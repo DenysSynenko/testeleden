@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -25,10 +29,10 @@ const Footer = () => {
             >
               <h3 className="font-display text-2xl font-bold mb-4">ELEDEN</h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                Premium content systems for modern businesses.
+                {t("footer.tagline")}
               </p>
               <p className="text-muted-foreground/60 text-sm">
-                Munich • Worldwide
+                {t("footer.location")}
               </p>
             </motion.div>
           </div>
@@ -40,13 +44,13 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h4 className="text-sm font-medium text-foreground mb-4">Navigation</h4>
+            <h4 className="text-sm font-medium text-foreground mb-4">{t("footer.nav")}</h4>
             <ul className="space-y-3">
               <li>
-                <FooterLink onClick={() => scrollToSection("work")}>Work</FooterLink>
+                <FooterLink onClick={() => scrollToSection("work")}>{t("nav.work")}</FooterLink>
               </li>
               <li>
-                <FooterLink onClick={() => scrollToSection("contact")}>Contact</FooterLink>
+                <FooterLink onClick={() => scrollToSection("contact")}>{t("nav.contact")}</FooterLink>
               </li>
             </ul>
           </motion.div>
@@ -58,13 +62,13 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h4 className="text-sm font-medium text-foreground mb-4">Legal</h4>
+            <h4 className="text-sm font-medium text-foreground mb-4">{t("footer.legal")}</h4>
             <ul className="space-y-3">
               <li>
-                <FooterLink href="#">Impressum</FooterLink>
+                <FooterLink href="/impressum">{t("footer.impressum")}</FooterLink>
               </li>
               <li>
-                <FooterLink href="#">Privacy</FooterLink>
+                <FooterLink href="/privacy">{t("footer.privacy")}</FooterLink>
               </li>
             </ul>
           </motion.div>
@@ -79,7 +83,7 @@ const Footer = () => {
           className="mt-16 pt-8 border-t border-white/[0.06]"
         >
           <p className="text-muted-foreground/50 text-xs text-center">
-            © {new Date().getFullYear()} ELEDEN. All rights reserved.
+            © {new Date().getFullYear()} ELEDEN. {t("footer.copyright")}
           </p>
         </motion.div>
       </div>
@@ -96,17 +100,26 @@ const FooterLink = ({
   href?: string;
   onClick?: () => void;
 }) => {
-  const Component = onClick ? "button" : "a";
+  if (href) {
+    return (
+      <Link
+        to={href}
+        className="relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group inline-block"
+      >
+        {children}
+        <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-primary/60 transition-all duration-300 group-hover:w-full" />
+      </Link>
+    );
+  }
   
   return (
-    <Component
-      href={href}
+    <button
       onClick={onClick}
       className="relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group inline-block"
     >
       {children}
       <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-primary/60 transition-all duration-300 group-hover:w-full" />
-    </Component>
+    </button>
   );
 };
 

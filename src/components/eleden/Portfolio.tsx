@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Play, X, ArrowRight, Check } from "lucide-react";
 import MagneticButton from "./MagneticButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface CaseStudy {
   id: string;
@@ -117,25 +118,48 @@ const cases: CaseStudy[] = [
 
 const Portfolio = () => {
   const [selectedCase, setSelectedCase] = useState<CaseStudy | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   return (
-    <section id="work" className="relative py-32 overflow-hidden">
-      {/* Background */}
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-glow-mint opacity-20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-20 rounded-full blur-3xl" />
+    <section id="work" ref={containerRef} className="relative py-32 overflow-hidden">
+      {/* Animated Background */}
+      <motion.div
+        style={{ y: backgroundY }}
+        className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-glow-mint opacity-20 rounded-full blur-3xl"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.15, 0.25, 0.15],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-20 rounded-full blur-3xl"
+      />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16"
         >
-          <h2 className="section-title mb-4">Selected work</h2>
+          <h2 className="section-title mb-4">{t("portfolio.title")}</h2>
           <p className="text-muted-foreground text-lg max-w-xl">
-            Vertical reels, designed to sell the feeling — and the result.
+            {t("portfolio.subtitle")}
           </p>
         </motion.div>
 
@@ -144,10 +168,10 @@ const Portfolio = () => {
           {/* Row 1: Large left, 2 stacked right */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.7 }}
               className="md:col-span-2 md:row-span-2"
             >
               <VideoCard 
@@ -157,10 +181,10 @@ const Portfolio = () => {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
             >
               <VideoCard 
                 caseStudy={cases[1]} 
@@ -169,10 +193,10 @@ const Portfolio = () => {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
             >
               <VideoCard 
                 caseStudy={cases[2]} 
@@ -185,10 +209,10 @@ const Portfolio = () => {
           {/* Row 2: 2 stacked left, Large right */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.7 }}
             >
               <VideoCard 
                 caseStudy={cases[3]} 
@@ -197,10 +221,10 @@ const Portfolio = () => {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
             >
               <VideoCard 
                 caseStudy={cases[4]} 
@@ -209,10 +233,10 @@ const Portfolio = () => {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
               className="md:row-span-2"
             >
               <VideoCard 
@@ -232,10 +256,13 @@ const Portfolio = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mt-12 text-center"
         >
-          <button className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 group">
-            <span>View all work</span>
+          <motion.button 
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 group"
+            whileHover={{ x: 5 }}
+          >
+            <span>{t("portfolio.viewAll")}</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+          </motion.button>
         </motion.div>
       </div>
 
@@ -244,7 +271,8 @@ const Portfolio = () => {
         {selectedCase && (
           <CaseSpotlight 
             caseStudy={selectedCase} 
-            onClose={() => setSelectedCase(null)} 
+            onClose={() => setSelectedCase(null)}
+            t={t}
           />
         )}
       </AnimatePresence>
@@ -261,6 +289,7 @@ interface VideoCardProps {
 const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
   const videoRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -287,19 +316,33 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
     <motion.div
       ref={videoRef}
       onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className={`video-card cursor-pointer relative group ${heightClass}`}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.02, y: -8 }}
       transition={{ duration: 0.4 }}
     >
       {/* Placeholder gradient background */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${caseStudy.color}`} />
+      <motion.div 
+        className={`absolute inset-0 bg-gradient-to-br ${caseStudy.color}`}
+        animate={{
+          opacity: isHovered ? 0.8 : 1,
+        }}
+        transition={{ duration: 0.3 }}
+      />
       
       {/* Animated play state indicator */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
           initial={{ scale: 1 }}
-          animate={{ scale: isInView ? [1, 1.1, 1] : 1 }}
-          transition={{ duration: 2, repeat: isInView ? Infinity : 0 }}
+          animate={{ 
+            scale: isInView ? [1, 1.1, 1] : 1,
+            opacity: isHovered ? 0 : 1
+          }}
+          transition={{ 
+            scale: { duration: 2, repeat: isInView ? Infinity : 0 },
+            opacity: { duration: 0.3 }
+          }}
           className="w-16 h-16 rounded-full bg-surface/80 backdrop-blur-sm border border-white/10 flex items-center justify-center"
         >
           <Play className="w-6 h-6 text-champagne fill-champagne/30" />
@@ -309,29 +352,40 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
       {/* Overlay on hover */}
       <motion.div
         initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent p-6 flex flex-col justify-end"
+        animate={{ opacity: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent p-6 flex flex-col justify-end"
       >
-        <p className="text-xs text-muted-foreground mb-1">
-          Case #{caseStudy.id}
-        </p>
-        <h3 className="font-display text-xl font-semibold mb-2">
-          {caseStudy.title}
-        </h3>
-        <p className="text-sm text-muted-foreground mb-2">
-          {caseStudy.category}
-        </p>
-        <p className="text-sm text-primary font-medium">
-          {caseStudy.result}
-        </p>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <p className="text-xs text-muted-foreground mb-1">
+            Case #{caseStudy.id}
+          </p>
+          <h3 className="font-display text-xl font-semibold mb-2">
+            {caseStudy.title}
+          </h3>
+          <p className="text-sm text-muted-foreground mb-2">
+            {caseStudy.category}
+          </p>
+          <p className="text-sm text-primary font-medium">
+            {caseStudy.result}
+          </p>
+        </motion.div>
       </motion.div>
 
       {/* Always visible minimal label */}
-      <div className="absolute bottom-4 left-4 right-4 group-hover:opacity-0 transition-opacity duration-300">
+      <motion.div 
+        className="absolute bottom-4 left-4 right-4"
+        animate={{ opacity: isHovered ? 0 : 1 }}
+        transition={{ duration: 0.2 }}
+      >
         <p className="text-xs text-white/60">
           Case #{caseStudy.id} — {caseStudy.title}
         </p>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
@@ -339,9 +393,10 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
 interface CaseSpotlightProps {
   caseStudy: CaseStudy;
   onClose: () => void;
+  t: (key: string) => string;
 }
 
-const CaseSpotlight = ({ caseStudy, onClose }: CaseSpotlightProps) => {
+const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
   const scrollToSection = (id: string) => {
     onClose();
     setTimeout(() => {
@@ -361,27 +416,39 @@ const CaseSpotlight = ({ caseStudy, onClose }: CaseSpotlightProps) => {
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-background/90 backdrop-blur-xl" />
+      <motion.div 
+        initial={{ backdropFilter: "blur(0px)" }}
+        animate={{ backdropFilter: "blur(20px)" }}
+        exit={{ backdropFilter: "blur(0px)" }}
+        className="absolute inset-0 bg-background/90"
+      />
 
       {/* Modal */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={{ opacity: 0, scale: 0.9, y: 30, filter: "blur(10px)" }}
+        animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+        exit={{ opacity: 0, scale: 0.9, y: 30, filter: "blur(10px)" }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-2xl glass-elevated rounded-[18px] p-8 max-h-[90vh] overflow-y-auto"
       >
         {/* Close button */}
-        <button
+        <motion.button
           onClick={onClose}
+          whileHover={{ scale: 1.1, rotate: 90 }}
+          whileTap={{ scale: 0.9 }}
           className="absolute top-4 right-4 w-10 h-10 rounded-full bg-surface border border-white/10 flex items-center justify-center hover:bg-surface-elevated transition-colors duration-300"
         >
           <X className="w-4 h-4" />
-        </button>
+        </motion.button>
 
         {/* Content */}
-        <div className="mb-6">
+        <motion.div 
+          className="mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
           <p className="text-sm text-muted-foreground mb-2">
             Case #{caseStudy.id}
           </p>
@@ -391,59 +458,94 @@ const CaseSpotlight = ({ caseStudy, onClose }: CaseSpotlightProps) => {
           <p className="text-muted-foreground">
             {caseStudy.category}
           </p>
-        </div>
+        </motion.div>
 
         {/* Result badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8">
+        <motion.div 
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           <span className="text-primary font-medium">{caseStudy.result}</span>
-        </div>
+        </motion.div>
 
         {/* Outcomes */}
-        <div className="mb-8">
-          <h3 className="text-sm font-medium text-foreground mb-4">Key Outcomes</h3>
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+        >
+          <h3 className="text-sm font-medium text-foreground mb-4">{t("portfolio.outcomes")}</h3>
           <ul className="space-y-3">
             {caseStudy.details.outcomes.map((outcome, index) => (
-              <li key={index} className="flex items-start gap-3">
+              <motion.li 
+                key={index} 
+                className="flex items-start gap-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + index * 0.1 }}
+              >
                 <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Check className="w-3 h-3 text-primary" />
                 </div>
                 <span className="text-muted-foreground">{outcome}</span>
-              </li>
+              </motion.li>
             ))}
           </ul>
-        </div>
+        </motion.div>
 
         {/* Services */}
-        <div className="mb-8">
-          <h3 className="text-sm font-medium text-foreground mb-4">What we did</h3>
+        <motion.div 
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <h3 className="text-sm font-medium text-foreground mb-4">{t("portfolio.services")}</h3>
           <div className="flex flex-wrap gap-2">
             {caseStudy.details.services.map((service, index) => (
-              <span
+              <motion.span
                 key={index}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.55 + index * 0.05 }}
                 className="px-3 py-1.5 rounded-full bg-surface text-sm text-muted-foreground border border-white/[0.06]"
               >
                 {service}
-              </span>
+              </motion.span>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Testimonial */}
-        <div className="mb-8 p-6 rounded-xl bg-surface border border-white/[0.06]">
+        <motion.div 
+          className="mb-8 p-6 rounded-xl bg-surface border border-white/[0.06]"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
           <p className="text-foreground italic mb-4">
             "{caseStudy.details.testimonial}"
           </p>
           <p className="text-sm text-muted-foreground">— Client</p>
-        </div>
+        </motion.div>
 
         {/* CTA */}
-        <MagneticButton 
-          variant="primary"
-          onClick={() => scrollToSection("contact")}
-          className="w-full justify-center"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
         >
-          Request similar system
-        </MagneticButton>
+          <MagneticButton 
+            variant="primary"
+            onClick={() => scrollToSection("contact")}
+            className="w-full justify-center"
+          >
+            {t("portfolio.cta")}
+          </MagneticButton>
+        </motion.div>
       </motion.div>
     </motion.div>
   );
