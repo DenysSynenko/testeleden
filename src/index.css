@@ -15,9 +15,9 @@
     --surface: 215 22% 9%; /* #12161C */
     --surface-elevated: 215 25% 11%; /* #141A22 */
     
-    --primary: 168 52% 58%; /* #5BCDB6 - pastel mint */
-    --primary-foreground: 220 20% 4%;
-    --primary-deep: 172 48% 33%; /* #2B7D72 - deep mint */
+    --primary: 158 42% 42%; /* #3F9B7A - dark mint */
+    --primary-foreground: 220 20% 94%;
+    --primary-deep: 160 48% 28%; /* #256B52 - deep dark mint */
     
     --secondary: 215 22% 9%;
     --secondary-foreground: 220 20% 94%;
@@ -44,8 +44,8 @@
     --radius: 16px;
     
     /* Premium Shadows & Glows */
-    --glow-mint: 0 0 80px 20px hsla(168, 52%, 58%, 0.15);
-    --glow-mint-soft: 0 0 40px 10px hsla(168, 52%, 58%, 0.08);
+    --glow-mint: 0 0 80px 20px hsla(158, 42%, 42%, 0.18);
+    --glow-mint-soft: 0 0 40px 10px hsla(158, 42%, 42%, 0.10);
     --shadow-elevated: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
@@ -208,7 +208,7 @@
   }
 
   .bg-glow-mint {
-    background: radial-gradient(ellipse 50% 50% at 50% 50%, hsla(168, 52%, 58%, 0.12) 0%, transparent 70%);
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, hsla(158, 42%, 42%, 0.15) 0%, transparent 70%);
   }
 
   .bg-glow-champagne {
