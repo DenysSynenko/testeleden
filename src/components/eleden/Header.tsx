@@ -56,17 +56,20 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <motion.div
+            <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                if (!isHomePage) {
+                  window.location.href = "/";
+                } else {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="font-display text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300"
             >
-              <Link
-                to="/"
-                className="font-display text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300"
-              >
-                ELEDEN
-              </Link>
-            </motion.div>
+              ELEDEN
+            </motion.button>
 
             {/* Navigation */}
             <nav className="flex items-center gap-8">
