@@ -7,6 +7,7 @@ import Packages from "@/components/eleden/Packages";
 import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
 import Footer from "@/components/eleden/Footer";
+import ScrollToTop from "@/components/eleden/ScrollToTop";
 
 const Index = () => {
   return (
@@ -30,6 +31,9 @@ const Index = () => {
       
       {/* Footer */}
       <Footer />
+      
+      {/* Scroll to top button */}
+      <ScrollToTop />
     </div>
   );
 };
