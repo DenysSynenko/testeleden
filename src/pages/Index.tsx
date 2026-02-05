@@ -1,12 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from "@/components/eleden/Header";
+import Hero from "@/components/eleden/Hero";
+import Outcomes from "@/components/eleden/Outcomes";
+import Portfolio from "@/components/eleden/Portfolio";
+import SystemSection from "@/components/eleden/SystemSection";
+import Packages from "@/components/eleden/Packages";
+import FAQ from "@/components/eleden/FAQ";
+import ContactCTA from "@/components/eleden/ContactCTA";
+import Footer from "@/components/eleden/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* Noise overlay */}
+      <div className="noise-overlay" />
+      
+      {/* Header */}
+      <Header />
+      
+      {/* Main content */}
+      <main>
+        <Hero />
+        <Outcomes />
+        <Portfolio />
+        <SystemSection />
+        <Packages />
+        <FAQ />
+        <ContactCTA />
+      </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
