@@ -58,8 +58,8 @@ export default {
         },
         champagne: "#D6B36A",
         mint: {
-          DEFAULT: "#5BCDB6",
-          deep: "#2B7D72",
+          DEFAULT: "#3F9B7A",
+          deep: "#256B52",
         },
       },
       borderRadius: {
