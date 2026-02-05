@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, forwardRef } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -10,20 +10,21 @@ interface MagneticButtonProps {
   showArrow?: boolean;
 }
 
-const MagneticButton = ({ 
+const MagneticButton = forwardRef<HTMLButtonElement, MagneticButtonProps>(({ 
   children, 
   variant = "primary", 
   onClick,
   className = "",
   showArrow = true
-}: MagneticButtonProps) => {
+}, ref) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!buttonRef.current) return;
+    const currentRef = buttonRef.current || (ref as React.RefObject<HTMLButtonElement>)?.current;
+    if (!currentRef) return;
     
-    const rect = buttonRef.current.getBoundingClientRect();
+    const rect = currentRef.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
@@ -64,6 +65,8 @@ const MagneticButton = ({
       )}
     </motion.button>
   );
-};
+});
+
+MagneticButton.displayName = "MagneticButton";
 
 export default MagneticButton;

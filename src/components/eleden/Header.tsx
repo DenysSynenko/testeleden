@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-type Language = "EN" | "DE" | "UA";
+import { Link, useLocation } from "react-router-dom";
+import { useLanguage, Language } from "@/contexts/LanguageContext";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [language, setLanguage] = useState<Language>("EN");
+  const { language, setLanguage, t } = useLanguage();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,10 @@ const Header = () => {
   }, []);
 
   const scrollToSection = (id: string) => {
+    if (!isHomePage) {
+      window.location.href = `/#${id}`;
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -50,41 +56,49 @@ const Header = () => {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <motion.a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
-              className="font-display text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300"
+            <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              ELEDEN
-            </motion.a>
+              <Link
+                to="/"
+                className="font-display text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300"
+              >
+                ELEDEN
+              </Link>
+            </motion.div>
 
             {/* Navigation */}
             <nav className="flex items-center gap-8">
               {/* Nav Links */}
               <div className="hidden md:flex items-center gap-8">
-                <NavLink onClick={() => scrollToSection("work")}>Work</NavLink>
-                <NavLink onClick={() => scrollToSection("contact")}>Contact</NavLink>
+                <NavLink onClick={() => scrollToSection("work")}>{t("nav.work")}</NavLink>
+                <NavLink onClick={() => scrollToSection("contact")}>{t("nav.contact")}</NavLink>
               </div>
 
               {/* Language Switcher */}
               <div className="flex items-center gap-1 text-sm">
                 {(["EN", "DE", "UA"] as Language[]).map((lang, index) => (
                   <div key={lang} className="flex items-center">
-                    <button
+                    <motion.button
                       onClick={() => setLanguage(lang)}
-                      className={`px-2 py-1 rounded-md transition-all duration-300 ${
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`px-2 py-1 rounded-md transition-all duration-300 relative ${
                         language === lang
                           ? "text-foreground font-medium"
                           : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
-                      {lang}
-                    </button>
+                      {language === lang && (
+                        <motion.div
+                          layoutId="languageIndicator"
+                          className="absolute inset-0 bg-primary/10 rounded-md border border-primary/20"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                        />
+                      )}
+                      <span className="relative z-10">{lang}</span>
+                    </motion.button>
                     {index < 2 && (
                       <span className="text-white/20 mx-1">|</span>
                     )}
@@ -110,10 +124,17 @@ const NavLink = ({
     <motion.button
       onClick={onClick}
       className="relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group"
-      whileHover={{ y: -1 }}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
     >
       {children}
-      <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
+      <motion.span 
+        className="absolute -bottom-1 left-0 h-px bg-primary origin-left"
+        initial={{ scaleX: 0 }}
+        whileHover={{ scaleX: 1 }}
+        transition={{ duration: 0.3 }}
+        style={{ width: "100%" }}
+      />
     </motion.button>
   );
 };
