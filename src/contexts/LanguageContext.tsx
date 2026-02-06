@@ -153,9 +153,20 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.location": "Munich • Worldwide",
     "footer.nav": "Navigation",
     "footer.legal": "Legal",
+    "footer.social": "Social",
     "footer.impressum": "Impressum",
     "footer.privacy": "Privacy",
     "footer.copyright": "All rights reserved.",
+    "footer.trust": "Based in Munich • Available worldwide • Reply within 24–48 hours",
+    
+    // About
+    "about.headline": "Founder-led. Crafted in Munich.",
+    "about.p1": "I'm a content creator from Ukraine, relocated to Munich because of the war.",
+    "about.p2": "I worked in employment and then built my own content agency.",
+    "about.p3": "I'm also a sponsor-backed professional cyclist, which shaped my taste for dynamic, stylish content.",
+    "about.p4": "My approach: stylish, honest, fast execution, premium look.",
+    "about.closing": "If you want premium short-form content with a clear system — ELEDEN builds it for you.",
+    "about.photoPlaceholder": "Add your photo here",
   },
   
   DE: {
@@ -302,9 +313,20 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.location": "München • Weltweit",
     "footer.nav": "Navigation",
     "footer.legal": "Rechtliches",
+    "footer.social": "Soziale Medien",
     "footer.impressum": "Impressum",
     "footer.privacy": "Datenschutz",
     "footer.copyright": "Alle Rechte vorbehalten.",
+    "footer.trust": "Standort München • Weltweit verfügbar • Antwort innerhalb von 24–48 Stunden",
+    
+    // About
+    "about.headline": "Gründergeführt. Gefertigt in München.",
+    "about.p1": "Ich bin ein Content Creator aus der Ukraine, nach München umgezogen wegen des Krieges.",
+    "about.p2": "Ich war angestellt und habe dann meine eigene Content-Agentur aufgebaut.",
+    "about.p3": "Ich bin auch ein sponsorunterstützter Profi-Radfahrer, was meinen Geschmack für dynamische, stilvolle Inhalte geprägt hat.",
+    "about.p4": "Mein Ansatz: stilvoll, ehrlich, schnelle Umsetzung, Premium-Look.",
+    "about.closing": "Wenn Sie Premium-Kurzform-Content mit einem klaren System wollen — ELEDEN baut es für Sie.",
+    "about.photoPlaceholder": "Fügen Sie Ihr Foto hier ein",
   },
   
   UA: {
@@ -451,9 +473,20 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.location": "Мюнхен • По всьому світу",
     "footer.nav": "Навігація",
     "footer.legal": "Правова інформація",
+    "footer.social": "Соціальні мережі",
     "footer.impressum": "Імпресум",
     "footer.privacy": "Конфіденційність",
     "footer.copyright": "Всі права захищені.",
+    "footer.trust": "Мюнхен • Доступні по всьому світу • Відповідь протягом 24–48 годин",
+    
+    // About
+    "about.headline": "Засновник на чолі. Створено в Мюнхені.",
+    "about.p1": "Я контент-креатор з України, переїхав до Мюнхена через війну.",
+    "about.p2": "Я працював за наймом, а потім побудував власну контент-агенцію.",
+    "about.p3": "Я також професійний велогонщик зі спонсорською підтримкою, що сформувало мій смак до динамічного, стильного контенту.",
+    "about.p4": "Мій підхід: стильно, чесно, швидке виконання, преміальний вигляд.",
+    "about.closing": "Якщо ви хочете преміальний короткометражний контент з чіткою системою — ELEDEN створить його для вас.",
+    "about.photoPlaceholder": "Додайте своє фото сюди",
   },
 };
 

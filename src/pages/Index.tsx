@@ -3,6 +3,7 @@ import Hero from "@/components/eleden/Hero";
 import Outcomes from "@/components/eleden/Outcomes";
 import Portfolio from "@/components/eleden/Portfolio";
 import SystemSection from "@/components/eleden/SystemSection";
+import About from "@/components/eleden/About";
 import Packages from "@/components/eleden/Packages";
 import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
@@ -24,6 +25,7 @@ const Index = () => {
         <Outcomes />
         <Portfolio />
         <SystemSection />
+        <About />
         <Packages />
         <FAQ />
         <ContactCTA />

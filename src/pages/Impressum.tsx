@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Header from "@/components/eleden/Header";
 
 const Impressum = () => {
   const { language } = useLanguage();
@@ -13,27 +14,24 @@ const Impressum = () => {
       sections: [
         {
           title: "Information according to § 5 TMG",
-          content: `ELEDEN
-Max Mustermann
-Musterstraße 123
-80331 Munich
+          content: `Denys Synenko Medienproduktion
+Berg-am-Laim-Str. 73
+81673 München
 Germany`
         },
         {
           title: "Contact",
-          content: `Phone: +49 123 456789
-Email: hello@eleden.de`
+          content: `Email: aiproductionsub@gmail.com`
         },
         {
-          title: "VAT ID",
-          content: `VAT identification number according to §27 a of the German VAT Act:
-DE123456789`
+          title: "Legal Form",
+          content: `Einzelunternehmer`
         },
         {
           title: "Responsible for content according to § 55 Abs. 2 RStV",
-          content: `Max Mustermann
-Musterstraße 123
-80331 Munich`
+          content: `Denys Synenko
+Berg-am-Laim-Str. 73
+81673 München`
         },
         {
           title: "Dispute Resolution",
@@ -48,27 +46,24 @@ We are not willing or obliged to participate in dispute resolution proceedings b
       sections: [
         {
           title: "Angaben gemäß § 5 TMG",
-          content: `ELEDEN
-Max Mustermann
-Musterstraße 123
-80331 München
+          content: `Denys Synenko Medienproduktion
+Berg-am-Laim-Str. 73
+81673 München
 Deutschland`
         },
         {
           title: "Kontakt",
-          content: `Telefon: +49 123 456789
-E-Mail: hello@eleden.de`
+          content: `E-Mail: aiproductionsub@gmail.com`
         },
         {
-          title: "Umsatzsteuer-ID",
-          content: `Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:
-DE123456789`
+          title: "Rechtsform",
+          content: `Einzelunternehmer`
         },
         {
           title: "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
-          content: `Max Mustermann
-Musterstraße 123
-80331 München`
+          content: `Denys Synenko
+Berg-am-Laim-Str. 73
+81673 München`
         },
         {
           title: "Streitschlichtung",
@@ -83,27 +78,24 @@ Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer 
       sections: [
         {
           title: "Інформація згідно з § 5 TMG",
-          content: `ELEDEN
-Макс Мустерман
-Мустерштрассе 123
-80331 Мюнхен
+          content: `Denys Synenko Medienproduktion
+Berg-am-Laim-Str. 73
+81673 Мюнхен
 Німеччина`
         },
         {
           title: "Контакт",
-          content: `Телефон: +49 123 456789
-Email: hello@eleden.de`
+          content: `Email: aiproductionsub@gmail.com`
         },
         {
-          title: "Ідентифікаційний номер ПДВ",
-          content: `Ідентифікаційний номер ПДВ згідно з §27 a Закону про ПДВ Німеччини:
-DE123456789`
+          title: "Правова форма",
+          content: `Einzelunternehmer (Індивідуальний підприємець)`
         },
         {
           title: "Відповідальний за контент згідно з § 55 Abs. 2 RStV",
-          content: `Макс Мустерман
-Мустерштрассе 123
-80331 Мюнхен`
+          content: `Denys Synenko
+Berg-am-Laim-Str. 73
+81673 Мюнхен`
         },
         {
           title: "Вирішення спорів",
@@ -119,12 +111,13 @@ DE123456789`
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       <div className="noise-overlay" />
+      <Header />
       
       {/* Background glows */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-glow-mint opacity-15 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-10 rounded-full blur-3xl" />
       
-      <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-24">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-32">
         {/* Back link */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Header from "@/components/eleden/Header";
 
 const Privacy = () => {
   const { language } = useLanguage();
@@ -16,11 +17,10 @@ const Privacy = () => {
           title: "1. Data Controller",
           content: `The data controller responsible for data processing on this website is:
 
-ELEDEN
-Max Mustermann
-Musterstraße 123
-80331 Munich, Germany
-Email: hello@eleden.de`
+Denys Synenko Medienproduktion
+Berg-am-Laim-Str. 73
+81673 München, Germany
+Email: aiproductionsub@gmail.com`
         },
         {
           title: "2. Data Collection",
@@ -54,7 +54,7 @@ Email: hello@eleden.de`
 • Right to data portability
 • Right to object to processing
 
-To exercise any of these rights, please contact us at hello@eleden.de.`
+To exercise any of these rights, please contact us at aiproductionsub@gmail.com.`
         },
         {
           title: "6. Cookies",
@@ -68,7 +68,7 @@ To exercise any of these rights, please contact us at hello@eleden.de.`
           title: "8. Contact",
           content: `If you have any questions about this privacy policy or our data practices, please contact us at:
 
-Email: hello@eleden.de`
+Email: aiproductionsub@gmail.com`
         }
       ]
     },
@@ -81,11 +81,10 @@ Email: hello@eleden.de`
           title: "1. Verantwortlicher",
           content: `Verantwortlicher für die Datenverarbeitung auf dieser Website ist:
 
-ELEDEN
-Max Mustermann
-Musterstraße 123
-80331 München, Deutschland
-E-Mail: hello@eleden.de`
+Denys Synenko Medienproduktion
+Berg-am-Laim-Str. 73
+81673 München, Deutschland
+E-Mail: aiproductionsub@gmail.com`
         },
         {
           title: "2. Datenerfassung",
@@ -119,7 +118,7 @@ E-Mail: hello@eleden.de`
 • Recht auf Datenübertragbarkeit
 • Widerspruchsrecht gegen die Verarbeitung
 
-Um eines dieser Rechte auszuüben, kontaktieren Sie uns bitte unter hello@eleden.de.`
+Um eines dieser Rechte auszuüben, kontaktieren Sie uns bitte unter aiproductionsub@gmail.com.`
         },
         {
           title: "6. Cookies",
@@ -133,7 +132,7 @@ Um eines dieser Rechte auszuüben, kontaktieren Sie uns bitte unter hello@eleden
           title: "8. Kontakt",
           content: `Wenn Sie Fragen zu dieser Datenschutzerklärung oder unseren Datenpraktiken haben, kontaktieren Sie uns bitte unter:
 
-E-Mail: hello@eleden.de`
+E-Mail: aiproductionsub@gmail.com`
         }
       ]
     },
@@ -146,11 +145,10 @@ E-Mail: hello@eleden.de`
           title: "1. Контролер даних",
           content: `Контролером даних, відповідальним за обробку даних на цьому веб-сайті, є:
 
-ELEDEN
-Макс Мустерман
-Мустерштрассе 123
-80331 Мюнхен, Німеччина
-Email: hello@eleden.de`
+Denys Synenko Medienproduktion
+Berg-am-Laim-Str. 73
+81673 Мюнхен, Німеччина
+Email: aiproductionsub@gmail.com`
         },
         {
           title: "2. Збір даних",
@@ -184,7 +182,7 @@ Email: hello@eleden.de`
 • Право на перенесення даних
 • Право заперечувати проти обробки
 
-Щоб скористатися будь-яким з цих прав, будь ласка, зв'яжіться з нами за адресою hello@eleden.de.`
+Щоб скористатися будь-яким з цих прав, будь ласка, зв'яжіться з нами за адресою aiproductionsub@gmail.com.`
         },
         {
           title: "6. Файли cookie",
@@ -198,7 +196,7 @@ Email: hello@eleden.de`
           title: "8. Контакт",
           content: `Якщо у вас є запитання щодо цієї політики конфіденційності або наших практик роботи з даними, будь ласка, зв'яжіться з нами:
 
-Email: hello@eleden.de`
+Email: aiproductionsub@gmail.com`
         }
       ]
     }
@@ -209,12 +207,13 @@ Email: hello@eleden.de`
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       <div className="noise-overlay" />
+      <Header />
       
       {/* Background glows */}
       <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-glow-mint opacity-15 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-10 rounded-full blur-3xl" />
       
-      <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-24">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-32">
         {/* Back link */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
