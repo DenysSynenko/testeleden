@@ -12,15 +12,25 @@ const Footer = () => {
     }
   };
 
+  const socialLinks = {
+    instagram: [
+      { label: "UA", url: "https://www.instagram.com/den.synenko.ua/" },
+      { label: "EN", url: "https://www.instagram.com/de.synenko/" },
+      { label: "Personal", url: "https://www.instagram.com/denys_synenko/" },
+    ],
+    tiktok: { label: "TikTok", url: "https://www.tiktok.com/@de.synenko?_r=1&_t=ZG-93gzwE0wwz2" },
+    youtube: { label: "YouTube", url: "https://youtube.com/@denyssynenko?si=5YAiNACsPNu_lrTy" },
+  };
+
   return (
     <footer className="relative bg-surface border-t border-white/[0.06]">
       {/* Champagne separator line */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-champagne/30 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
-          <div className="md:col-span-1">
+          <div className="lg:col-span-1">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -72,15 +82,77 @@ const Footer = () => {
               </li>
             </ul>
           </motion.div>
+
+          {/* Social */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <h4 className="text-sm font-medium text-foreground mb-4">{t("footer.social")}</h4>
+            <div className="space-y-4">
+              {/* Instagram */}
+              <div>
+                <p className="text-xs text-muted-foreground/60 mb-2">Instagram</p>
+                <div className="flex flex-wrap gap-2">
+                  {socialLinks.instagram.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-300"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* TikTok & YouTube */}
+              <div className="flex gap-3">
+                <a
+                  href={socialLinks.tiktok.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-300"
+                >
+                  TikTok
+                </a>
+                <a
+                  href={socialLinks.youtube.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-300"
+                >
+                  YouTube
+                </a>
+              </div>
+            </div>
+          </motion.div>
         </div>
+
+        {/* Trust line */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-12 pt-6 border-t border-white/[0.06]"
+        >
+          <p className="text-muted-foreground/60 text-xs text-center">
+            {t("footer.trust")}
+          </p>
+        </motion.div>
 
         {/* Copyright */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-16 pt-8 border-t border-white/[0.06]"
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-6"
         >
           <p className="text-muted-foreground/50 text-xs text-center">
             © {new Date().getFullYear()} ELEDEN. {t("footer.copyright")}
