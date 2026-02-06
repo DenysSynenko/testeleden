@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import founderPhoto from "@/assets/founder-photo.jpg";
 
 const About = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +27,7 @@ const About = () => {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Photo placeholder with mint treatment */}
+          {/* Photo with mint treatment */}
           <motion.div
             initial={{ opacity: 0, x: -40, filter: "blur(10px)" }}
             whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
@@ -36,21 +37,18 @@ const About = () => {
           >
             {/* Main photo container */}
             <div className="relative aspect-[4/5] rounded-[18px] overflow-hidden bg-surface border border-white/[0.06]">
-              {/* Placeholder with mint overlay treatment */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-surface to-primary-deep/30" />
+              {/* Actual photo */}
+              <img 
+                src={founderPhoto} 
+                alt="Denys Synenko - Founder of ELEDEN"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
               
-              {/* Photo placeholder area */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                    <span className="text-4xl text-primary/60">DS</span>
-                  </div>
-                  <p className="text-muted-foreground/50 text-sm">{t("about.photoPlaceholder")}</p>
-                </div>
-              </div>
-
-              {/* Mint treatment overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-primary/5 pointer-events-none" />
+              {/* Mint treatment overlay - subtle green tint */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary-deep/15 mix-blend-overlay pointer-events-none" />
+              
+              {/* Bottom gradient for text legibility if needed */}
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Decorative element */}

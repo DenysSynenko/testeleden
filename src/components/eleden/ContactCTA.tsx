@@ -7,19 +7,39 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const ContactCTA = () => {
   const { t } = useLanguage();
   const [formData, setFormData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     company: "",
-    product: "",
+    instagram: "",
+    email: "",
+    website: "",
+    goal: "",
     budget: "",
+    timeline: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const goalOptions = [
+    { value: "brand", label: "Brand" },
+    { value: "leads", label: "Leads" },
+    { value: "both", label: "Both" },
+  ];
+
   const budgetOptions = [
-    { value: "480", label: "€480 / month" },
-    { value: "870", label: "€870 / month" },
-    { value: "1260", label: "€1,260 / month" },
-    { value: "2000", label: "€2,000+ / month (individual)" },
+    { value: "480", label: "€480" },
+    { value: "870", label: "€870" },
+    { value: "1260", label: "€1,260" },
+    { value: "2000", label: "€2,000+" },
+    { value: "unsure", label: "Not sure" },
+  ];
+
+  const timelineOptions = [
+    { value: "asap", label: "ASAP" },
+    { value: "2-4weeks", label: "2–4 weeks" },
+    { value: "1-2months", label: "1–2 months" },
+    { value: "researching", label: "Just researching" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,10 +54,17 @@ const ContactCTA = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const selectStyles = {
+    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239AA3B2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "right 1rem center",
+    backgroundSize: "1.5em",
+  } as React.CSSProperties;
 
   return (
     <section id="contact" className="relative py-32 overflow-hidden">
@@ -95,7 +122,7 @@ const ContactCTA = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-xl mx-auto"
+          className="max-w-2xl mx-auto"
         >
           {isSubmitted ? (
             <motion.div
@@ -135,70 +162,188 @@ const ContactCTA = () => {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Name Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
-                  label={t("contact.name")}
-                  name="name"
-                  value={formData.name}
+                  label={t("contact.firstName")}
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  placeholder={t("contact.name")}
+                  placeholder={t("contact.firstName")}
                   required
                   index={0}
                 />
                 <FormField
-                  label={t("contact.company")}
-                  name="company"
-                  value={formData.company}
+                  label={t("contact.lastName")}
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleChange}
-                  placeholder="@handle"
-                  required
+                  placeholder={t("contact.lastNameOptional")}
                   index={1}
                 />
               </div>
 
-              <FormField
-                label={t("contact.product")}
-                name="product"
-                value={formData.product}
-                onChange={handleChange}
-                placeholder={t("contact.product")}
-                required
-                index={2}
-              />
+              {/* Company & Instagram Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  label={t("contact.companyName")}
+                  name="company"
+                  value={formData.company}
+                  onChange={handleChange}
+                  placeholder={t("contact.companyName")}
+                  required
+                  index={2}
+                />
+                <FormField
+                  label={t("contact.instagram")}
+                  name="instagram"
+                  value={formData.instagram}
+                  onChange={handleChange}
+                  placeholder="@handle"
+                  required
+                  index={3}
+                />
+              </div>
 
+              {/* Email & Website Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  label={t("contact.email")}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="you@company.com"
+                  required
+                  type="email"
+                  index={4}
+                />
+                <FormField
+                  label={t("contact.website")}
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  placeholder={t("contact.websiteOptional")}
+                  index={5}
+                />
+              </div>
+
+              {/* Dropdowns Row */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Goal */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="space-y-2"
+                >
+                  <label className="block text-sm font-medium text-foreground">
+                    {t("contact.goal")}
+                  </label>
+                  <motion.select
+                    whileFocus={{ scale: 1.01 }}
+                    name="goal"
+                    value={formData.goal}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
+                    style={selectStyles}
+                  >
+                    <option value="" disabled>
+                      {t("contact.select")}
+                    </option>
+                    {goalOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </motion.select>
+                </motion.div>
+
+                {/* Budget */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.25 }}
+                  className="space-y-2"
+                >
+                  <label className="block text-sm font-medium text-foreground">
+                    {t("contact.budget")}
+                  </label>
+                  <motion.select
+                    whileFocus={{ scale: 1.01 }}
+                    name="budget"
+                    value={formData.budget}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
+                    style={selectStyles}
+                  >
+                    <option value="" disabled>
+                      {t("contact.select")}
+                    </option>
+                    {budgetOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </motion.select>
+                </motion.div>
+
+                {/* Timeline */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="space-y-2"
+                >
+                  <label className="block text-sm font-medium text-foreground">
+                    {t("contact.timeline")}
+                  </label>
+                  <motion.select
+                    whileFocus={{ scale: 1.01 }}
+                    name="timeline"
+                    value={formData.timeline}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
+                    style={selectStyles}
+                  >
+                    <option value="" disabled>
+                      {t("contact.select")}
+                    </option>
+                    {timelineOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </motion.select>
+                </motion.div>
+              </div>
+
+              {/* Message */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
                 className="space-y-2"
               >
                 <label className="block text-sm font-medium text-foreground">
-                  {t("contact.budget")}
+                  {t("contact.message")}
                 </label>
-                <motion.select
+                <motion.textarea
                   whileFocus={{ scale: 1.01 }}
-                  name="budget"
-                  value={formData.budget}
+                  name="message"
+                  value={formData.message}
                   onChange={handleChange}
+                  placeholder={t("contact.messagePlaceholder")}
                   required
-                  className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239AA3B2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 1rem center",
-                    backgroundSize: "1.5em",
-                  }}
-                >
-                  <option value="" disabled>
-                    {t("contact.select")}
-                  </option>
-                  {budgetOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </motion.select>
+                  rows={4}
+                  className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/40 transition-all duration-300 resize-none"
+                />
               </motion.div>
 
               <motion.div 
@@ -251,7 +396,7 @@ const ContactCTA = () => {
                 transition={{ delay: 0.5 }}
                 className="text-center text-xs text-muted-foreground/60"
               >
-                {t("contact.note")}
+                {t("contact.microcopy")}
               </motion.p>
             </form>
           )}
@@ -269,6 +414,7 @@ interface FormFieldProps {
   placeholder: string;
   required?: boolean;
   index: number;
+  type?: string;
 }
 
 const FormField = ({
@@ -279,13 +425,14 @@ const FormField = ({
   placeholder,
   required,
   index,
+  type = "text",
 }: FormFieldProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
       className="space-y-2"
     >
       <label htmlFor={name} className="block text-sm font-medium text-foreground">
@@ -293,7 +440,7 @@ const FormField = ({
       </label>
       <motion.input
         whileFocus={{ scale: 1.01 }}
-        type="text"
+        type={type}
         id={name}
         name={name}
         value={value}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -156,11 +157,14 @@ const Header = () => {
                       <span className="relative z-10">{lang}</span>
                     </motion.button>
                     {index < 2 && (
-                      <span className="text-white/20 mx-1">|</span>
+                      <span className="text-muted-foreground/30 mx-1">|</span>
                     )}
                   </div>
                 ))}
               </div>
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
             </nav>
           </div>
         </div>
