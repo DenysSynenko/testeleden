@@ -41,14 +41,9 @@ const About = () => {
               <img 
                 src={founderPhoto} 
                 alt="Denys Synenko - Founder of ELEDEN"
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover object-top"
+                style={{ objectPosition: "center 15%" }}
               />
-              
-              {/* Mint treatment overlay - subtle green tint */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary-deep/15 mix-blend-overlay pointer-events-none" />
-              
-              {/* Bottom gradient for text legibility if needed */}
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Decorative element */}
