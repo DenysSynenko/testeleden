@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Impressum from "./pages/Impressum";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
+import CookieBanner from "./components/eleden/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <CookieBanner />
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>

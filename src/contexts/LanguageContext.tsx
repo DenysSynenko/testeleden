@@ -156,6 +156,11 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Request received",
     "contact.success.body": "We'll get back to you within 24–48 hours.",
     "contact.sending": "Sending...",
+    "cookies.title": "Cookies & privacy",
+    "cookies.body": "We use essential cookies to run the site and anonymous analytics to improve it. See our",
+    "cookies.privacy": "Privacy Policy",
+    "cookies.accept": "Accept",
+    "cookies.decline": "Decline",
     
     // Footer
     "footer.tagline": "Premium content systems for modern businesses.",
@@ -325,6 +330,11 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Anfrage erhalten",
     "contact.success.body": "Wir melden uns innerhalb von 24–48 Stunden.",
     "contact.sending": "Wird gesendet...",
+    "cookies.title": "Cookies & Datenschutz",
+    "cookies.body": "Wir verwenden notwendige Cookies für den Betrieb und anonyme Analyse zur Verbesserung. Mehr in unserer",
+    "cookies.privacy": "Datenschutzerklärung",
+    "cookies.accept": "Akzeptieren",
+    "cookies.decline": "Ablehnen",
     
     // Footer
     "footer.tagline": "Premium Content-Systeme für moderne Unternehmen.",
@@ -494,6 +504,11 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Запит отримано",
     "contact.success.body": "Ми зв'яжемося з вами протягом 24–48 годин.",
     "contact.sending": "Надсилаємо...",
+    "cookies.title": "Cookies та приватність",
+    "cookies.body": "Ми використовуємо необхідні cookies для роботи сайту та анонімну аналітику для покращення. Деталі — у",
+    "cookies.privacy": "Політиці конфіденційності",
+    "cookies.accept": "Прийняти",
+    "cookies.decline": "Відхилити",
     
     // Footer
     "footer.tagline": "Преміальні контент-системи для сучасного бізнесу.",

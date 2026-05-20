@@ -14,6 +14,7 @@ interface CaseStudy {
   posterUrl?: string;
   clientUrl?: string;
   clientLabel?: string;
+  clientLinks?: { url: string; label: string }[];
   details: {
     outcomes: string[];
     services: string[];
@@ -44,14 +45,16 @@ const cases: CaseStudy[] = [
   },
   {
     id: "02",
-    title: "EBSS 170 m² — Residential Apartments",
+    title: "Almeno Immobilien — Residential Apartments",
     category: "Real Estate Reel · 9:16",
     result: "+89 leads in 45 days",
     color: "from-champagne/20 to-champagne/5",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.jpg",
-    clientUrl: "https://www.instagram.com/ebss.immo/",
-    clientLabel: "EBSS Immobilien",
+    clientLinks: [
+      { url: "https://www.instagram.com/almeno_immobilien/", label: "Instagram" },
+      { url: "https://www.almeno.at/immobilien/", label: "Website" },
+    ],
     details: {
       outcomes: [
         "89 new leads generated",
@@ -495,20 +498,29 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
           </motion.div>
         )}
 
-        {/* Client link */}
-        {caseStudy.clientUrl && (
-          <motion.a
-            href={caseStudy.clientUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+        {/* Client links */}
+        {(caseStudy.clientLinks?.length || caseStudy.clientUrl) && (
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.18 }}
-            className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-primary/40 hover:text-primary transition-all duration-300"
+            className="flex flex-wrap gap-2 mb-6"
           >
-            <ExternalLink className="w-3.5 h-3.5" />
-            <span>Visit client{caseStudy.clientLabel ? ` · ${caseStudy.clientLabel}` : ""}</span>
-          </motion.a>
+            {(caseStudy.clientLinks ?? (caseStudy.clientUrl
+              ? [{ url: caseStudy.clientUrl, label: caseStudy.clientLabel ?? "Visit client" }]
+              : [])).map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-primary/40 hover:text-primary transition-all duration-300"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>{link.label}</span>
+              </a>
+            ))}
+          </motion.div>
         )}
 
         {/* Result badge */}
