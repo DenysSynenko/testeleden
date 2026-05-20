@@ -188,6 +188,7 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.impressum": "Impressum",
     "footer.privacy": "Privacy",
     "footer.copyright": "All rights reserved.",
+    "footer.cookieSettings": "Cookie settings",
     "footer.trust": "Based in Munich • Available worldwide • Reply within 24–48 hours",
     
     // About
@@ -379,6 +380,7 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.impressum": "Impressum",
     "footer.privacy": "Datenschutz",
     "footer.copyright": "Alle Rechte vorbehalten.",
+    "footer.cookieSettings": "Cookie-Einstellungen",
     "footer.trust": "Standort München • Weltweit verfügbar • Antwort innerhalb von 24–48 Stunden",
     
     // About
@@ -570,6 +572,7 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.impressum": "Імпресум",
     "footer.privacy": "Конфіденційність",
     "footer.copyright": "Всі права захищені.",
+    "footer.cookieSettings": "Налаштування cookies",
     "footer.trust": "Мюнхен • Доступні по всьому світу • Відповідь протягом 24–48 годин",
     
     // About
@@ -585,8 +588,31 @@ const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const LANG_KEY = "eleden_lang";
+
+const detectLanguage = (): Language => {
+  if (typeof window === "undefined") return "EN";
+  try {
+    const stored = localStorage.getItem(LANG_KEY) as Language | null;
+    if (stored === "EN" || stored === "DE" || stored === "UA") return stored;
+  } catch { /* ignore */ }
+  const langs = (navigator.languages?.length ? navigator.languages : [navigator.language]) || [];
+  for (const raw of langs) {
+    const l = (raw || "").toLowerCase();
+    if (l.startsWith("de")) return "DE";
+    if (l.startsWith("uk") || l.startsWith("ua") || l.startsWith("ru")) return "UA";
+    if (l.startsWith("en")) return "EN";
+  }
+  return "EN";
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>("EN");
+  const [language, setLanguageState] = useState<Language>(detectLanguage);
+
+  const setLanguage = (lang: Language) => {
+    try { localStorage.setItem(LANG_KEY, lang); } catch { /* ignore */ }
+    setLanguageState(lang);
+  };
 
   const t = (key: string): string => {
     return translations[language][key] || key;

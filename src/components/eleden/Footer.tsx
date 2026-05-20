@@ -76,6 +76,16 @@ const Footer = () => {
               <li>
                 <FooterLink href="/privacy">{t("footer.privacy")}</FooterLink>
               </li>
+              <li>
+                <FooterLink
+                  onClick={() => {
+                    try { localStorage.removeItem("eleden_cookie_consent_v1"); } catch { /* ignore */ }
+                    window.dispatchEvent(new Event("eleden:open-cookie-settings"));
+                  }}
+                >
+                  {t("footer.cookieSettings")}
+                </FooterLink>
+              </li>
             </ul>
           </motion.div>
 
