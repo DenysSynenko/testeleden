@@ -13,7 +13,6 @@ interface LeadPayload {
   website?: string;
   goal: string;
   budget: string;
-  timeline: string;
   message: string;
 }
 
@@ -24,7 +23,7 @@ function isString(v: unknown): v is string {
 function validate(body: unknown): { ok: true; data: LeadPayload } | { ok: false; error: string } {
   if (!body || typeof body !== 'object') return { ok: false, error: 'Invalid body' };
   const b = body as Record<string, unknown>;
-  const required = ['firstName', 'company', 'instagram', 'email', 'goal', 'budget', 'timeline', 'message'];
+  const required = ['firstName', 'company', 'instagram', 'email', 'goal', 'budget', 'message'];
   for (const k of required) {
     if (!isString(b[k]) || (b[k] as string).trim() === '') {
       return { ok: false, error: `Missing field: ${k}` };
@@ -45,7 +44,6 @@ function validate(body: unknown): { ok: true; data: LeadPayload } | { ok: false;
       website: isString(b.website) ? (b.website as string).trim() : '',
       goal: (b.goal as string).trim(),
       budget: (b.budget as string).trim(),
-      timeline: (b.timeline as string).trim(),
       message: (b.message as string).trim(),
     },
   };
@@ -89,7 +87,6 @@ Deno.serve(async (req: Request) => {
       'Instagram': { url: instagramUrl },
       'Goal': { select: { name: d.goal } },
       'Budget': { select: { name: d.budget } },
-      'Timeline': { select: { name: d.timeline } },
       'Message': { rich_text: [{ text: { content: d.message } }] },
       'Last Contact': { date: { start: today } },
       'Process Status': { status: { name: 'Lead' } },
