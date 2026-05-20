@@ -5,6 +5,7 @@ import Portfolio from "@/components/eleden/Portfolio";
 import SystemSection from "@/components/eleden/SystemSection";
 import About from "@/components/eleden/About";
 import Packages from "@/components/eleden/Packages";
+import Leadroom from "@/components/eleden/Leadroom";
 import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
 import Footer from "@/components/eleden/Footer";
@@ -27,6 +28,7 @@ const Index = () => {
         <SystemSection />
         <About />
         <Packages />
+        <Leadroom />
         <FAQ />
         <ContactCTA />
       </main>
