@@ -13,13 +13,9 @@ const Footer = () => {
   };
 
   const socialLinks = {
-    instagram: [
-      { label: "UA", url: "https://www.instagram.com/den.synenko.ua/" },
-      { label: "EN", url: "https://www.instagram.com/de.synenko/" },
-      { label: "Personal", url: "https://www.instagram.com/denys_synenko/" },
-    ],
-    tiktok: { label: "TikTok", url: "https://www.tiktok.com/@de.synenko?_r=1&_t=ZG-93gzwE0wwz2" },
-    youtube: { label: "YouTube", url: "https://youtube.com/@denyssynenko?si=5YAiNACsPNu_lrTy" },
+    instagram: { label: "Instagram", url: "https://www.instagram.com/eleden.media/" },
+    tiktok: { label: "TikTok", url: "https://www.tiktok.com/@de.synenko" },
+    youtube: { label: "YouTube", url: "https://www.youtube.com/@DenysSynenko" },
   };
 
   return (
@@ -91,44 +87,18 @@ const Footer = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <h4 className="text-sm font-medium text-foreground mb-4">{t("footer.social")}</h4>
-            <div className="space-y-4">
-              {/* Instagram */}
-              <div>
-                <p className="text-xs text-muted-foreground/60 mb-2">Instagram</p>
-                <div className="flex flex-wrap gap-2">
-                  {socialLinks.instagram.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-300"
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* TikTok & YouTube */}
-              <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
+              {[socialLinks.instagram, socialLinks.tiktok, socialLinks.youtube].map((link) => (
                 <a
-                  href={socialLinks.tiktok.url}
+                  key={link.label}
+                  href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-300"
                 >
-                  TikTok
+                  {link.label}
                 </a>
-                <a
-                  href={socialLinks.youtube.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all duration-300"
-                >
-                  YouTube
-                </a>
-              </div>
+              ))}
             </div>
           </motion.div>
         </div>
