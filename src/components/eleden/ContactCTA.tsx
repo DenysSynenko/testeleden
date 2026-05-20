@@ -21,20 +21,6 @@ const ContactCTA = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const goalOptions = [
-    { value: "brand", label: "Brand" },
-    { value: "leads", label: "Leads" },
-    { value: "both", label: "Both" },
-  ];
-
-  const budgetOptions = [
-    { value: "480", label: "€480" },
-    { value: "870", label: "€870" },
-    { value: "1260", label: "€1,260" },
-    { value: "2000", label: "€2,000+" },
-    { value: "unsure", label: "Not sure" },
-  ];
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -65,13 +51,6 @@ const ContactCTA = () => {
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
-  const selectStyles = {
-    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239AA3B2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "right 1rem center",
-    backgroundSize: "1.5em",
-  } as React.CSSProperties;
 
   return (
     <section id="contact" className="relative py-32 overflow-hidden">
@@ -245,78 +224,12 @@ const ContactCTA = () => {
                 index={6}
               />
 
-              {/* Dropdowns Row */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Goal */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="space-y-2"
-                >
-                  <label className="block text-sm font-medium text-foreground">
-                    {t("contact.goal")}
-                  </label>
-                  <motion.select
-                    whileFocus={{ scale: 1.01 }}
-                    name="goal"
-                    value={formData.goal}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
-                    style={selectStyles}
-                  >
-                    <option value="" disabled>
-                      {t("contact.select")}
-                    </option>
-                    {goalOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </motion.select>
-                </motion.div>
-
-                {/* Budget */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                  className="space-y-2"
-                >
-                  <label className="block text-sm font-medium text-foreground">
-                    {t("contact.budget")}
-                  </label>
-                  <motion.select
-                    whileFocus={{ scale: 1.01 }}
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
-                    style={selectStyles}
-                  >
-                    <option value="" disabled>
-                      {t("contact.select")}
-                    </option>
-                    {budgetOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </motion.select>
-                </motion.div>
-
-              </div>
-
               {/* Message */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.35 }}
+                transition={{ duration: 1, delay: 0.35 }}
                 className="space-y-2"
               >
                 <label className="block text-sm font-medium text-foreground">
