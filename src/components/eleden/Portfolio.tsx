@@ -602,4 +602,171 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
   );
 };
 
+/* ============================================================
+   CaseVideoPlayer — minimal cinematic player with controls
+   ============================================================ */
+interface CaseVideoPlayerProps {
+  src: string;
+  poster?: string;
+}
+
+const fmt = (s: number) => {
+  if (!isFinite(s)) return "0:00";
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, "0")}`;
+};
+
+const CaseVideoPlayer = ({ src, poster }: CaseVideoPlayerProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const [current, setCurrent] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [showControls, setShowControls] = useState(true);
+
+  const togglePlay = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play();
+      setPlaying(true);
+    } else {
+      v.pause();
+      setPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+  };
+
+  const seek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = videoRef.current;
+    if (!v) return;
+    const t = Number(e.target.value);
+    v.currentTime = t;
+    setCurrent(t);
+  };
+
+  const goFullscreen = () => {
+    const el = wrapRef.current;
+    if (!el) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      el.requestFullscreen?.();
+    }
+  };
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const onTime = () => setCurrent(v.currentTime);
+    const onMeta = () => setDuration(v.duration);
+    const onEnd = () => setPlaying(false);
+    v.addEventListener("timeupdate", onTime);
+    v.addEventListener("loadedmetadata", onMeta);
+    v.addEventListener("ended", onEnd);
+    return () => {
+      v.removeEventListener("timeupdate", onTime);
+      v.removeEventListener("loadedmetadata", onMeta);
+      v.removeEventListener("ended", onEnd);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="relative w-full bg-black rounded-[14px] overflow-hidden mx-auto"
+      style={{ aspectRatio: "9 / 16", maxHeight: "70vh", maxWidth: "min(100%, calc(70vh * 9 / 16))" }}
+      onMouseEnter={() => setShowControls(true)}
+      onMouseLeave={() => playing && setShowControls(false)}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        playsInline
+        preload="metadata"
+        onClick={togglePlay}
+        className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+      />
+
+      {/* Center play overlay when paused */}
+      {!playing && (
+        <button
+          type="button"
+          onClick={togglePlay}
+          aria-label="Play video"
+          className="absolute inset-0 flex items-center justify-center group/play bg-black/20 hover:bg-black/30 transition-colors"
+        >
+          <span className="w-16 h-16 rounded-full bg-surface/90 backdrop-blur-md border border-white/15 flex items-center justify-center group-hover/play:scale-110 transition-transform duration-300">
+            <Play className="w-6 h-6 text-champagne fill-champagne ml-0.5" />
+          </span>
+        </button>
+      )}
+
+      {/* Controls bar */}
+      <div
+        className={`absolute left-0 right-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-300 ${
+          showControls || !playing ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={togglePlay}
+            aria-label={playing ? "Pause" : "Play"}
+            className="w-9 h-9 rounded-full bg-surface/80 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-surface text-foreground"
+          >
+            {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+          </button>
+
+          <span className="text-xs text-white/90 tabular-nums min-w-[42px]">
+            {fmt(current)}
+          </span>
+
+          <input
+            type="range"
+            min={0}
+            max={duration || 0}
+            step={0.1}
+            value={current}
+            onChange={seek}
+            aria-label="Seek"
+            className="flex-1 accent-primary h-1 cursor-pointer"
+          />
+
+          <span className="text-xs text-white/70 tabular-nums min-w-[42px] text-right">
+            {fmt(duration)}
+          </span>
+
+          <button
+            type="button"
+            onClick={toggleMute}
+            aria-label={muted ? "Unmute" : "Mute"}
+            className="w-9 h-9 rounded-full bg-surface/80 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-surface text-foreground"
+          >
+            {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+
+          <button
+            type="button"
+            onClick={goFullscreen}
+            aria-label="Fullscreen"
+            className="w-9 h-9 rounded-full bg-surface/80 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-surface text-foreground"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default Portfolio;
