@@ -332,11 +332,13 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Anfrage erhalten",
     "contact.success.body": "Wir melden uns innerhalb von 24–48 Stunden.",
     "contact.sending": "Wird gesendet...",
-    "cookies.title": "Cookies & Datenschutz",
-    "cookies.body": "Wir verwenden notwendige Cookies für den Betrieb und anonyme Analyse zur Verbesserung. Mehr in unserer",
+    "cookies.title": "Ihre Datenschutz-Auswahl",
+    "cookies.body": "Diese Website verwendet ausschließlich technisch notwendige Cookies, die für den Betrieb erforderlich sind. Es werden keine Marketing-, Werbe- oder Tracking-Cookies gesetzt und keine Daten ohne Ihre Einwilligung an Dritte weitergegeben.",
+    "cookies.legal": "Mit „Akzeptieren\" bestätigen Sie diesen Hinweis gemäß DSGVO und §25 TTDSG. Die Einwilligung können Sie jederzeit widerrufen. Details:",
     "cookies.privacy": "Datenschutzerklärung",
+    "cookies.impressum": "Impressum",
     "cookies.accept": "Akzeptieren",
-    "cookies.decline": "Ablehnen",
+    "cookies.decline": "Nicht notwendige ablehnen",
     
     // Footer
     "footer.tagline": "Premium Content-Systeme für moderne Unternehmen.",
