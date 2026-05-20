@@ -453,7 +453,7 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
         exit={{ opacity: 0, scale: 0.9, y: 30, filter: "blur(10px)" }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-2xl glass-elevated rounded-[18px] p-8 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-3xl glass-elevated rounded-[18px] p-6 sm:p-8 max-h-[92vh] overflow-y-auto"
       >
         {/* Close button */}
         <motion.button
@@ -482,6 +482,34 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
             {caseStudy.category}
           </p>
         </motion.div>
+
+        {/* Video player */}
+        {caseStudy.videoUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mb-6"
+          >
+            <CaseVideoPlayer src={caseStudy.videoUrl} poster={caseStudy.posterUrl} />
+          </motion.div>
+        )}
+
+        {/* Client link */}
+        {caseStudy.clientUrl && (
+          <motion.a
+            href={caseStudy.clientUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.18 }}
+            className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-primary/40 hover:text-primary transition-all duration-300"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span>Visit client{caseStudy.clientLabel ? ` · ${caseStudy.clientLabel}` : ""}</span>
+          </motion.a>
+        )}
 
         {/* Result badge */}
         <motion.div 
