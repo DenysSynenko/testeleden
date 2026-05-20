@@ -160,8 +160,6 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.email": "Email",
     "contact.website": "Website",
     "contact.websiteOptional": "Website (optional)",
-    "contact.goal": "Goal",
-    "contact.budget": "Monthly budget",
     "contact.message": "Message",
     "contact.phone": "Phone",
     "contact.phoneOptional": "Phone (optional)",
