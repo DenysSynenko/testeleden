@@ -122,6 +122,21 @@ const translations: Record<Language, Record<string, string>> = {
     
     // FAQ
     "faq.title": "Frequently asked questions",
+    // Leadroom partnership
+    "leadroom.title": "Full-funnel. Content meets performance.",
+    "leadroom.subtitle": "ELEDEN partners with Leadroom — a performance marketing agency — to offer a complete growth system: premium content production combined with targeted paid advertising.",
+    "leadroom.eleden.label": "ELEDEN",
+    "leadroom.eleden.heading": "Content Production",
+    "leadroom.eleden.desc": "Short-form video, brand storytelling, and content systems that build trust and authority on social media.",
+    "leadroom.eleden.tag": "Strategy · Production · Editing",
+    "leadroom.leadroom.label": "Leadroom",
+    "leadroom.leadroom.heading": "Performance Marketing",
+    "leadroom.leadroom.desc": "Meta Ads, Google Ads, and paid social campaigns — engineered to convert attention into qualified leads.",
+    "leadroom.leadroom.tag": "Meta Ads · Google Ads · Retargeting",
+    "leadroom.connector": "Together: content that converts + ads that scale",
+    "leadroom.cta.title": "Want the full system?",
+    "leadroom.cta.subtitle": "Book a strategy call — we'll assess whether a combined approach fits your goals.",
+    "leadroom.cta.button": "Request a strategy call",
     "faq.q1": "How does the collaboration work?",
     "faq.a1": "We start with a short strategy call, align goals and positioning, then build a repeatable content system. You get clear deliverables, deadlines, and a monthly performance loop.",
     "faq.q2": "Do you need footage from us, or can you work with client materials?",
