@@ -218,11 +218,11 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
   return (
     <motion.div
       ref={videoRef}
-      onClick={onClick}
+      onClick={caseStudy.comingSoon ? undefined : onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`video-card cursor-pointer relative group ${heightClass}`}
-      whileHover={{ scale: 1.02, y: -8 }}
+      className={`video-card relative group ${heightClass} ${caseStudy.comingSoon ? "cursor-default" : "cursor-pointer"}`}
+      whileHover={caseStudy.comingSoon ? undefined : { scale: 1.02, y: -8 }}
       transition={{ duration: 0.4 }}
     >
       {/* Poster image (if real video) or gradient placeholder */}
@@ -246,6 +246,7 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
       <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent pointer-events-none" />
       
       {/* Animated play state indicator */}
+      {!caseStudy.comingSoon && (
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
           initial={{ scale: 1 }}
@@ -262,6 +263,15 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
           <Play className="w-6 h-6 text-champagne fill-champagne/30" />
         </motion.div>
       </div>
+      )}
+
+      {caseStudy.comingSoon && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm border border-champagne/30 text-champagne text-xs tracking-[0.2em] uppercase">
+            Coming soon
+          </div>
+        </div>
+      )}
 
       {/* Overlay on hover */}
       <motion.div
