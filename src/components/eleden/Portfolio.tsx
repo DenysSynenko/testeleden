@@ -135,7 +135,7 @@ const Portfolio = () => {
         </motion.div>
 
         {/* Portfolio Grid — 3 cases, balanced */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center md:justify-items-stretch">
           {cases.map((c, i) => (
             <motion.div
               key={c.id}
@@ -143,6 +143,7 @@ const Portfolio = () => {
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.1 }}
+              className="w-full max-w-[320px] md:max-w-none"
             >
               <VideoCard
                 caseStudy={c}

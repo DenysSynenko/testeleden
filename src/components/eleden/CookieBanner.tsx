@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocation } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const STORAGE_KEY = "eleden_cookie_consent_v1";
+const ALLOWED_PATHS = ["/privacy", "/impressum"];
 
 const CookieBanner = () => {
   const { t } = useLanguage();
+  const location = useLocation();
   const [visible, setVisible] = useState(false);
+  const onLegalPage = ALLOWED_PATHS.includes(location.pathname);
+  const showModal = visible && !onLegalPage;
 
   useEffect(() => {
     try {
@@ -19,13 +24,13 @@ const CookieBanner = () => {
   }, []);
 
   useEffect(() => {
-    if (!visible) return;
+    if (!showModal) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [visible]);
+  }, [showModal]);
 
   const persist = (value: "accepted" | "declined") => {
     try {
@@ -41,7 +46,7 @@ const CookieBanner = () => {
 
   return (
     <AnimatePresence>
-      {visible && (
+      {showModal && (
         <div
           className="fixed inset-0 z-[80] flex items-center justify-center p-4"
           role="dialog"
