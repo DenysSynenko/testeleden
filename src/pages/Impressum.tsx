@@ -28,10 +28,19 @@ Germany`
           content: `Einzelunternehmer`
         },
         {
+          title: "Tax Information",
+          content: `Steuernummer: 146/226/30614
+(Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG wird nachgetragen, sobald erteilt)`
+        },
+        {
           title: "Responsible for content according to § 55 Abs. 2 RStV",
           content: `Denys Synenko
 Berg-am-Laim-Str. 73
 81673 München`
+        },
+        {
+          title: "Liability Disclaimer",
+          content: `The contents of this website have been created with the utmost care. However, we assume no liability for the accuracy, completeness, or timeliness of the content provided.`
         },
         {
           title: "Dispute Resolution",
@@ -60,10 +69,19 @@ Deutschland`
           content: `Einzelunternehmer`
         },
         {
+          title: "Steuerangaben",
+          content: `Steuernummer: 146/226/30614
+(Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG wird nachgetragen, sobald erteilt)`
+        },
+        {
           title: "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
           content: `Denys Synenko
 Berg-am-Laim-Str. 73
 81673 München`
+        },
+        {
+          title: "Haftungsausschluss",
+          content: `Die Inhalte dieser Webseite wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte übernehmen wir keine Gewähr.`
         },
         {
           title: "Streitschlichtung",
@@ -92,10 +110,19 @@ Berg-am-Laim-Str. 73
           content: `Einzelunternehmer (Індивідуальний підприємець)`
         },
         {
+          title: "Податкова інформація",
+          content: `Steuernummer (податковий номер): 146/226/30614
+(Ідентифікаційний номер платника ПДВ згідно з § 27a UStG буде додано після отримання)`
+        },
+        {
           title: "Відповідальний за контент згідно з § 55 Abs. 2 RStV",
           content: `Denys Synenko
 Berg-am-Laim-Str. 73
 81673 Мюнхен`
+        },
+        {
+          title: "Відмова від відповідальності",
+          content: `Вміст цього веб-сайту створено з максимальною ретельністю. Однак ми не несемо відповідальності за точність, повноту чи актуальність наданої інформації.`
         },
         {
           title: "Вирішення спорів",
