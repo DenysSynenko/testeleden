@@ -26,14 +26,16 @@ interface CaseStudy {
 const cases: CaseStudy[] = [
   {
     id: "01",
-    title: "Kirchbichl Tirol — Meta Ads Reel",
+    title: "Almeno Immobilien — Meta Ads Reel",
     category: "Reel for Meta Ads · 9:16",
     result: "117 leads via Meta Ads",
     color: "from-primary/20 to-primary-deep/40",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/kirchbichl.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/kirchbichl.jpg",
-    clientUrl: "https://www.instagram.com/kirchbichl.tirol/",
-    clientLabel: "Kirchbichl Tirol",
+    clientLinks: [
+      { url: "https://www.instagram.com/almeno_immobilien/", label: "Instagram" },
+      { url: "https://www.almeno.at/immobilien/", label: "Website" },
+    ],
     details: {
       outcomes: [
         "117 qualified leads generated via Meta Ads",
