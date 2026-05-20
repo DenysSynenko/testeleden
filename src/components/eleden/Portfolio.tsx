@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Play, X, ArrowRight, Check } from "lucide-react";
+import { Play, Pause, X, ArrowRight, Check, Volume2, VolumeX, Maximize2, ExternalLink } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -10,6 +10,10 @@ interface CaseStudy {
   category: string;
   result: string;
   color: string;
+  videoUrl?: string;
+  posterUrl?: string;
+  clientUrl?: string;
+  clientLabel?: string;
   details: {
     outcomes: string[];
     services: string[];
@@ -20,10 +24,14 @@ interface CaseStudy {
 const cases: CaseStudy[] = [
   {
     id: "01",
-    title: "Luxury Apartments",
-    category: "Reels + Editing + Posting",
+    title: "Kirchbichl, Tirol — Luxury Apartments",
+    category: "Cinematic Reel · 9:16",
     result: "+47 inquiries in 30 days",
     color: "from-primary/20 to-primary-deep/40",
+    videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/kirchbichl.mp4",
+    posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/kirchbichl.jpg",
+    clientUrl: "https://www.instagram.com/kirchbichl.tirol/",
+    clientLabel: "Kirchbichl Tirol",
     details: {
       outcomes: [
         "47 qualified inquiries in first month",
@@ -36,17 +44,21 @@ const cases: CaseStudy[] = [
   },
   {
     id: "02",
-    title: "Premium Service Brand",
-    category: "UGC + Reels",
+    title: "EBSS 170 m² — Residential Apartments",
+    category: "Real Estate Reel · 9:16",
     result: "+89 leads in 45 days",
     color: "from-champagne/20 to-champagne/5",
+    videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.mp4",
+    posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.jpg",
+    clientUrl: "https://www.instagram.com/ebss.immo/",
+    clientLabel: "EBSS Immobilien",
     details: {
       outcomes: [
         "89 new leads generated",
         "2.5x content engagement rate",
         "Consistent brand voice established"
       ],
-      services: ["Content strategy", "UGC coordination", "Editing", "Performance tracking"],
+      services: ["On-location shoot", "Cinematic editing", "Color grading", "Publishing"],
       testimonial: "Finally, content that converts. ELEDEN understands premium positioning.",
     },
   },
