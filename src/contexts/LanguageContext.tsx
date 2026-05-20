@@ -36,7 +36,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Portfolio
     "portfolio.title": "Selected work",
     "portfolio.subtitle": "Vertical reels, designed to sell the feeling — and the result.",
-    "portfolio.viewAll": "View all work",
+    "portfolio.viewAll": "More work coming soon",
     "portfolio.outcomes": "Key Outcomes",
     "portfolio.services": "What we did",
     "portfolio.cta": "Request similar system",
@@ -210,7 +210,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Portfolio
     "portfolio.title": "Ausgewählte Arbeiten",
     "portfolio.subtitle": "Vertikale Reels, designed um das Gefühl zu verkaufen — und das Ergebnis.",
-    "portfolio.viewAll": "Alle Arbeiten ansehen",
+    "portfolio.viewAll": "Weitere Arbeiten in Kürze",
     "portfolio.outcomes": "Wichtige Ergebnisse",
     "portfolio.services": "Was wir gemacht haben",
     "portfolio.cta": "Ähnliches System anfragen",
@@ -384,7 +384,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Portfolio
     "portfolio.title": "Вибрані роботи",
     "portfolio.subtitle": "Вертикальні рілси, створені щоб продати відчуття — і результат.",
-    "portfolio.viewAll": "Переглянути всі роботи",
+    "portfolio.viewAll": "Більше робіт скоро",
     "portfolio.outcomes": "Ключові результати",
     "portfolio.services": "Що ми зробили",
     "portfolio.cta": "Запросити подібну систему",

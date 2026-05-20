@@ -20,7 +20,7 @@ const Privacy = () => {
 Denys Synenko Medienproduktion
 Berg-am-Laim-Str. 73
 81673 München, Germany
-Email: aiproductionsub@gmail.com`
+Email: denissinenko31@gmail.com`
         },
         {
           title: "2. Data Collection via Contact Form",
@@ -73,7 +73,7 @@ You may request earlier deletion at any time, subject to legal retention require
 • Right to data portability (Art. 20): Receive your data in a structured format
 • Right to object (Art. 21): Object to processing based on legitimate interests
 
-To exercise any of these rights, please contact us at aiproductionsub@gmail.com. We will respond within 30 days.`
+To exercise any of these rights, please contact us at denissinenko31@gmail.com. We will respond within 30 days.`
         },
         {
           title: "6. Data Security",
@@ -100,7 +100,7 @@ Website: www.lda.bayern.de`
           title: "10. Contact",
           content: `If you have any questions about this privacy policy or our data practices, please contact us at:
 
-Email: aiproductionsub@gmail.com`
+Email: denissinenko31@gmail.com`
         }
       ]
     },
@@ -116,7 +116,7 @@ Email: aiproductionsub@gmail.com`
 Denys Synenko Medienproduktion
 Berg-am-Laim-Str. 73
 81673 München, Deutschland
-E-Mail: aiproductionsub@gmail.com`
+E-Mail: denissinenko31@gmail.com`
         },
         {
           title: "2. Datenerfassung über das Kontaktformular",
@@ -169,7 +169,7 @@ Sie können jederzeit eine frühere Löschung verlangen, vorbehaltlich gesetzlic
 • Recht auf Datenübertragbarkeit (Art. 20): Ihre Daten in strukturiertem Format erhalten
 • Widerspruchsrecht (Art. 21): Verarbeitung auf Grundlage berechtigter Interessen widersprechen
 
-Um eines dieser Rechte auszuüben, kontaktieren Sie uns bitte unter aiproductionsub@gmail.com. Wir werden innerhalb von 30 Tagen antworten.`
+Um eines dieser Rechte auszuüben, kontaktieren Sie uns bitte unter denissinenko31@gmail.com. Wir werden innerhalb von 30 Tagen antworten.`
         },
         {
           title: "6. Datensicherheit",
@@ -196,7 +196,7 @@ Website: www.lda.bayern.de`
           title: "10. Kontakt",
           content: `Wenn Sie Fragen zu dieser Datenschutzerklärung oder unseren Datenpraktiken haben, kontaktieren Sie uns bitte unter:
 
-E-Mail: aiproductionsub@gmail.com`
+E-Mail: denissinenko31@gmail.com`
         }
       ]
     },
@@ -212,7 +212,7 @@ E-Mail: aiproductionsub@gmail.com`
 Denys Synenko Medienproduktion
 Berg-am-Laim-Str. 73
 81673 Мюнхен, Німеччина
-Email: aiproductionsub@gmail.com`
+Email: denissinenko31@gmail.com`
         },
         {
           title: "2. Збір даних через контактну форму",
@@ -265,7 +265,7 @@ Email: aiproductionsub@gmail.com`
 • Право на перенесення даних (Ст. 20): отримати ваші дані у структурованому форматі
 • Право на заперечення (Ст. 21): заперечувати обробку на основі законних інтересів
 
-Щоб скористатися будь-яким з цих прав, зв'яжіться з нами за адресою aiproductionsub@gmail.com. Ми відповімо протягом 30 днів.`
+Щоб скористатися будь-яким з цих прав, зв'яжіться з нами за адресою denissinenko31@gmail.com. Ми відповімо протягом 30 днів.`
         },
         {
           title: "6. Безпека даних",
@@ -292,7 +292,7 @@ Promenade 18, 91522 Ansbach, Німеччина
           title: "10. Контакт",
           content: `Якщо у вас є запитання щодо цієї політики конфіденційності або наших практик роботи з даними, зв'яжіться з нами:
 
-Email: aiproductionsub@gmail.com`
+Email: denissinenko31@gmail.com`
         }
       ]
     }
