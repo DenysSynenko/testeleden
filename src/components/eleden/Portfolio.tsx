@@ -14,6 +14,7 @@ interface CaseStudy {
   posterUrl?: string;
   clientUrl?: string;
   clientLabel?: string;
+  clientLinks?: { url: string; label: string }[];
   details: {
     outcomes: string[];
     services: string[];
@@ -44,14 +45,16 @@ const cases: CaseStudy[] = [
   },
   {
     id: "02",
-    title: "EBSS 170 m² — Residential Apartments",
+    title: "Almeno Immobilien — Residential Apartments",
     category: "Real Estate Reel · 9:16",
     result: "+89 leads in 45 days",
     color: "from-champagne/20 to-champagne/5",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.jpg",
-    clientUrl: "https://www.instagram.com/ebss.immo/",
-    clientLabel: "EBSS Immobilien",
+    clientLinks: [
+      { url: "https://www.instagram.com/almeno_immobilien/", label: "Instagram" },
+      { url: "https://www.almeno.at/immobilien/", label: "Website" },
+    ],
     details: {
       outcomes: [
         "89 new leads generated",
