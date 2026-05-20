@@ -11,17 +11,28 @@ const CookieBanner = () => {
   useEffect(() => {
     try {
       if (!localStorage.getItem(STORAGE_KEY)) {
-        const id = window.setTimeout(() => setVisible(true), 800);
-        return () => window.clearTimeout(id);
+        setVisible(true);
       }
     } catch {
       setVisible(true);
     }
   }, []);
 
+  useEffect(() => {
+    if (!visible) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [visible]);
+
   const persist = (value: "accepted" | "declined") => {
     try {
-      localStorage.setItem(STORAGE_KEY, value);
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ value, ts: new Date().toISOString(), v: 1 })
+      );
     } catch {
       /* ignore */
     }
@@ -31,43 +42,74 @@ const CookieBanner = () => {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-4 left-4 right-4 z-[60] sm:left-6 sm:right-auto sm:max-w-md"
+        <div
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4"
           role="dialog"
-          aria-live="polite"
-          aria-label={t("cookies.title")}
+          aria-modal="true"
+          aria-labelledby="cookie-title"
+          aria-describedby="cookie-body"
         >
-          <div className="glass-elevated rounded-[18px] border border-white/[0.08] p-5 sm:p-6 shadow-2xl">
-            <h2 className="font-display text-base font-semibold text-foreground mb-1">
+          {/* Page-blocking blurred backdrop */}
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 bg-background/85"
+          />
+
+          {/* Centered modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.95, y: 20, filter: "blur(10px)" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-lg glass-elevated rounded-[18px] border border-white/[0.08] p-6 sm:p-8 shadow-2xl"
+          >
+            <h2
+              id="cookie-title"
+              className="font-display text-xl sm:text-2xl font-semibold text-foreground mb-3"
+            >
               {t("cookies.title")}
             </h2>
-            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-              {t("cookies.body")}{" "}
-              <a href="/privacy" className="underline underline-offset-2 hover:text-foreground">
+            <p
+              id="cookie-body"
+              className="text-sm text-muted-foreground mb-3 leading-relaxed"
+            >
+              {t("cookies.body")}
+            </p>
+            <p className="text-xs text-muted-foreground/80 mb-6 leading-relaxed">
+              {t("cookies.legal")}{" "}
+              <a
+                href="/privacy"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
                 {t("cookies.privacy")}
               </a>
-              .
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => persist("accepted")}
-                className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+              {" · "}
+              <a
+                href="/impressum"
+                className="underline underline-offset-2 hover:text-foreground"
               >
-                {t("cookies.accept")}
-              </button>
+                {t("cookies.impressum")}
+              </a>
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 onClick={() => persist("declined")}
-                className="px-4 py-2 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-white/20 transition-colors"
+                className="flex-1 px-4 py-3 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-white/20 transition-colors"
               >
                 {t("cookies.decline")}
               </button>
+              <button
+                onClick={() => persist("accepted")}
+                className="flex-1 px-4 py-3 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+              >
+                {t("cookies.accept")}
+              </button>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>
   );
