@@ -334,14 +334,25 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
       whileHover={{ scale: 1.02, y: -8 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Placeholder gradient background */}
-      <motion.div 
-        className={`absolute inset-0 bg-gradient-to-br ${caseStudy.color}`}
-        animate={{
-          opacity: isHovered ? 0.8 : 1,
-        }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Poster image (if real video) or gradient placeholder */}
+      {caseStudy.posterUrl ? (
+        <motion.img
+          src={caseStudy.posterUrl}
+          alt={caseStudy.title}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+          animate={{ scale: isHovered ? 1.05 : 1, opacity: isHovered ? 0.85 : 1 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        />
+      ) : (
+        <motion.div
+          className={`absolute inset-0 bg-gradient-to-br ${caseStudy.color}`}
+          animate={{ opacity: isHovered ? 0.8 : 1 }}
+          transition={{ duration: 0.3 }}
+        />
+      )}
+      {/* Soft top-to-bottom darkening for legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent pointer-events-none" />
       
       {/* Animated play state indicator */}
       <div className="absolute inset-0 flex items-center justify-center">
