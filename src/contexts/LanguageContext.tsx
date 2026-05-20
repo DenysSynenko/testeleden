@@ -330,6 +330,11 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Anfrage erhalten",
     "contact.success.body": "Wir melden uns innerhalb von 24–48 Stunden.",
     "contact.sending": "Wird gesendet...",
+    "cookies.title": "Cookies & Datenschutz",
+    "cookies.body": "Wir verwenden notwendige Cookies für den Betrieb und anonyme Analyse zur Verbesserung. Mehr in unserer",
+    "cookies.privacy": "Datenschutzerklärung",
+    "cookies.accept": "Akzeptieren",
+    "cookies.decline": "Ablehnen",
     
     // Footer
     "footer.tagline": "Premium Content-Systeme für moderne Unternehmen.",
