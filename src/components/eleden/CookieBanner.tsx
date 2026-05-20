@@ -21,6 +21,9 @@ const CookieBanner = () => {
     } catch {
       setVisible(true);
     }
+    const reopen = () => setVisible(true);
+    window.addEventListener("eleden:open-cookie-settings", reopen);
+    return () => window.removeEventListener("eleden:open-cookie-settings", reopen);
   }, []);
 
   useEffect(() => {
