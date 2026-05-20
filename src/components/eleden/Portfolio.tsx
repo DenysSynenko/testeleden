@@ -498,20 +498,29 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
           </motion.div>
         )}
 
-        {/* Client link */}
-        {caseStudy.clientUrl && (
-          <motion.a
-            href={caseStudy.clientUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+        {/* Client links */}
+        {(caseStudy.clientLinks?.length || caseStudy.clientUrl) && (
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.18 }}
-            className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-primary/40 hover:text-primary transition-all duration-300"
+            className="flex flex-wrap gap-2 mb-6"
           >
-            <ExternalLink className="w-3.5 h-3.5" />
-            <span>Visit client{caseStudy.clientLabel ? ` · ${caseStudy.clientLabel}` : ""}</span>
-          </motion.a>
+            {(caseStudy.clientLinks ?? (caseStudy.clientUrl
+              ? [{ url: caseStudy.clientUrl, label: caseStudy.clientLabel ?? "Visit client" }]
+              : [])).map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-white/[0.08] text-sm text-foreground hover:border-primary/40 hover:text-primary transition-all duration-300"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>{link.label}</span>
+              </a>
+            ))}
+          </motion.div>
         )}
 
         {/* Result badge */}
