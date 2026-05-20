@@ -16,8 +16,6 @@ const ContactCTA = () => {
     email: "",
     phone: "",
     website: "",
-    goal: "",
-    budget: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
