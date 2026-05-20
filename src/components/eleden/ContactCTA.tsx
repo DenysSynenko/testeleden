@@ -18,7 +18,6 @@ const ContactCTA = () => {
     website: "",
     goal: "",
     budget: "",
-    timeline: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,13 +35,6 @@ const ContactCTA = () => {
     { value: "1260", label: "€1,260" },
     { value: "2000", label: "€2,000+" },
     { value: "unsure", label: "Not sure" },
-  ];
-
-  const timelineOptions = [
-    { value: "asap", label: "ASAP" },
-    { value: "2-4weeks", label: "2–4 weeks" },
-    { value: "1-2months", label: "1–2 months" },
-    { value: "researching", label: "Just researching" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -321,36 +313,6 @@ const ContactCTA = () => {
                   </motion.select>
                 </motion.div>
 
-                {/* Timeline */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="space-y-2"
-                >
-                  <label className="block text-sm font-medium text-foreground">
-                    {t("contact.timeline")}
-                  </label>
-                  <motion.select
-                    whileFocus={{ scale: 1.01 }}
-                    name="timeline"
-                    value={formData.timeline}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground focus:outline-none focus:border-primary/40 transition-all duration-300 appearance-none cursor-pointer"
-                    style={selectStyles}
-                  >
-                    <option value="" disabled>
-                      {t("contact.select")}
-                    </option>
-                    {timelineOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </motion.select>
-                </motion.div>
               </div>
 
               {/* Message */}
