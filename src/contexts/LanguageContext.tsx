@@ -188,6 +188,7 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.impressum": "Impressum",
     "footer.privacy": "Privacy",
     "footer.copyright": "All rights reserved.",
+    "footer.cookieSettings": "Cookie settings",
     "footer.trust": "Based in Munich • Available worldwide • Reply within 24–48 hours",
     
     // About
@@ -379,6 +380,7 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.impressum": "Impressum",
     "footer.privacy": "Datenschutz",
     "footer.copyright": "Alle Rechte vorbehalten.",
+    "footer.cookieSettings": "Cookie-Einstellungen",
     "footer.trust": "Standort München • Weltweit verfügbar • Antwort innerhalb von 24–48 Stunden",
     
     // About
@@ -570,6 +572,7 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.impressum": "Імпресум",
     "footer.privacy": "Конфіденційність",
     "footer.copyright": "Всі права захищені.",
+    "footer.cookieSettings": "Налаштування cookies",
     "footer.trust": "Мюнхен • Доступні по всьому світу • Відповідь протягом 24–48 годин",
     
     // About
