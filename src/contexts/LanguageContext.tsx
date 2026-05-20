@@ -504,6 +504,11 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Запит отримано",
     "contact.success.body": "Ми зв'яжемося з вами протягом 24–48 годин.",
     "contact.sending": "Надсилаємо...",
+    "cookies.title": "Cookies та приватність",
+    "cookies.body": "Ми використовуємо необхідні cookies для роботи сайту та анонімну аналітику для покращення. Деталі — у",
+    "cookies.privacy": "Політиці конфіденційності",
+    "cookies.accept": "Прийняти",
+    "cookies.decline": "Відхилити",
     
     // Footer
     "footer.tagline": "Преміальні контент-системи для сучасного бізнесу.",
