@@ -585,8 +585,31 @@ const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const LANG_KEY = "eleden_lang";
+
+const detectLanguage = (): Language => {
+  if (typeof window === "undefined") return "EN";
+  try {
+    const stored = localStorage.getItem(LANG_KEY) as Language | null;
+    if (stored === "EN" || stored === "DE" || stored === "UA") return stored;
+  } catch { /* ignore */ }
+  const langs = (navigator.languages?.length ? navigator.languages : [navigator.language]) || [];
+  for (const raw of langs) {
+    const l = (raw || "").toLowerCase();
+    if (l.startsWith("de")) return "DE";
+    if (l.startsWith("uk") || l.startsWith("ua") || l.startsWith("ru")) return "UA";
+    if (l.startsWith("en")) return "EN";
+  }
+  return "EN";
+};
+
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>("EN");
+  const [language, setLanguageState] = useState<Language>(detectLanguage);
+
+  const setLanguage = (lang: Language) => {
+    try { localStorage.setItem(LANG_KEY, lang); } catch { /* ignore */ }
+    setLanguageState(lang);
+  };
 
   const t = (key: string): string => {
     return translations[language][key] || key;
