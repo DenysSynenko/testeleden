@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { AnimatedLines } from "./AnimatedText";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const ContactCTA = () => {
   const { t } = useLanguage();
@@ -12,6 +14,7 @@ const ContactCTA = () => {
     company: "",
     instagram: "",
     email: "",
+    phone: "",
     website: "",
     goal: "",
     budget: "",
@@ -45,12 +48,26 @@ const ContactCTA = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("submit-lead", {
+        body: formData,
+      });
+      if (error) throw error;
+      if (data && (data as { success?: boolean }).success === false) {
+        throw new Error((data as { error?: string }).error || "Request failed");
+      }
+      setIsSubmitted(true);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      toast({
+        title: "Could not send",
+        description: msg,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -224,6 +241,19 @@ const ContactCTA = () => {
                   onChange={handleChange}
                   placeholder={t("contact.websiteOptional")}
                   index={5}
+                />
+              </div>
+
+              {/* Phone Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  label="Phone (optional)"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+49 …"
+                  type="tel"
+                  index={6}
                 />
               </div>
 
