@@ -163,8 +163,6 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.message": "Message",
     "contact.phone": "Phone",
     "contact.phoneOptional": "Phone (optional)",
-    "contact.messagePlaceholder": "Tell me what you sell and what result you want.",
-    "contact.messagePlaceholder": "Tell me what you sell and what result you want.",
     "contact.cta": "Request a strategy call",
     "contact.microcopy": "No spam. We only use your details to reply within 24–48 hours.",
     "contact.success.title": "Request received",
