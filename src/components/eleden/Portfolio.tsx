@@ -132,89 +132,23 @@ const Portfolio = () => {
           </p>
         </motion.div>
 
-        {/* Portfolio Grid - Asymmetric Layout */}
-        <div className="space-y-8">
-          {/* Row 1: Large left, 2 stacked right */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Portfolio Grid — 3 cases, balanced */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {cases.map((c, i) => (
             <motion.div
+              key={c.id}
               initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="md:col-span-2 md:row-span-2"
+              transition={{ duration: 0.7, delay: i * 0.1 }}
             >
-              <VideoCard 
-                caseStudy={cases[0]} 
-                size="large"
-                onClick={() => setSelectedCase(cases[0])}
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-            >
-              <VideoCard 
-                caseStudy={cases[1]} 
-                size="small"
-                onClick={() => setSelectedCase(cases[1])}
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <VideoCard 
-                caseStudy={cases[2]} 
-                size="small"
-                onClick={() => setSelectedCase(cases[2])}
-              />
-            </motion.div>
-          </div>
-
-          {/* Row 2: 2 stacked left, Large right */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-            >
-              <VideoCard 
-                caseStudy={cases[3]} 
-                size="small"
-                onClick={() => setSelectedCase(cases[3])}
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-            >
-              <VideoCard 
-                caseStudy={cases[4]} 
-                size="small"
-                onClick={() => setSelectedCase(cases[4])}
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="md:row-span-2"
-            >
-              <VideoCard 
-                caseStudy={cases[5]} 
+              <VideoCard
+                caseStudy={c}
                 size="medium"
-                onClick={() => setSelectedCase(cases[5])}
+                onClick={() => !c.comingSoon && setSelectedCase(c)}
               />
             </motion.div>
-          </div>
+          ))}
         </div>
 
         {/* View all link */}
