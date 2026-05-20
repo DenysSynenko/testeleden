@@ -75,25 +75,27 @@ Deno.serve(async (req: Request) => {
     const fullName = `${d.firstName}${d.lastName ? ' ' + d.lastName : ''}`.trim();
     const today = new Date().toISOString().slice(0, 10);
 
-    const addressLines = [
-      `Company: ${d.company}`,
-      `Instagram: ${d.instagram}`,
-      d.website ? `Website: ${d.website}` : null,
-      `Goal: ${d.goal} · Budget: ${d.budget} · Timeline: ${d.timeline}`,
-      '',
-      `Message: ${d.message}`,
-    ].filter(Boolean).join('\n');
+    const instagramUrl = d.instagram.startsWith('http')
+      ? d.instagram
+      : `https://instagram.com/${d.instagram.replace(/^@/, '')}`;
+    const websiteUrl = d.website
+      ? (d.website.startsWith('http') ? d.website : `https://${d.website}`)
+      : '';
 
     const properties: Record<string, unknown> = {
       'Client Name': { title: [{ text: { content: fullName } }] },
       'Email': { email: d.email },
-      'Address': { rich_text: [{ text: { content: addressLines } }] },
+      'Company': { rich_text: [{ text: { content: d.company } }] },
+      'Instagram': { url: instagramUrl },
+      'Goal': { select: { name: d.goal } },
+      'Budget': { select: { name: d.budget } },
+      'Timeline': { select: { name: d.timeline } },
+      'Message': { rich_text: [{ text: { content: d.message } }] },
       'Last Contact': { date: { start: today } },
       'Process Status': { status: { name: 'Lead' } },
     };
-    if (d.phone) {
-      properties['Phone'] = { phone_number: d.phone };
-    }
+    if (websiteUrl) properties['Website'] = { url: websiteUrl };
+    if (d.phone) properties['Phone'] = { phone_number: d.phone };
 
     const res = await fetch(`${GATEWAY_URL}/pages`, {
       method: 'POST',
