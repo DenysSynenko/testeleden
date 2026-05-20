@@ -15,6 +15,7 @@ interface CaseStudy {
   clientUrl?: string;
   clientLabel?: string;
   clientLinks?: { url: string; label: string }[];
+  comingSoon?: boolean;
   details: {
     outcomes: string[];
     services: string[];
@@ -25,9 +26,9 @@ interface CaseStudy {
 const cases: CaseStudy[] = [
   {
     id: "01",
-    title: "Kirchbichl, Tirol — Luxury Apartments",
-    category: "Cinematic Reel · 9:16",
-    result: "+47 inquiries in 30 days",
+    title: "Luxury Apartments — Meta Ads Reel",
+    category: "Reel for Meta Ads · 9:16",
+    result: "117 leads via Meta Ads",
     color: "from-primary/20 to-primary-deep/40",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/kirchbichl.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/kirchbichl.jpg",
@@ -35,19 +36,19 @@ const cases: CaseStudy[] = [
     clientLabel: "Kirchbichl Tirol",
     details: {
       outcomes: [
-        "47 qualified inquiries in first month",
-        "300% increase in social engagement",
-        "Premium brand positioning achieved"
+        "117 qualified leads generated via Meta Ads",
+        "Premium positioning that matches the property",
+        "Creative built for scroll-stopping performance",
       ],
-      services: ["Strategy", "Shooting direction", "Premium editing", "Publishing support"],
+      services: ["Idea & planning", "Filming", "Editing", "Color grading"],
       testimonial: "ELEDEN transformed how we present our properties. The content speaks premium.",
     },
   },
   {
     id: "02",
-    title: "Almeno Immobilien — Residential Apartments",
-    category: "Real Estate Reel · 9:16",
-    result: "+89 leads in 45 days",
+    title: "Almeno Immobilien — Meta Ads Reel",
+    category: "Reel for Meta Ads · 9:16",
+    result: "101 leads via Meta Ads",
     color: "from-champagne/20 to-champagne/5",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.jpg",
@@ -57,76 +58,29 @@ const cases: CaseStudy[] = [
     ],
     details: {
       outcomes: [
-        "89 new leads generated",
-        "2.5x content engagement rate",
-        "Consistent brand voice established"
+        "101 qualified leads generated via Meta Ads",
+        "Consistent brand voice across the listing",
+        "Conversion-focused pacing and edit",
       ],
-      services: ["On-location shoot", "Cinematic editing", "Color grading", "Publishing"],
+      services: ["Idea & planning", "Filming", "Editing", "Color grading"],
       testimonial: "Finally, content that converts. ELEDEN understands premium positioning.",
     },
   },
   {
     id: "03",
-    title: "Product Launch",
-    category: "Ads + Short-form",
-    result: "Sold out in 72 hours",
+    title: "Automotive Detailing — Cinematic Edit",
+    category: "Cinematography · Coming soon",
+    result: "In production",
     color: "from-primary-deep/30 to-surface",
+    comingSoon: true,
     details: {
       outcomes: [
-        "Complete sellout in 72 hours",
-        "1.2M organic impressions",
-        "Featured in industry publications"
+        "Cinematic detailing piece in post-production",
+        "Premium product storytelling",
+        "Reveal scheduled — stay tuned",
       ],
-      services: ["Launch strategy", "Ad creative", "Short-form content", "Real-time optimization"],
-      testimonial: "The launch content was pure fire. Exceeded every expectation.",
-    },
-  },
-  {
-    id: "04",
-    title: "Personal Brand",
-    category: "Content System",
-    result: "+12K followers in 60 days",
-    color: "from-champagne/15 to-primary/10",
-    details: {
-      outcomes: [
-        "12,000 new followers",
-        "Speaking engagements booked",
-        "Consistent thought leadership"
-      ],
-      services: ["Personal branding", "Content calendar", "Scripting", "Editing"],
-      testimonial: "ELEDEN made me look like I have a full production team.",
-    },
-  },
-  {
-    id: "05",
-    title: "Restaurant / Hospitality",
-    category: "Reels + Stories",
-    result: "+156% reservation increase",
-    color: "from-primary/25 to-champagne/10",
-    details: {
-      outcomes: [
-        "156% more reservations",
-        "Viral content moments",
-        "Premium dining perception"
-      ],
-      services: ["Food content strategy", "On-location shoots", "Story content", "Reels production"],
-      testimonial: "Our tables are fully booked weeks in advance now.",
-    },
-  },
-  {
-    id: "06",
-    title: "Event / Lifestyle",
-    category: "Cinematic edits",
-    result: "3 sold-out events",
-    color: "from-primary-deep/20 to-champagne/15",
-    details: {
-      outcomes: [
-        "3 consecutive sold-out events",
-        "Premium ticket tier sold first",
-        "Waitlist established for future events"
-      ],
-      services: ["Event capture", "Cinematic editing", "Highlight reels", "Promotional content"],
-      testimonial: "The highlight reels sell the next event before we even announce it.",
+      services: ["Idea & planning", "Filming", "Editing", "Color grading"],
+      testimonial: "",
     },
   },
 ];
