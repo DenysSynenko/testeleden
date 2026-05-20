@@ -244,6 +244,19 @@ const ContactCTA = () => {
                 />
               </div>
 
+              {/* Phone Row */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  label="Phone (optional)"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+49 …"
+                  type="tel"
+                  index={6}
+                />
+              </div>
+
               {/* Dropdowns Row */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Goal */}
