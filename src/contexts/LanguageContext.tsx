@@ -313,6 +313,21 @@ const translations: Record<Language, Record<string, string>> = {
     
     // FAQ
     "faq.title": "Häufig gestellte Fragen",
+    // Leadroom partnership
+    "leadroom.title": "Full-Funnel. Content trifft Performance.",
+    "leadroom.subtitle": "ELEDEN arbeitet mit Leadroom — einer Performance-Marketing-Agentur — zusammen, um ein komplettes Wachstumssystem anzubieten: Premium-Content-Produktion kombiniert mit gezielter bezahlter Werbung.",
+    "leadroom.eleden.label": "ELEDEN",
+    "leadroom.eleden.heading": "Content-Produktion",
+    "leadroom.eleden.desc": "Short-Form-Videos, Brand Storytelling und Content-Systeme, die Vertrauen und Autorität in Social Media aufbauen.",
+    "leadroom.eleden.tag": "Strategie · Produktion · Schnitt",
+    "leadroom.leadroom.label": "Leadroom",
+    "leadroom.leadroom.heading": "Performance-Marketing",
+    "leadroom.leadroom.desc": "Meta Ads, Google Ads und bezahlte Social-Kampagnen — darauf ausgelegt, Aufmerksamkeit in qualifizierte Leads zu verwandeln.",
+    "leadroom.leadroom.tag": "Meta Ads · Google Ads · Retargeting",
+    "leadroom.connector": "Zusammen: Content, der konvertiert + Ads, die skalieren",
+    "leadroom.cta.title": "Möchten Sie das komplette System?",
+    "leadroom.cta.subtitle": "Buchen Sie ein Strategiegespräch — wir prüfen, ob ein kombinierter Ansatz zu Ihren Zielen passt.",
+    "leadroom.cta.button": "Strategiegespräch anfragen",
     "faq.q1": "Wie funktioniert die Zusammenarbeit?",
     "faq.a1": "Wir starten mit einem kurzen Strategiegespräch, stimmen Ziele und Positionierung ab und bauen dann ein wiederholbares Content-System. Sie bekommen klare Deliverables, Deadlines und eine monatliche Performance-Schleife.",
     "faq.q2": "Brauchen Sie Material von uns, oder können Sie mit Kundenmaterial arbeiten?",
