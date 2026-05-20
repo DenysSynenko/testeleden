@@ -156,11 +156,13 @@ const translations: Record<Language, Record<string, string>> = {
     "contact.success.title": "Request received",
     "contact.success.body": "We'll get back to you within 24–48 hours.",
     "contact.sending": "Sending...",
-    "cookies.title": "Cookies & privacy",
-    "cookies.body": "We use essential cookies to run the site and anonymous analytics to improve it. See our",
+    "cookies.title": "Your privacy choice",
+    "cookies.body": "This site uses only strictly necessary cookies required for the site to function. We do not set marketing, advertising or tracking cookies, and we do not share data with third parties without your consent.",
+    "cookies.legal": "By choosing \"Accept\" you confirm this notice. You can withdraw consent at any time. Details:",
     "cookies.privacy": "Privacy Policy",
+    "cookies.impressum": "Impressum",
     "cookies.accept": "Accept",
-    "cookies.decline": "Decline",
+    "cookies.decline": "Decline non-essential",
     
     // Footer
     "footer.tagline": "Premium content systems for modern businesses.",
