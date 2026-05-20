@@ -32,7 +32,7 @@ const Header = () => {
   const socialLinks = [
     { 
       name: "Instagram", 
-      url: "https://www.instagram.com/de.synenko/",
+      url: "https://www.instagram.com/eleden.media/",
       icon: (
         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
