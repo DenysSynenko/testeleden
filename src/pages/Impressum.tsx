@@ -21,7 +21,7 @@ Germany`
         },
         {
           title: "Contact",
-          content: `Email: aiproductionsub@gmail.com`
+          content: `Email: denissinenko31@gmail.com`
         },
         {
           title: "Legal Form",
@@ -53,7 +53,7 @@ Deutschland`
         },
         {
           title: "Kontakt",
-          content: `E-Mail: aiproductionsub@gmail.com`
+          content: `E-Mail: denissinenko31@gmail.com`
         },
         {
           title: "Rechtsform",
@@ -85,7 +85,7 @@ Berg-am-Laim-Str. 73
         },
         {
           title: "Контакт",
-          content: `Email: aiproductionsub@gmail.com`
+          content: `Email: denissinenko31@gmail.com`
         },
         {
           title: "Правова форма",
