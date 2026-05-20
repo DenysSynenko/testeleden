@@ -214,7 +214,7 @@ const ContactCTA = () => {
                 />
               </div>
 
-              {/* Email & Website Row */}
+              {/* Email & Phone Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   label={t("contact.email")}
@@ -227,30 +227,28 @@ const ContactCTA = () => {
                   index={4}
                 />
                 <FormField
-                  label={t("contact.website")}
-                  name="website"
-                  value={formData.website}
-                  onChange={handleChange}
-                  placeholder={t("contact.websiteOptional")}
-                  index={5}
-                />
-              </div>
-
-              {/* Phone Row */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  label="Phone (optional)"
+                  label={t("contact.phoneOptional")}
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+49 …"
                   type="tel"
-                  index={6}
+                  index={5}
                 />
               </div>
 
+              {/* Website Row (full width) */}
+              <FormField
+                label={t("contact.website")}
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                placeholder={t("contact.websiteOptional")}
+                index={6}
+              />
+
               {/* Dropdowns Row */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Goal */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
