@@ -11,7 +11,7 @@ const Privacy = () => {
     EN: {
       title: "Privacy Policy",
       backText: "Back to home",
-      lastUpdated: "Last updated: February 2025",
+      lastUpdated: "Last updated: May 2026",
       sections: [
         {
           title: "1. Data Controller",
@@ -107,7 +107,7 @@ Email: denissinenko31@gmail.com`
     DE: {
       title: "Datenschutzerklärung",
       backText: "Zurück zur Startseite",
-      lastUpdated: "Zuletzt aktualisiert: Februar 2025",
+      lastUpdated: "Zuletzt aktualisiert: Mai 2026",
       sections: [
         {
           title: "1. Verantwortlicher",
@@ -203,7 +203,7 @@ E-Mail: denissinenko31@gmail.com`
     UA: {
       title: "Політика конфіденційності",
       backText: "Назад на головну",
-      lastUpdated: "Останнє оновлення: лютий 2025",
+      lastUpdated: "Останнє оновлення: травень 2026",
       sections: [
         {
           title: "1. Контролер даних",
