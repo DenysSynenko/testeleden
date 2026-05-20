@@ -26,7 +26,7 @@ interface CaseStudy {
 const cases: CaseStudy[] = [
   {
     id: "01",
-    title: "Luxury Apartments — Meta Ads Reel",
+    title: "Kirchbichl Tirol — Meta Ads Reel",
     category: "Reel for Meta Ads · 9:16",
     result: "117 leads via Meta Ads",
     color: "from-primary/20 to-primary-deep/40",
