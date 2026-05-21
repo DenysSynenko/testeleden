@@ -160,12 +160,12 @@ const Hero = () => {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 rounded-full border border-white/20 flex items-start justify-center p-2"
+          className="w-6 h-10 rounded-full border border-foreground/30 flex items-start justify-center p-2"
         >
           <motion.div
             animate={{ height: ["20%", "40%", "20%"] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-0.5 bg-primary/60 rounded-full"
+            className="w-0.5 bg-primary rounded-full"
           />
         </motion.div>
       </motion.div>
