@@ -4,20 +4,20 @@ import { useMemo } from "react";
 const FloatingParticles = () => {
   const particles = useMemo(
     () =>
-      Array.from({ length: 14 }).map((_, i) => ({
+      Array.from({ length: 22 }).map((_, i) => ({
         id: i,
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: Math.random() * 2 + 1.5,
-        duration: 14 + Math.random() * 16,
-        delay: Math.random() * 8,
-        drift: (Math.random() - 0.5) * 40,
+        size: Math.random() * 2.5 + 2,
+        duration: 12 + Math.random() * 14,
+        delay: Math.random() * 10,
+        drift: (Math.random() - 0.5) * 60,
       })),
     []
   );
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden">
       {particles.map((p) => (
         <motion.span
           key={p.id}
@@ -27,14 +27,13 @@ const FloatingParticles = () => {
             top: `${p.top}%`,
             width: p.size,
             height: p.size,
-            opacity: 0.35,
-            filter: "blur(0.5px)",
-            boxShadow: "0 0 6px hsl(var(--primary) / 0.6)",
+            filter: "blur(0.4px)",
+            boxShadow: "0 0 8px hsl(var(--primary) / 0.9), 0 0 16px hsl(var(--primary) / 0.4)",
           }}
           animate={{
-            y: [0, -120, 0],
+            y: [0, -160, 0],
             x: [0, p.drift, 0],
-            opacity: [0, 0.5, 0],
+            opacity: [0, 0.85, 0],
           }}
           transition={{
             duration: p.duration,
