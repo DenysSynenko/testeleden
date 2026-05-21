@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -6,6 +7,12 @@ import Header from "@/components/eleden/Header";
 
 const Privacy = () => {
   const { language } = useLanguage();
+
+  useEffect(() => {
+    const prev = document.title;
+    document.title = "Privacy Policy — ELEDEN";
+    return () => { document.title = prev; };
+  }, []);
 
   const content = {
     EN: {

@@ -1,0 +1,11 @@
+# ELEDEN
+
+> Premium short-form video systems and brand strategy for businesses in Munich and worldwide, by Denys Synenko.
+
+ELEDEN is a Munich-based studio building repeatable content systems: reels, corporate videos, creative campaigns, and brand strategy for premium services, real estate, hospitality, personal brands, and product launches.
+
+## Pages
+
+- [Home](/): Services, portfolio, pricing, process, and contact for ELEDEN.
+- [Impressum](/impressum): Legal information per § 5 TMG.
+- [Privacy](/privacy): Privacy policy and data handling.
