@@ -291,8 +291,8 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
           transition={{ duration: 0.3 }}
         />
       )}
-      {/* Soft top-to-bottom darkening for legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/10 to-transparent pointer-events-none" />
+      {/* Soft top-to-bottom darkening for legibility (always dark, both themes) */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
       
       {/* Animated play state indicator */}
       {!caseStudy.comingSoon && (
@@ -327,23 +327,23 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.3 }}
-        className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent p-6 flex flex-col justify-end"
+        className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-transparent p-6 flex flex-col justify-end"
       >
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
         >
-          <p className="text-xs text-muted-foreground mb-1">
+          <p className="text-xs text-white/60 mb-1">
             Case #{caseStudy.id}
           </p>
-          <h3 className="font-display text-xl font-semibold mb-2">
+          <h3 className="font-display text-xl font-semibold mb-2 text-white">
             {caseStudy.title}
           </h3>
-          <p className="text-sm text-muted-foreground mb-2">
+          <p className="text-sm text-white/70 mb-2">
             {caseStudy.category}
           </p>
-          <p className="text-sm text-primary font-medium">
+          <p className="text-sm text-champagne font-medium">
             {caseStudy.result}
           </p>
         </motion.div>
