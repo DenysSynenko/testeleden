@@ -203,19 +203,20 @@ interface NicheBlockProps {
 
 const NicheBlock = ({ label, cases, onSelect }: NicheBlockProps) => {
   const cols = cases.length >= 3 ? "md:grid-cols-3" : cases.length === 2 ? "md:grid-cols-2" : "md:grid-cols-1";
+  const maxW = cases.length >= 3 ? "max-w-6xl" : cases.length === 2 ? "max-w-4xl" : "max-w-md";
   return (
-    <div>
+    <div className={`${maxW} mx-auto`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-8 flex items-center gap-4"
+        className="mb-8 flex items-center gap-4 justify-center md:justify-start"
       >
         <span className="text-xs tracking-[0.3em] uppercase text-champagne">{label}</span>
-        <span className="h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
+        <span className="hidden md:block h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
       </motion.div>
-      <div className={`grid grid-cols-1 ${cols} gap-6 justify-items-center md:justify-items-stretch`}>
+      <div className={`grid grid-cols-1 ${cols} gap-6 justify-items-center`}>
         {cases.map((c, i) => (
           <motion.div
             key={c.id}
@@ -223,7 +224,7 @@ const NicheBlock = ({ label, cases, onSelect }: NicheBlockProps) => {
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: i * 0.1 }}
-            className="w-full max-w-[320px] md:max-w-none"
+            className="w-full max-w-[360px]"
           >
             <VideoCard
               caseStudy={c}
@@ -527,21 +528,6 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
             ))}
           </div>
         </motion.div>
-
-        {/* Testimonial */}
-        {caseStudy.details.testimonial && (
-          <motion.div 
-            className="mb-8 p-6 rounded-xl bg-surface border border-white/[0.06]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <p className="text-foreground italic mb-4">
-              "{caseStudy.details.testimonial}"
-            </p>
-            <p className="text-sm text-muted-foreground">— Client</p>
-          </motion.div>
-        )}
 
         {/* CTA */}
         <motion.div
