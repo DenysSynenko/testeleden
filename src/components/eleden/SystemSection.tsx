@@ -70,7 +70,7 @@ const SystemSection = () => {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-glow-champagne opacity-15 rounded-full blur-3xl"
+        className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-glow-mint opacity-15 rounded-full blur-3xl"
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -169,7 +169,7 @@ const StepCard = ({ step, index }: StepCardProps) => {
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 + 0.4 }}
           >
-            <span className="badge-champagne">{step.badge}</span>
+            <span className="badge-primary">{step.badge}</span>
           </motion.div>
         )}
 

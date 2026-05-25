@@ -122,7 +122,7 @@ const Packages = () => {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-glow-champagne opacity-15 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-glow-mint opacity-15 rounded-full blur-3xl"
         />
       </motion.div>
 
@@ -182,7 +182,7 @@ const Packages = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="pt-6 pl-4 border-l-2 border-champagne/30"
+              className="pt-6 pl-4 border-l-2 border-primary/30"
             >
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {t("packages.note")}
@@ -224,7 +224,7 @@ const Packages = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       className="absolute -top-3 right-6"
                     >
-                      <span className="badge-champagne flex items-center gap-1">
+                      <span className="badge-primary flex items-center gap-1">
                         <Sparkles className="w-3 h-3" />
                         {t("packages.recommended")}
                       </span>
@@ -388,7 +388,7 @@ const PackageTab = ({ pkg, isActive, onClick, index, t }: PackageTabProps) => {
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className="badge-champagne text-[8px]"
+                className="badge-primary text-[8px]"
               >
                 ★
               </motion.span>

@@ -51,7 +51,7 @@ const immobilienCases: CaseStudy[] = [
     title: "Almeno Immobilien — Meta Ads Reel",
     category: "Reel for Meta Ads · 9:16",
     result: "101 leads via Meta Ads",
-    color: "from-champagne/20 to-champagne/5",
+    color: "from-primary/20 to-primary/5",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/ebss.jpg",
     clientLinks: [
@@ -76,7 +76,7 @@ const detailingCases: CaseStudy[] = [
     title: "MDB Fahrzeugpflege — Before / After",
     category: "Detailing Reel · 9:16 · Instagram + TikTok",
     result: "Premium before/after edit",
-    color: "from-champagne/20 to-primary-deep/30",
+    color: "from-primary/20 to-primary-deep/30",
     videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/mdb.mp4",
     posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/mdb.jpg",
     clientLinks: [
@@ -123,7 +123,7 @@ const Portfolio = () => {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-20 rounded-full blur-3xl"
+        className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-glow-mint opacity-20 rounded-full blur-3xl"
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -213,8 +213,8 @@ const NicheBlock = ({ label, cases, onSelect }: NicheBlockProps) => {
         transition={{ duration: 0.6 }}
         className="mb-8 flex items-center gap-4 justify-center md:justify-start"
       >
-        <span className="text-xs tracking-[0.3em] uppercase text-champagne">{label}</span>
-        <span className="hidden md:block h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
+        <span className="text-xs tracking-[0.3em] uppercase text-primary">{label}</span>
+        <span className="hidden md:block h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
       </motion.div>
       <div className={`grid grid-cols-1 ${cols} gap-6 justify-items-center`}>
         {cases.map((c, i) => (
@@ -309,14 +309,14 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
           }}
           className="w-16 h-16 rounded-full bg-surface/80 backdrop-blur-sm border border-white/10 flex items-center justify-center"
         >
-          <Play className="w-6 h-6 text-champagne fill-champagne/30" />
+          <Play className="w-6 h-6 text-primary fill-primary/30" />
         </motion.div>
       </div>
       )}
 
       {caseStudy.comingSoon && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm border border-champagne/30 text-champagne text-xs tracking-[0.2em] uppercase">
+          <div className="px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm border border-primary/30 text-primary text-xs tracking-[0.2em] uppercase">
             Coming soon
           </div>
         </div>
@@ -343,7 +343,7 @@ const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
           <p className="text-sm text-white/70 mb-2">
             {caseStudy.category}
           </p>
-          <p className="text-sm text-champagne font-medium">
+          <p className="text-sm text-primary font-medium">
             {caseStudy.result}
           </p>
         </motion.div>
@@ -652,7 +652,7 @@ const CaseVideoPlayer = ({ src, poster }: CaseVideoPlayerProps) => {
           className="absolute inset-0 flex items-center justify-center group/play bg-black/20 hover:bg-black/30 transition-colors"
         >
           <span className="w-16 h-16 rounded-full bg-surface/90 backdrop-blur-md border border-white/15 flex items-center justify-center group-hover/play:scale-110 transition-transform duration-300">
-            <Play className="w-6 h-6 text-champagne fill-champagne ml-0.5" />
+            <Play className="w-6 h-6 text-primary fill-primary ml-0.5" />
           </span>
         </button>
       )}

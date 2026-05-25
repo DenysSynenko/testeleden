@@ -56,7 +56,7 @@ const Outcomes = () => {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-glow-champagne opacity-15 rounded-full blur-3xl"
+        className="absolute top-1/4 left-0 w-[400px] h-[400px] bg-glow-mint opacity-15 rounded-full blur-3xl"
       />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -161,7 +161,7 @@ const OutcomeCard = ({ outcome, index }: OutcomeCardProps) => {
             viewport={{ once: true }}
             transition={{ delay: index * 0.15 + 0.5 }}
           >
-            <span className="badge-champagne">{outcome.badge}</span>
+            <span className="badge-primary">{outcome.badge}</span>
           </motion.div>
         )}
 

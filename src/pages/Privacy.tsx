@@ -314,7 +314,7 @@ Email: denissinenko31@gmail.com`
       
       {/* Background glows */}
       <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-glow-mint opacity-15 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-glow-mint opacity-10 rounded-full blur-3xl" />
       
       <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 py-32">
         {/* Back link */}

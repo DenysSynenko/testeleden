@@ -58,7 +58,7 @@ const Hero = () => {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute bottom-1/4 right-1/3 w-[300px] h-[300px] bg-glow-champagne opacity-30 rounded-full blur-3xl"
+          className="absolute bottom-1/4 right-1/3 w-[300px] h-[300px] bg-glow-mint opacity-30 rounded-full blur-3xl"
         />
         
         {/* Floating particles */}
