@@ -529,17 +529,19 @@ const CaseSpotlight = ({ caseStudy, onClose, t }: CaseSpotlightProps) => {
         </motion.div>
 
         {/* Testimonial */}
-        <motion.div 
-          className="mb-8 p-6 rounded-xl bg-surface border border-white/[0.06]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <p className="text-foreground italic mb-4">
-            "{caseStudy.details.testimonial}"
-          </p>
-          <p className="text-sm text-muted-foreground">— Client</p>
-        </motion.div>
+        {caseStudy.details.testimonial && (
+          <motion.div 
+            className="mb-8 p-6 rounded-xl bg-surface border border-white/[0.06]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <p className="text-foreground italic mb-4">
+              "{caseStudy.details.testimonial}"
+            </p>
+            <p className="text-sm text-muted-foreground">— Client</p>
+          </motion.div>
+        )}
 
         {/* CTA */}
         <motion.div
