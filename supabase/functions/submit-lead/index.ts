@@ -30,6 +30,17 @@ function validate(body: unknown): { ok: true; data: LeadPayload } | { ok: false;
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email as string)) {
     return { ok: false, error: 'Invalid email' };
   }
+  const MAX_LENGTHS: Record<string, number> = {
+    firstName: 100, lastName: 100,
+    company: 200, instagram: 100,
+    email: 254, phone: 30,
+    website: 500, message: 2000,
+  };
+  for (const [field, max] of Object.entries(MAX_LENGTHS)) {
+    if (isString(b[field]) && (b[field] as string).length > max) {
+      return { ok: false, error: `Field too long: ${field}` };
+    }
+  }
   return {
     ok: true,
     data: {
@@ -104,7 +115,7 @@ Deno.serve(async (req: Request) => {
     const data = await res.json();
     if (!res.ok) {
       console.error('Notion error', res.status, data);
-      return new Response(JSON.stringify({ success: false, error: 'Notion request failed', details: data }), {
+      return new Response(JSON.stringify({ success: false, error: 'Submission failed, please try again' }), {
         status: 502,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -117,7 +128,7 @@ Deno.serve(async (req: Request) => {
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown error';
     console.error('submit-lead error', msg);
-    return new Response(JSON.stringify({ success: false, error: msg }), {
+    return new Response(JSON.stringify({ success: false, error: 'Submission failed, please try again' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
