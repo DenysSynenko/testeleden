@@ -25,7 +25,7 @@
     --muted: 215 22% 9%;
     --muted-foreground: 215 16% 65%; /* #9AA3B2 */
     
-    --accent: 42 52% 63%; /* #D6B36A - champagne gold */
+    --accent: 158 42% 42%; /* #3F9B7A - mint green */
     --accent-foreground: 220 20% 4%;
     
     --card: 215 22% 9%;
@@ -73,7 +73,7 @@
     --muted: 220 14% 96%;
     --muted-foreground: 215 16% 40%; /* #5A6474 */
     
-    --accent: 42 45% 48%; /* Slightly darker champagne for contrast #B29142 */
+    --accent: 158 42% 38%; /* Slightly darker mint for contrast #398D6F */
     --accent-foreground: 220 20% 98%;
     
     --card: 220 14% 96%;
