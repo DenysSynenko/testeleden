@@ -56,7 +56,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        champagne: "#D6B36A",
         mint: {
           DEFAULT: "#3F9B7A",
           deep: "#256B52",
