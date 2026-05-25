@@ -23,7 +23,7 @@ interface CaseStudy {
   };
 }
 
-const cases: CaseStudy[] = [
+const immobilienCases: CaseStudy[] = [
   {
     id: "01",
     title: "Almeno Immobilien — Meta Ads Reel",
@@ -68,18 +68,25 @@ const cases: CaseStudy[] = [
       testimonial: "Finally, content that converts. ELEDEN understands premium positioning.",
     },
   },
+];
+
+const detailingCases: CaseStudy[] = [
   {
-    id: "03",
-    title: "Automotive Detailing — Cinematic Edit",
-    category: "Cinematography · Coming soon",
-    result: "In production",
-    color: "from-primary-deep/30 to-surface",
-    comingSoon: true,
+    id: "D1",
+    title: "MDB Fahrzeugpflege — Before / After",
+    category: "Detailing Reel · 9:16 · Instagram + TikTok",
+    result: "Premium before/after edit",
+    color: "from-champagne/20 to-primary-deep/30",
+    videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/mdb.mp4",
+    posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/mdb.jpg",
+    clientLinks: [
+      { url: "https://www.instagram.com/mdbfahrzeugpflege/", label: "Instagram" },
+    ],
     details: {
       outcomes: [
-        "Cinematic detailing piece in post-production",
-        "Premium product storytelling",
-        "Reveal scheduled — stay tuned",
+        "Cinematic before/after that stops the scroll",
+        "Built for Instagram Reels and TikTok",
+        "Product storytelling that elevates the studio",
       ],
       services: ["Idea & planning", "Filming", "Editing", "Color grading"],
       testimonial: "",
