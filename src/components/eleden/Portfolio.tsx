@@ -23,7 +23,7 @@ interface CaseStudy {
   };
 }
 
-const cases: CaseStudy[] = [
+const immobilienCases: CaseStudy[] = [
   {
     id: "01",
     title: "Almeno Immobilien — Meta Ads Reel",
@@ -68,18 +68,25 @@ const cases: CaseStudy[] = [
       testimonial: "Finally, content that converts. ELEDEN understands premium positioning.",
     },
   },
+];
+
+const detailingCases: CaseStudy[] = [
   {
-    id: "03",
-    title: "Automotive Detailing — Cinematic Edit",
-    category: "Cinematography · Coming soon",
-    result: "In production",
-    color: "from-primary-deep/30 to-surface",
-    comingSoon: true,
+    id: "D1",
+    title: "MDB Fahrzeugpflege — Before / After",
+    category: "Detailing Reel · 9:16 · Instagram + TikTok",
+    result: "Premium before/after edit",
+    color: "from-champagne/20 to-primary-deep/30",
+    videoUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/mdb.mp4",
+    posterUrl: "https://hceuppafankyvukayjzp.supabase.co/storage/v1/object/public/case-videos/mdb.jpg",
+    clientLinks: [
+      { url: "https://www.instagram.com/mdbfahrzeugpflege/", label: "Instagram" },
+    ],
     details: {
       outcomes: [
-        "Cinematic detailing piece in post-production",
-        "Premium product storytelling",
-        "Reveal scheduled — stay tuned",
+        "Cinematic before/after that stops the scroll",
+        "Built for Instagram Reels and TikTok",
+        "Product storytelling that elevates the studio",
       ],
       services: ["Idea & planning", "Filming", "Editing", "Color grading"],
       testimonial: "",
@@ -134,24 +141,20 @@ const Portfolio = () => {
           </p>
         </motion.div>
 
-        {/* Portfolio Grid — 3 cases, balanced */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center md:justify-items-stretch">
-          {cases.map((c, i) => (
-            <motion.div
-              key={c.id}
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-              className="w-full max-w-[320px] md:max-w-none"
-            >
-              <VideoCard
-                caseStudy={c}
-                size="medium"
-                onClick={() => !c.comingSoon && setSelectedCase(c)}
-              />
-            </motion.div>
-          ))}
+        {/* Immobilien niche */}
+        <NicheBlock
+          label="Immobilien"
+          cases={immobilienCases}
+          onSelect={setSelectedCase}
+        />
+
+        {/* Detailing niche */}
+        <div className="mt-20">
+          <NicheBlock
+            label="Detailing"
+            cases={detailingCases}
+            onSelect={setSelectedCase}
+          />
         </div>
 
         {/* View all link */}
@@ -191,6 +194,48 @@ interface VideoCardProps {
   size: "small" | "medium" | "large";
   onClick: () => void;
 }
+
+interface NicheBlockProps {
+  label: string;
+  cases: CaseStudy[];
+  onSelect: (c: CaseStudy) => void;
+}
+
+const NicheBlock = ({ label, cases, onSelect }: NicheBlockProps) => {
+  const cols = cases.length >= 3 ? "md:grid-cols-3" : cases.length === 2 ? "md:grid-cols-2" : "md:grid-cols-1";
+  return (
+    <div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-8 flex items-center gap-4"
+      >
+        <span className="text-xs tracking-[0.3em] uppercase text-champagne">{label}</span>
+        <span className="h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
+      </motion.div>
+      <div className={`grid grid-cols-1 ${cols} gap-6 justify-items-center md:justify-items-stretch`}>
+        {cases.map((c, i) => (
+          <motion.div
+            key={c.id}
+            initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: i * 0.1 }}
+            className="w-full max-w-[320px] md:max-w-none"
+          >
+            <VideoCard
+              caseStudy={c}
+              size="medium"
+              onClick={() => !c.comingSoon && onSelect(c)}
+            />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
   const videoRef = useRef<HTMLDivElement>(null);
