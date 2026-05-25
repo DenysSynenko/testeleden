@@ -80,7 +80,7 @@ const SystemSection = () => {
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-20 max-w-2xl"
+          className="mb-20 max-w-2xl mx-auto md:mx-0 text-center md:text-left"
         >
           <h2 className="section-title mb-4">{t("system.title")}</h2>
           <p className="text-muted-foreground text-lg">

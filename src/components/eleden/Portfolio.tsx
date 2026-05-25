@@ -126,10 +126,10 @@ const Portfolio = () => {
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+          className="mb-16 text-center md:text-left"
         >
           <h2 className="section-title mb-4">{t("portfolio.title")}</h2>
-          <p className="text-muted-foreground text-lg max-w-xl">
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto md:mx-0">
             {t("portfolio.subtitle")}
           </p>
         </motion.div>
