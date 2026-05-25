@@ -141,24 +141,20 @@ const Portfolio = () => {
           </p>
         </motion.div>
 
-        {/* Portfolio Grid — 3 cases, balanced */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center md:justify-items-stretch">
-          {cases.map((c, i) => (
-            <motion.div
-              key={c.id}
-              initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-              className="w-full max-w-[320px] md:max-w-none"
-            >
-              <VideoCard
-                caseStudy={c}
-                size="medium"
-                onClick={() => !c.comingSoon && setSelectedCase(c)}
-              />
-            </motion.div>
-          ))}
+        {/* Immobilien niche */}
+        <NicheBlock
+          label="Immobilien"
+          cases={immobilienCases}
+          onSelect={setSelectedCase}
+        />
+
+        {/* Detailing niche */}
+        <div className="mt-20">
+          <NicheBlock
+            label="Detailing"
+            cases={detailingCases}
+            onSelect={setSelectedCase}
+          />
         </div>
 
         {/* View all link */}
