@@ -57,10 +57,10 @@ const Leadroom = () => {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="premium-card flex flex-col"
           >
-            <div className="w-12 h-12 rounded-xl bg-champagne/15 border border-champagne/30 flex items-center justify-center mb-5 text-champagne">
+            <div className="w-12 h-12 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center mb-5 text-primary">
               <Target className="w-5 h-5" />
             </div>
-            <p className="text-xs uppercase tracking-widest text-champagne mb-2">{t("leadroom.leadroom.label")}</p>
+            <p className="text-xs uppercase tracking-widest text-primary mb-2">{t("leadroom.leadroom.label")}</p>
             <h3 className="font-display text-2xl font-semibold mb-3">{t("leadroom.leadroom.heading")}</h3>
             <p className="text-muted-foreground leading-relaxed mb-6">{t("leadroom.leadroom.desc")}</p>
             <p className="text-xs text-muted-foreground/70 mt-auto">{t("leadroom.leadroom.tag")}</p>

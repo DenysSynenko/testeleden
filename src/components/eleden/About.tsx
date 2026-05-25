@@ -22,7 +22,7 @@ const About = () => {
         className="absolute inset-0 pointer-events-none"
       >
         <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-glow-mint opacity-15 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-glow-champagne opacity-10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-glow-mint opacity-10 rounded-full blur-3xl" />
       </motion.div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
@@ -52,7 +52,7 @@ const About = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="absolute -bottom-4 -right-4 w-32 h-32 rounded-[14px] border border-champagne/20 bg-gradient-to-br from-champagne/5 to-transparent -z-10"
+              className="absolute -bottom-4 -right-4 w-32 h-32 rounded-[14px] border border-primary/20 bg-gradient-to-br from-primary/5 to-transparent -z-10"
             />
           </motion.div>
 

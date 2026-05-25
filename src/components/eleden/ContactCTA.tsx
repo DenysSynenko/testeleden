@@ -78,7 +78,7 @@ const ContactCTA = () => {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-glow-champagne opacity-15 rounded-full blur-3xl"
+          className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-glow-mint opacity-15 rounded-full blur-3xl"
         />
       </div>
 

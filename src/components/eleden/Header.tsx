@@ -81,7 +81,7 @@ const Header = () => {
               animate={{ scaleX: 1, opacity: 1 }}
               exit={{ scaleX: 0, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-champagne/40 to-transparent"
+              className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
             />
           )}
         </AnimatePresence>
