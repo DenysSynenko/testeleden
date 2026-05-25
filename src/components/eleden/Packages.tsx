@@ -208,7 +208,7 @@ const Packages = () => {
                 className="relative"
               >
                 {/* Premium Card */}
-                <div className="premium-card relative overflow-hidden">
+                <div className="premium-card relative">
                   {/* Animated border glow */}
                   <motion.div
                     className="absolute inset-0 rounded-[18px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"

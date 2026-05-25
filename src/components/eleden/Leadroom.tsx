@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Video, Target, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MagneticButton from "./MagneticButton";
 
 const scrollToContact = () => {
   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
@@ -85,12 +86,11 @@ const Leadroom = () => {
         >
           <h3 className="font-display text-2xl md:text-3xl font-semibold mb-3">{t("leadroom.cta.title")}</h3>
           <p className="text-muted-foreground max-w-xl mx-auto mb-8">{t("leadroom.cta.subtitle")}</p>
-          <button
-            onClick={scrollToContact}
-            className="px-8 py-4 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all duration-300 hover:scale-[1.02]"
-          >
-            {t("leadroom.cta.button")} →
-          </button>
+          <div className="flex justify-center">
+            <MagneticButton variant="primary" onClick={scrollToContact}>
+              {t("leadroom.cta.button")}
+            </MagneticButton>
+          </div>
         </motion.div>
       </div>
     </section>

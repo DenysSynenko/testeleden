@@ -106,7 +106,7 @@ const FAQItem = ({ faq, index, isOpen, onToggle }: FAQItemProps) => {
             scale: isOpen ? 1.1 : 1
           }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="flex-shrink-0 w-8 h-8 rounded-full bg-surface-elevated border border-white/[0.06] flex items-center justify-center"
+          className="flex-shrink-0 w-8 h-8 rounded-full bg-surface-elevated border border-white/[0.06] flex items-center justify-center pointer-events-none"
         >
           <ChevronDown className={`w-4 h-4 transition-colors duration-300 ${isOpen ? "text-primary" : "text-muted-foreground"}`} />
         </motion.div>

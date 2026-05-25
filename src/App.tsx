@@ -10,6 +10,7 @@ import Impressum from "./pages/Impressum";
 import Privacy from "./pages/Privacy";
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/eleden/CookieBanner";
+import RouteScrollToTop from "./components/RouteScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <RouteScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/impressum" element={<Impressum />} />
