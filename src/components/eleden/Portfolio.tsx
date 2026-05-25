@@ -195,6 +195,48 @@ interface VideoCardProps {
   onClick: () => void;
 }
 
+interface NicheBlockProps {
+  label: string;
+  cases: CaseStudy[];
+  onSelect: (c: CaseStudy) => void;
+}
+
+const NicheBlock = ({ label, cases, onSelect }: NicheBlockProps) => {
+  const cols = cases.length >= 3 ? "md:grid-cols-3" : cases.length === 2 ? "md:grid-cols-2" : "md:grid-cols-1";
+  return (
+    <div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-8 flex items-center gap-4"
+      >
+        <span className="text-xs tracking-[0.3em] uppercase text-champagne">{label}</span>
+        <span className="h-px flex-1 bg-gradient-to-r from-champagne/40 to-transparent" />
+      </motion.div>
+      <div className={`grid grid-cols-1 ${cols} gap-6 justify-items-center md:justify-items-stretch`}>
+        {cases.map((c, i) => (
+          <motion.div
+            key={c.id}
+            initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: i * 0.1 }}
+            className="w-full max-w-[320px] md:max-w-none"
+          >
+            <VideoCard
+              caseStudy={c}
+              size="medium"
+              onClick={() => !c.comingSoon && onSelect(c)}
+            />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const VideoCard = ({ caseStudy, size, onClick }: VideoCardProps) => {
   const videoRef = useRef<HTMLDivElement>(null);
   const [isInView, setIsInView] = useState(false);
