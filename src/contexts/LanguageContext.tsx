@@ -69,6 +69,7 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.cta.l": "Request Package L",
     "packages.cta.custom": "Request a custom plan",
     "packages.note": "Every package can be customized and extended after the first call.",
+    "packages.filming": "Filming included. Locally in Munich at no extra cost. Outside Munich — +€100 for shoot organization; the videographer is paid by the client.",
     
     // Package S
     "packages.s.name": "Package S",
@@ -259,6 +260,7 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.cta.l": "Paket L anfragen",
     "packages.cta.custom": "Individuelles Angebot anfragen",
     "packages.note": "Jedes Paket kann nach dem ersten Gespräch angepasst und erweitert werden.",
+    "packages.filming": "Dreh inklusive. Lokal in München ohne Aufpreis. Außerhalb Münchens — +100 € für die Drehorganisation; der Videograf wird vom Kunden bezahlt.",
     
     // Package S
     "packages.s.name": "Paket S",
@@ -449,6 +451,7 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.cta.l": "Запросити Пакет L",
     "packages.cta.custom": "Запросити індивідуальний план",
     "packages.note": "Кожен пакет може бути налаштований та розширений після першого дзвінка.",
+    "packages.filming": "Зйомка включена. Локально в Мюнхені — без доплати. Поза Мюнхеном — +100 € за організацію зйомки; відеограф оплачується клієнтом окремо.",
     
     // Package S
     "packages.s.name": "Пакет S",
