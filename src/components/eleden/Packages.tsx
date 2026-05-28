@@ -322,6 +322,14 @@ const Packages = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
                     >
+                      {activePackage.id !== "individual" && (
+                        <div className="mb-5 p-4 rounded-[12px] border border-primary/20 bg-primary/5">
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            <span className="text-primary font-medium">★ </span>
+                            {t("packages.filming")}
+                          </p>
+                        </div>
+                      )}
                       <MagneticButton
                         variant="primary"
                         onClick={scrollToContact}
