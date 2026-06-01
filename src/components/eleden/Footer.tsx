@@ -56,6 +56,9 @@ const Footer = () => {
                 <FooterLink onClick={() => scrollToSection("work")}>{t("nav.work")}</FooterLink>
               </li>
               <li>
+                <FooterLink onClick={() => scrollToSection("services")}>{t("nav.services")}</FooterLink>
+              </li>
+              <li>
                 <FooterLink onClick={() => scrollToSection("contact")}>{t("nav.contact")}</FooterLink>
               </li>
             </ul>
