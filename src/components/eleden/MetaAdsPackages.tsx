@@ -26,7 +26,7 @@ const packages: MetaPackage[] = [
     fullPrice: 999,
     leadroomAddon: "+€499 Leadroom Starter",
     features: [
-      "5 ad creatives / month",
+      "5 Reels / month",
       "Shooting + editing included",
       "Basic ad strategy",
       "1 platform (Meta)",
@@ -41,7 +41,7 @@ const packages: MetaPackage[] = [
     fullPrice: 1699,
     leadroomAddon: "+€799 Leadroom Growth",
     features: [
-      "10 ad creatives / month",
+      "10 Reels / month",
       "Shooting + editing included",
       "Full ad strategy + scripting",
       "2 platforms (Meta + Google)",
@@ -58,7 +58,7 @@ const packages: MetaPackage[] = [
     fullPrice: 2399,
     leadroomAddon: "+€899 Leadroom Scaling",
     features: [
-      "20 ad creatives / month",
+      "20 Reels / month",
       "Shooting + editing included",
       "Full strategy + A/B testing",
       "Up to 4 platforms",
