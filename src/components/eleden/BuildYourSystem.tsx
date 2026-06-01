@@ -237,7 +237,7 @@ const BuildYourSystem = () => {
                     </motion.button>
                   );
                 })}
-              </div>
+              </MobileCarousel>
               <div className="flex justify-center gap-4 mt-10">
                 <button
                   onClick={() => setStep(1)}
