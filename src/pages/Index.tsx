@@ -6,6 +6,8 @@ import SystemSection from "@/components/eleden/SystemSection";
 import About from "@/components/eleden/About";
 import Packages from "@/components/eleden/Packages";
 import MetaAdsPackages from "@/components/eleden/MetaAdsPackages";
+import BuildYourSystem from "@/components/eleden/BuildYourSystem";
+import WhyEledenLeadroom from "@/components/eleden/WhyEledenLeadroom";
 import Leadroom from "@/components/eleden/Leadroom";
 import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
@@ -35,6 +37,8 @@ const Index = () => {
         <div id="services">
           <Packages />
           <MetaAdsPackages />
+          <BuildYourSystem />
+          <WhyEledenLeadroom />
         </div>
         <Leadroom />
         <FAQ />
