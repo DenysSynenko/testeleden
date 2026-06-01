@@ -32,8 +32,10 @@ const Index = () => {
         <Portfolio />
         <SystemSection />
         <About />
-        <Packages />
-        <MetaAdsPackages />
+        <div id="services">
+          <Packages />
+          <MetaAdsPackages />
+        </div>
         <Leadroom />
         <FAQ />
         <ContactCTA />

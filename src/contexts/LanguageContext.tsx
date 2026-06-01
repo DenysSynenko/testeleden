@@ -12,6 +12,7 @@ const translations: Record<Language, Record<string, string>> = {
   EN: {
     // Header
     "nav.work": "Work",
+   "nav.services": "Services",
     "nav.contact": "Contact",
     
     // Hero
@@ -203,6 +204,7 @@ const translations: Record<Language, Record<string, string>> = {
   DE: {
     // Header
     "nav.work": "Arbeiten",
+   "nav.services": "Leistungen",
     "nav.contact": "Kontakt",
     
     // Hero
@@ -394,6 +396,7 @@ const translations: Record<Language, Record<string, string>> = {
   UA: {
     // Header
     "nav.work": "Роботи",
+   "nav.services": "Послуги",
     "nav.contact": "Контакт",
     
     // Hero
