@@ -214,7 +214,7 @@ const MetaAdsPackages = () => {
 
                 {/* CTA */}
                 <MagneticButton
-                  variant={pkg.popular || pkg.glow ? "primary" : "ghost"}
+                  variant="primary"
                   onClick={scrollToContact}
                   className="w-full justify-center"
                 >

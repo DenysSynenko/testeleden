@@ -130,6 +130,7 @@ const Header = () => {
               {/* Nav Links */}
               <div className="hidden md:flex items-center gap-8">
                 <NavLink onClick={() => scrollToSection("work")}>{t("nav.work")}</NavLink>
+                <NavLink onClick={() => scrollToSection("services")}>{t("nav.services")}</NavLink>
                 <NavLink onClick={() => scrollToSection("contact")}>{t("nav.contact")}</NavLink>
               </div>
 
