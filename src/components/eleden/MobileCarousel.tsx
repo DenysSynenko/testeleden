@@ -46,7 +46,7 @@ const MobileCarousel = ({ children, mdCols = 3, autoScroll = true, className = "
   return (
     <div
       ref={ref}
-      className={`flex md:grid ${gridCols} gap-5 md:gap-6 lg:gap-7 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none -mx-6 md:mx-0 px-6 md:px-0 pb-6 md:pb-0 scrollbar-hide scroll-smooth ${className}`}
+      className={`flex md:grid ${gridCols} gap-5 md:gap-6 lg:gap-7 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none -mx-6 md:mx-0 px-6 md:px-0 pt-6 md:pt-0 pb-6 md:pb-0 scrollbar-hide scroll-smooth ${className}`}
     >
       {Children.map(children, (child, i) => (
         <div
