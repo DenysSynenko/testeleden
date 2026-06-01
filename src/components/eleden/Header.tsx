@@ -135,7 +135,7 @@ const Header = () => {
               </div>
 
               {/* Language Switcher */}
-              <div className="hidden sm:flex items-center gap-1 text-sm">
+              <div className="flex items-center gap-0.5 md:gap-1 text-xs md:text-sm">
                 {(["EN", "DE", "UA"] as Language[]).map((lang, index) => (
                   <div key={lang} className="flex items-center">
                     <motion.button
@@ -184,7 +184,7 @@ const NavLink = ({
   return (
     <motion.button
       onClick={onClick}
-      className="relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group"
+      className="relative text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group whitespace-nowrap"
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
     >
