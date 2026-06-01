@@ -1,34 +1,16 @@
 import { motion } from "framer-motion";
 import { TrendingUp, ShieldCheck, Star, Puzzle } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const reasons = [
-  {
-    icon: TrendingUp,
-    title: "Results you can see",
-    text:
-      "We don't just produce content — we build systems that generate leads. Our case study with Almeno Immobilien: 200+ qualified leads in 2 months on a modest ad budget.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Price that makes sense",
-    text:
-      "Full-system packages starting at €999/month. Comparable agencies in Germany charge €2,500–4,500 for the same scope. You get more, you pay less.",
-  },
-  {
-    icon: Star,
-    title: "World-class standards",
-    text:
-      "We operate by the same production and performance standards used by top global agencies — applied to your budget and your market.",
-  },
-  {
-    icon: Puzzle,
-    title: "Two specialists, zero gaps",
-    text:
-      "ELEDEN handles content. Leadroom handles ads. No hand-offs, no miscommunication — one integrated team working toward your growth.",
-  },
-];
+const icons = [TrendingUp, ShieldCheck, Star, Puzzle];
 
 const WhyEledenLeadroom = () => {
+  const { t } = useLanguage();
+  const reasons = icons.map((Icon, i) => ({
+    icon: Icon,
+    title: t(`why.${i + 1}.title`),
+    text: t(`why.${i + 1}.text`),
+  }));
   return (
     <section className="relative py-32 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -43,10 +25,8 @@ const WhyEledenLeadroom = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-14 max-w-2xl mx-auto"
         >
-          <h2 className="section-title mb-4">Why ELEDEN &amp; Leadroom?</h2>
-          <p className="text-muted-foreground text-lg">
-            Two specialists. One system. Real results.
-          </p>
+          <h2 className="section-title mb-4">{t("why.title")}</h2>
+          <p className="text-muted-foreground text-lg">{t("why.subtitle")}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
@@ -81,9 +61,9 @@ const WhyEledenLeadroom = () => {
           <div className="relative rounded-[14px] bg-surface-elevated/80 border border-white/[0.06] pl-6 pr-6 py-5 overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
             <p className="font-display text-lg sm:text-xl text-foreground">
-              <span className="text-primary font-bold">200+ qualified leads</span>
-              <span className="text-muted-foreground"> · 2 months · modest ad budget — </span>
-              <span className="text-foreground">Almeno Immobilien</span>
+              <span className="text-primary font-bold">{t("why.case.lead")}</span>
+              <span className="text-muted-foreground">{t("why.case.mid")}</span>
+              <span className="text-foreground">{t("why.case.tail")}</span>
             </p>
           </div>
         </motion.div>
