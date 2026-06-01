@@ -2,71 +2,24 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
 import MagneticButton from "./MagneticButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Mode = "content" | "full";
 
-interface MetaPackage {
+interface MetaPkg {
   id: string;
   name: string;
-  tagline: string;
   contentPrice: number;
   fullPrice: number;
   leadroomAddon: string;
-  features: string[];
   popular?: boolean;
   glow?: boolean;
 }
 
-const packages: MetaPackage[] = [
-  {
-    id: "spark",
-    name: "Spark",
-    tagline: "Launch your first ad system with intent.",
-    contentPrice: 500,
-    fullPrice: 999,
-    leadroomAddon: "+€499 Leadroom Starter",
-    features: [
-      "5 Reels / month",
-      "Shooting + editing included",
-      "Basic ad strategy",
-      "1 platform (Meta)",
-      "Monthly strategy call",
-    ],
-  },
-  {
-    id: "surge",
-    name: "Surge",
-    tagline: "Scale creative output and reach across channels.",
-    contentPrice: 900,
-    fullPrice: 1699,
-    leadroomAddon: "+€799 Leadroom Growth",
-    features: [
-      "10 Reels / month",
-      "Shooting + editing included",
-      "Full ad strategy + scripting",
-      "2 platforms (Meta + Google)",
-      "Weekly optimization calls",
-      "A/B testing concepts",
-    ],
-    popular: true,
-  },
-  {
-    id: "storm",
-    name: "Storm",
-    tagline: "A complete content & performance engine.",
-    contentPrice: 1500,
-    fullPrice: 2399,
-    leadroomAddon: "+€899 Leadroom Scaling",
-    features: [
-      "20 Reels / month",
-      "Shooting + editing included",
-      "Full strategy + A/B testing",
-      "Up to 4 platforms",
-      "Daily monitoring",
-      "Dedicated Slack channel",
-    ],
-    glow: true,
-  },
+const packagesMeta: MetaPkg[] = [
+  { id: "spark", name: "Spark", contentPrice: 500, fullPrice: 999, leadroomAddon: "+€499 Leadroom Starter" },
+  { id: "surge", name: "Surge", contentPrice: 900, fullPrice: 1699, leadroomAddon: "+€799 Leadroom Growth", popular: true },
+  { id: "storm", name: "Storm", contentPrice: 1500, fullPrice: 2399, leadroomAddon: "+€899 Leadroom Scaling", glow: true },
 ];
 
 const AnimatedPrice = ({ value }: { value: number }) => {
@@ -88,6 +41,7 @@ const AnimatedPrice = ({ value }: { value: number }) => {
 
 const MetaAdsPackages = () => {
   const [mode, setMode] = useState<Mode>("content");
+  const { t } = useLanguage();
 
   const scrollToContact = () => {
     const el = document.getElementById("contact");
@@ -110,10 +64,8 @@ const MetaAdsPackages = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-12 max-w-2xl mx-auto"
         >
-          <h2 className="section-title mb-4">Meta Ads Packages</h2>
-          <p className="text-muted-foreground text-lg">
-            Choose how far you want to go — content alone, or a complete system that runs your ads end-to-end.
-          </p>
+          <h2 className="section-title mb-4">{t("meta.title")}</h2>
+          <p className="text-muted-foreground text-lg">{t("meta.subtitle")}</p>
         </motion.div>
 
         {/* Toggle */}
@@ -141,7 +93,7 @@ const MetaAdsPackages = () => {
                   />
                 )}
                 <span className="relative">
-                  {m === "content" ? "Content Only" : "Full System"}
+                  {m === "content" ? t("meta.toggle.content") : t("meta.toggle.full")}
                 </span>
               </button>
             ))}
@@ -150,8 +102,9 @@ const MetaAdsPackages = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7">
-          {packages.map((pkg, idx) => {
+          {packagesMeta.map((pkg, idx) => {
             const price = mode === "content" ? pkg.contentPrice : pkg.fullPrice;
+            const features = t(`meta.${pkg.id}.features`).split("|");
             return (
               <motion.div
                 key={pkg.id}
@@ -169,20 +122,20 @@ const MetaAdsPackages = () => {
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="badge-primary flex items-center gap-1 whitespace-nowrap">
                       <Sparkles className="w-3 h-3" />
-                      Most Popular
+                      {t("meta.popular")}
                     </span>
                   </div>
                 )}
 
                 {/* Name */}
                 <h3 className="font-display text-3xl font-bold mb-2">{pkg.name}</h3>
-                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">{pkg.tagline}</p>
+                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">{t(`meta.${pkg.id}.tagline`)}</p>
 
                 {/* Price */}
                 <div className="mb-6">
                   <div className="font-display text-4xl sm:text-5xl font-bold text-primary leading-none">
                     <AnimatedPrice value={price} />
-                    <span className="text-base text-muted-foreground font-normal ml-1.5">/month</span>
+                    <span className="text-base text-muted-foreground font-normal ml-1.5">{t("meta.month")}</span>
                   </div>
                   <AnimatePresence mode="wait">
                     {mode === "full" && (
@@ -202,7 +155,7 @@ const MetaAdsPackages = () => {
 
                 {/* Features */}
                 <ul className="space-y-3 mb-8 flex-1">
-                  {pkg.features.map((f) => (
+                  {features.map((f) => (
                     <li key={f} className="flex items-start gap-3">
                       <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                         <Check className="w-3 h-3 text-primary" />
@@ -218,7 +171,7 @@ const MetaAdsPackages = () => {
                   onClick={scrollToContact}
                   className="w-full justify-center"
                 >
-                  Request Package
+                  {t("meta.cta")}
                 </MagneticButton>
               </motion.div>
             );
@@ -234,10 +187,20 @@ const MetaAdsPackages = () => {
           className="mt-12 max-w-2xl mx-auto text-center space-y-3"
         >
           <p className="text-xs text-muted-foreground/80 leading-relaxed">
-            All prices exclude VAT. Filming in Munich included. Outside Munich +€100. Videographer paid by client. 3-month minimum term.
+            {t("meta.note.terms")}
           </p>
           <p className="text-sm text-foreground/80 leading-relaxed">
-            <span className="text-primary font-medium">Leadroom</span> manages your ad campaigns. <span className="text-primary font-medium">ELEDEN</span> produces your content. Together — one system.
+            {t("meta.note.together")
+              .split(/(\{leadroom\}|\{eleden\})/g)
+              .map((part, i) =>
+                part === "{leadroom}" ? (
+                  <span key={i} className="text-primary font-medium">Leadroom</span>
+                ) : part === "{eleden}" ? (
+                  <span key={i} className="text-primary font-medium">ELEDEN</span>
+                ) : (
+                  <span key={i}>{part}</span>
+                )
+              )}
           </p>
         </motion.div>
       </div>
