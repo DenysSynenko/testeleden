@@ -87,7 +87,7 @@ const Header = () => {
         </AnimatePresence>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16 md:h-20 gap-3">
             {/* Logo */}
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -99,13 +99,13 @@ const Header = () => {
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }
               }}
-              className="font-display text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300"
+              className="font-display text-lg md:text-xl font-bold tracking-tight text-foreground hover:text-primary transition-colors duration-300"
             >
               ELEDEN
             </motion.button>
 
             {/* Navigation */}
-            <nav className="flex items-center gap-6">
+            <nav className="flex items-center gap-3 md:gap-6">
               {/* Social Icons - Desktop only */}
               <div className="hidden md:flex items-center gap-3">
                 {socialLinks.map((social) => (
@@ -128,14 +128,14 @@ const Header = () => {
               <div className="hidden md:block w-px h-5 bg-white/10" />
 
               {/* Nav Links */}
-              <div className="hidden md:flex items-center gap-8">
+              <div className="flex items-center gap-4 md:gap-8 text-[13px] md:text-sm">
                 <NavLink onClick={() => scrollToSection("work")}>{t("nav.work")}</NavLink>
                 <NavLink onClick={() => scrollToSection("services")}>{t("nav.services")}</NavLink>
                 <NavLink onClick={() => scrollToSection("contact")}>{t("nav.contact")}</NavLink>
               </div>
 
               {/* Language Switcher */}
-              <div className="flex items-center gap-1 text-sm">
+              <div className="flex items-center gap-0.5 md:gap-1 text-xs md:text-sm">
                 {(["EN", "DE", "UA"] as Language[]).map((lang, index) => (
                   <div key={lang} className="flex items-center">
                     <motion.button
@@ -184,7 +184,7 @@ const NavLink = ({
   return (
     <motion.button
       onClick={onClick}
-      className="relative text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group"
+      className="relative text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 group whitespace-nowrap"
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
     >
