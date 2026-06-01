@@ -6,11 +6,21 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 type Mode = "content" | "full";
 
-const packagesMeta = [
+interface MetaPkg {
+  id: string;
+  name: string;
+  contentPrice: number;
+  fullPrice: number;
+  leadroomAddon: string;
+  popular?: boolean;
+  glow?: boolean;
+}
+
+const packagesMeta: MetaPkg[] = [
   { id: "spark", name: "Spark", contentPrice: 500, fullPrice: 999, leadroomAddon: "+€499 Leadroom Starter" },
   { id: "surge", name: "Surge", contentPrice: 900, fullPrice: 1699, leadroomAddon: "+€799 Leadroom Growth", popular: true },
   { id: "storm", name: "Storm", contentPrice: 1500, fullPrice: 2399, leadroomAddon: "+€899 Leadroom Scaling", glow: true },
-] as const;
+];
 
 const AnimatedPrice = ({ value }: { value: number }) => {
   return (
