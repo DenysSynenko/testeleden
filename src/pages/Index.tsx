@@ -32,15 +32,15 @@ const Index = () => {
         <Hero />
         <Outcomes />
         <Portfolio />
-        <SystemSection />
         <About />
+        <SystemSection />
+        <Leadroom />
+        <WhyEledenLeadroom />
         <div id="services">
           <Packages />
           <MetaAdsPackages />
           <BuildYourSystem />
-          <WhyEledenLeadroom />
         </div>
-        <Leadroom />
         <FAQ />
         <ContactCTA />
       </main>

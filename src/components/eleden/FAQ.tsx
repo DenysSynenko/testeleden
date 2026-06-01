@@ -28,6 +28,14 @@ const FAQ = () => {
       question: t("faq.q5"),
       answer: t("faq.a5"),
     },
+    {
+      question: t("faq.q6"),
+      answer: t("faq.a6"),
+    },
+    {
+      question: t("faq.q7"),
+      answer: t("faq.a7"),
+    },
   ];
 
   return (
