@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Sparkles } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MobileCarousel from "./MobileCarousel";
 
 type Mode = "content" | "full";
 
@@ -101,7 +102,7 @@ const MetaAdsPackages = () => {
         </motion.div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7">
+        <MobileCarousel mdCols={3}>
           {packagesMeta.map((pkg, idx) => {
             const price = mode === "content" ? pkg.contentPrice : pkg.fullPrice;
             const features = t(`meta.${pkg.id}.features`).split("|");
@@ -176,7 +177,7 @@ const MetaAdsPackages = () => {
               </motion.div>
             );
           })}
-        </div>
+        </MobileCarousel>
 
         {/* Notes */}
         <motion.div

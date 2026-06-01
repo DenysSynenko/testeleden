@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Sparkles, ArrowRight } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MobileCarousel from "./MobileCarousel";
 
 type PackageId = "spark" | "surge" | "storm";
 type Mode = "content" | "full";
@@ -115,7 +116,7 @@ const BuildYourSystem = () => {
               <h3 className="font-display text-2xl text-center mb-8 text-foreground">
                 {t("bys.step1.title")}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <MobileCarousel mdCols={3}>
                 {packagesMeta.map((p) => {
                   const isSelected = selected === p.id;
                   const pReels = t(`bys.${p.id}.reels`);
@@ -166,7 +167,7 @@ const BuildYourSystem = () => {
                     </motion.button>
                   );
                 })}
-              </div>
+              </MobileCarousel>
               <div className="flex justify-center mt-10">
                 <MagneticButton
                   variant="primary"
@@ -191,7 +192,7 @@ const BuildYourSystem = () => {
               <h3 className="font-display text-2xl text-center mb-8 text-foreground">
                 {t("bys.step2.title")}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+              <MobileCarousel mdCols={2} className="max-w-3xl mx-auto">
                 {(["content", "full"] as Mode[]).map((m) => {
                   const isSel = mode === m;
                   const isRec = m === "full";
@@ -237,7 +238,7 @@ const BuildYourSystem = () => {
                     </motion.button>
                   );
                 })}
-              </div>
+              </MobileCarousel>
               <div className="flex justify-center gap-4 mt-10">
                 <button
                   onClick={() => setStep(1)}
