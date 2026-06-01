@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Sparkles, ArrowRight } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import MobileCarousel from "./MobileCarousel";
 
 type PackageId = "spark" | "surge" | "storm";
 type Mode = "content" | "full";
