@@ -28,7 +28,7 @@ Germany`
         },
         {
           title: "Contact",
-          content: `Email: denissinenko31@gmail.com`
+          content: `Email: hello@eleden.media`
         },
         {
           title: "Legal Form",
@@ -69,7 +69,7 @@ Deutschland`
         },
         {
           title: "Kontakt",
-          content: `E-Mail: denissinenko31@gmail.com`
+          content: `E-Mail: hello@eleden.media`
         },
         {
           title: "Rechtsform",
@@ -110,7 +110,7 @@ Berg-am-Laim-Str. 73
         },
         {
           title: "Контакт",
-          content: `Email: denissinenko31@gmail.com`
+          content: `Email: hello@eleden.media`
         },
         {
           title: "Правова форма",
