@@ -11,11 +11,8 @@ const ContactCTA = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    company: "",
-    instagram: "",
     email: "",
     phone: "",
-    website: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,7 +44,7 @@ const ContactCTA = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -90,7 +87,7 @@ const ContactCTA = () => {
             lineClassName="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]"
             delay={0}
           />
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -108,7 +105,7 @@ const ContactCTA = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-2xl mx-auto"
+          className="max-w-xl mx-auto"
         >
           {isSubmitted ? (
             <motion.div
@@ -147,7 +144,7 @@ const ContactCTA = () => {
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
@@ -169,28 +166,6 @@ const ContactCTA = () => {
                 />
               </div>
 
-              {/* Company & Instagram Row */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  label={t("contact.companyName")}
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  placeholder={t("contact.companyName")}
-                  required
-                  index={2}
-                />
-                <FormField
-                  label={t("contact.instagram")}
-                  name="instagram"
-                  value={formData.instagram}
-                  onChange={handleChange}
-                  placeholder="@handle"
-                  required
-                  index={3}
-                />
-              </div>
-
               {/* Email & Phone Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
@@ -201,39 +176,31 @@ const ContactCTA = () => {
                   placeholder="you@company.com"
                   required
                   type="email"
-                  index={4}
+                  index={2}
                 />
                 <FormField
-                  label={t("contact.phoneOptional")}
+                  label="Phone"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   placeholder="+49 …"
+                  required
                   type="tel"
-                  index={5}
+                  index={3}
                 />
               </div>
 
-              {/* Website Row (full width) */}
-              <FormField
-                label={t("contact.website")}
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                placeholder={t("contact.websiteOptional")}
-                index={6}
-              />
-
-              {/* Message */}
+              {/* Message (optional) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.35 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
                 className="space-y-2"
               >
                 <label className="block text-sm font-medium text-foreground">
-                  {t("contact.message")}
+                  {t("contact.message")}{" "}
+                  <span className="text-muted-foreground/50 font-normal text-xs">(optional)</span>
                 </label>
                 <motion.textarea
                   whileFocus={{ scale: 1.01 }}
@@ -241,18 +208,17 @@ const ContactCTA = () => {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder={t("contact.messagePlaceholder")}
-                  required
-                  rows={4}
+                  rows={3}
                   className="w-full px-4 py-3 rounded-[14px] bg-surface border border-white/[0.08] text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/40 transition-all duration-300 resize-none"
                 />
               </motion.div>
 
-              <motion.div 
-                className="pt-4"
+              <motion.div
+                className="pt-2"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
               >
                 <MagneticButton
                   variant="primary"
@@ -294,7 +260,7 @@ const ContactCTA = () => {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.4 }}
                 className="text-center text-xs text-muted-foreground/60"
               >
                 {t("contact.microcopy")}

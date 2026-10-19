@@ -1,14 +1,11 @@
 import Header from "@/components/eleden/Header";
 import Hero from "@/components/eleden/Hero";
 import Outcomes from "@/components/eleden/Outcomes";
-import Portfolio from "@/components/eleden/Portfolio";
 import SystemSection from "@/components/eleden/SystemSection";
 import About from "@/components/eleden/About";
 import Packages from "@/components/eleden/Packages";
 import MetaAdsPackages from "@/components/eleden/MetaAdsPackages";
 import BuildYourSystem from "@/components/eleden/BuildYourSystem";
-import WhyEledenLeadroom from "@/components/eleden/WhyEledenLeadroom";
-import Leadroom from "@/components/eleden/Leadroom";
 import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
 import Footer from "@/components/eleden/Footer";
@@ -31,11 +28,8 @@ const Index = () => {
       <main>
         <Hero />
         <Outcomes />
-        <Portfolio />
         <About />
         <SystemSection />
-        <Leadroom />
-        <WhyEledenLeadroom />
         <div id="services">
           <Packages />
           <MetaAdsPackages />
