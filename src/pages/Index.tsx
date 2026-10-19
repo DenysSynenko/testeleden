@@ -1,8 +1,5 @@
 import Header from "@/components/eleden/Header";
 import Hero from "@/components/eleden/Hero";
-import Outcomes from "@/components/eleden/Outcomes";
-import SystemSection from "@/components/eleden/SystemSection";
-import About from "@/components/eleden/About";
 import Packages from "@/components/eleden/Packages";
 import MetaAdsPackages from "@/components/eleden/MetaAdsPackages";
 import BuildYourSystem from "@/components/eleden/BuildYourSystem";
@@ -20,16 +17,13 @@ const Index = () => {
 
       {/* Floating green particles */}
       <FloatingParticles />
-      
+
       {/* Header */}
       <Header />
-      
+
       {/* Main content */}
       <main>
         <Hero />
-        <Outcomes />
-        <About />
-        <SystemSection />
         <div id="services">
           <Packages />
           <MetaAdsPackages />
@@ -38,10 +32,10 @@ const Index = () => {
         <FAQ />
         <ContactCTA />
       </main>
-      
+
       {/* Footer */}
       <Footer />
-      
+
       {/* Scroll to top button */}
       <ScrollToTop />
     </div>
