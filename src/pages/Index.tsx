@@ -1,8 +1,7 @@
 import Header from "@/components/eleden/Header";
 import Hero from "@/components/eleden/Hero";
 import Packages from "@/components/eleden/Packages";
-import MetaAdsPackages from "@/components/eleden/MetaAdsPackages";
-import BuildYourSystem from "@/components/eleden/BuildYourSystem";
+import WhoWeWorkWith from "@/components/eleden/WhoWeWorkWith";
 import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
 import Footer from "@/components/eleden/Footer";
@@ -26,9 +25,8 @@ const Index = () => {
         <Hero />
         <div id="services">
           <Packages />
-          <MetaAdsPackages />
-          <BuildYourSystem />
         </div>
+        <WhoWeWorkWith />
         <FAQ />
         <ContactCTA />
       </main>

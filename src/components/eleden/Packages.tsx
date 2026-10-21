@@ -1,127 +1,392 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Check, X, ArrowRight, Sparkles } from "lucide-react";
+import { Check, Sparkles, ArrowRight, Camera } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface PackageData {
-  id: string;
-  translationKey: string;
+type Tab = "day" | "monthly" | "smm";
+const TABS: Tab[] = ["day", "monthly", "smm"];
+
+// ─── Shared card component ────────────────────────────────────────────────────
+interface PkgCardProps {
+  name: string;
+  price: string;
+  badge: string;
+  per: string;
+  tagline: string;
   includes: string[];
-  notIncluded: string[];
-  recommended?: boolean;
+  popular?: boolean;
+  index: number;
+  onCta: () => void;
+  ctaLabel: string;
+  popularLabel: string;
+  primaryBtn?: boolean;
 }
 
-const packageData: PackageData[] = [
-  {
-    id: "s",
-    translationKey: "s",
-    includes: [
-      "packages.s.inc1",
-      "packages.s.inc2",
-      "packages.s.inc3",
-      "packages.s.inc4",
-      "packages.s.inc5",
-      "packages.s.inc6",
-      "packages.s.inc7",
-    ],
-    notIncluded: [
-      "packages.s.not1",
-      "packages.s.not2",
-      "packages.s.not3",
-    ],
-  },
-  {
-    id: "m",
-    translationKey: "m",
-    includes: [
-      "packages.m.inc1",
-      "packages.m.inc2",
-      "packages.m.inc3",
-      "packages.m.inc4",
-      "packages.m.inc5",
-      "packages.m.inc6",
-      "packages.m.inc7",
-      "packages.m.inc8",
-      "packages.m.inc9",
-    ],
-    notIncluded: [
-      "packages.m.not1",
-    ],
-    recommended: true,
-  },
-  {
-    id: "l",
-    translationKey: "l",
-    includes: [
-      "packages.l.inc1",
-      "packages.l.inc2",
-      "packages.l.inc3",
-      "packages.l.inc4",
-      "packages.l.inc5",
-      "packages.l.inc6",
-      "packages.l.inc7",
-      "packages.l.inc8",
-      "packages.l.inc9",
-      "packages.l.inc10",
-    ],
-    notIncluded: [],
-  },
-  {
-    id: "individual",
-    translationKey: "individual",
-    includes: [],
-    notIncluded: [],
-  },
-];
+const PkgCard = ({
+  name, price, badge, per, tagline, includes,
+  popular, index, onCta, ctaLabel, popularLabel, primaryBtn,
+}: PkgCardProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay: index * 0.07 }}
+    className={`relative premium-card flex flex-col h-full ${popular ? "border-primary/40" : ""}`}
+  >
+    {popular && (
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+        <span className="badge-primary flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+          <Sparkles className="w-3 h-3" />
+          {popularLabel}
+        </span>
+      </div>
+    )}
 
+    <div className="flex-1 space-y-4">
+      <div>
+        <h3 className="font-display font-semibold text-base mb-2 text-foreground">{name}</h3>
+        <p className="text-2xl font-bold text-primary leading-none">{price}</p>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+            {badge}
+          </span>
+          <span className="text-xs text-muted-foreground">{per}</span>
+        </div>
+      </div>
+
+      <p className="text-sm text-muted-foreground leading-relaxed">{tagline}</p>
+
+      <ul className="space-y-2 pt-1">
+        {includes.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5">
+            <div className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Check className="w-2.5 h-2.5 text-primary" />
+            </div>
+            <span className="text-muted-foreground text-xs leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div className="mt-6">
+      <MagneticButton
+        variant={primaryBtn ? "primary" : "secondary"}
+        onClick={onCta}
+        className="w-full justify-center text-sm"
+      >
+        {ctaLabel}
+        <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+      </MagneticButton>
+    </div>
+  </motion.div>
+);
+
+// ─── SMM card (slightly different shape) ─────────────────────────────────────
+interface SmmCardProps {
+  name: string;
+  price: string;
+  posts: string;
+  platforms: string;
+  desc: string;
+  popular?: boolean;
+  index: number;
+  onCta: () => void;
+  ctaLabel: string;
+  popularLabel: string;
+}
+
+const SmmCard = ({
+  name, price, posts, platforms, desc,
+  popular, index, onCta, ctaLabel, popularLabel,
+}: SmmCardProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay: index * 0.07 }}
+    className={`relative premium-card flex flex-col h-full ${popular ? "border-primary/40" : ""}`}
+  >
+    {popular && (
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+        <span className="badge-primary flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+          <Sparkles className="w-3 h-3" />
+          {popularLabel}
+        </span>
+      </div>
+    )}
+
+    <div className="flex-1 space-y-3">
+      <div>
+        <h3 className="font-display font-semibold text-base mb-2 text-foreground">{name}</h3>
+        <p className="text-2xl font-bold text-primary leading-none">{price}</p>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">{posts}</span>
+          <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground">{platforms}</span>
+        </div>
+      </div>
+      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+    </div>
+
+    <div className="mt-5">
+      <MagneticButton
+        variant={popular ? "primary" : "secondary"}
+        onClick={onCta}
+        className="w-full justify-center text-sm"
+      >
+        {ctaLabel}
+        <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+      </MagneticButton>
+    </div>
+  </motion.div>
+);
+
+// ─── Tab panels ───────────────────────────────────────────────────────────────
+const DayTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) => {
+  const includes = [
+    t("packages.day.inc1"),
+    t("packages.day.inc2"),
+    t("packages.day.inc3"),
+    t("packages.day.inc4"),
+    t("packages.day.inc5"),
+  ];
+
+  const cards = [
+    { id: "single", popular: false },
+    { id: "mini",   popular: false },
+    { id: "standard", popular: true },
+    { id: "power",  popular: false },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <p className="text-center text-sm text-muted-foreground">{t("packages.tab.day.sub")}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+        {cards.map((c, i) => (
+          <PkgCard
+            key={c.id}
+            name={t(`packages.day.${c.id}.name`)}
+            price={t(`packages.day.${c.id}.price`)}
+            badge={t(`packages.day.${c.id}.videos`)}
+            per={t(`packages.day.${c.id}.per`)}
+            tagline={t(`packages.day.${c.id}.tagline`)}
+            includes={includes}
+            popular={c.popular}
+            index={i}
+            onCta={onCta}
+            ctaLabel={t("packages.cta.request")}
+            popularLabel={t("packages.popular")}
+            primaryBtn={c.popular}
+          />
+        ))}
+      </div>
+
+      {/* Hourly add-on note */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="max-w-md mx-auto text-center p-5 rounded-[14px] bg-surface border border-white/[0.06]"
+      >
+        <div className="flex items-center justify-center gap-2 mb-1">
+          <Camera className="w-4 h-4 text-primary" />
+          <p className="text-sm font-medium text-foreground">
+            {t("packages.hourly.label")} —{" "}
+            <span className="text-primary">{t("packages.hourly.price")}</span>
+          </p>
+        </div>
+        <p className="text-xs text-muted-foreground">{t("packages.hourly.desc")}</p>
+      </motion.div>
+
+      <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
+    </div>
+  );
+};
+
+const MonthlyTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) => {
+  const includes = [
+    t("packages.monthly.inc1"),
+    t("packages.monthly.inc2"),
+    t("packages.monthly.inc3"),
+    t("packages.monthly.inc4"),
+    t("packages.monthly.inc5"),
+  ];
+
+  const cards = [
+    { id: "light",  popular: false },
+    { id: "growth", popular: true },
+    { id: "pro",    popular: false },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <p className="text-center text-sm text-muted-foreground">{t("packages.tab.monthly.sub")}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-stretch">
+        {cards.map((c, i) => (
+          <PkgCard
+            key={c.id}
+            name={t(`packages.monthly.${c.id}.name`)}
+            price={t(`packages.monthly.${c.id}.price`)}
+            badge={t(`packages.monthly.${c.id}.videos`)}
+            per={t("packages.monthly.per")}
+            tagline={t(`packages.monthly.${c.id}.tagline`)}
+            includes={includes}
+            popular={c.popular}
+            index={i}
+            onCta={onCta}
+            ctaLabel={t("packages.cta.request")}
+            popularLabel={t("packages.popular")}
+            primaryBtn={c.popular}
+          />
+        ))}
+      </div>
+      <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
+    </div>
+  );
+};
+
+const SmmTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) => {
+  const bundles = [
+    { id: "start",  popular: false },
+    { id: "growth", popular: true },
+    { id: "full",   popular: false },
+  ];
+
+  const smmOnly = [
+    { id: "basic", popular: false },
+    { id: "plus",  popular: true },
+    { id: "pro",   popular: false },
+  ];
+
+  return (
+    <div className="space-y-12">
+      <p className="text-center text-sm text-muted-foreground">{t("packages.tab.smm.sub")}</p>
+
+      {/* Combined bundles */}
+      <div className="space-y-4">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground/60"
+        >
+          {t("packages.smm.section.bundle")}
+        </motion.p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-stretch">
+          {bundles.map((c, i) => (
+            <motion.div
+              key={c.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
+              className={`relative premium-card flex flex-col h-full ${c.popular ? "border-primary/40" : ""}`}
+            >
+              {c.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                  <span className="badge-primary flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+                    <Sparkles className="w-3 h-3" />
+                    {t("packages.popular")}
+                  </span>
+                </div>
+              )}
+              <div className="flex-1 space-y-3">
+                <div>
+                  <h3 className="font-display font-semibold text-base mb-2 text-foreground">
+                    {t(`packages.smmvideo.${c.id}.name`)}
+                  </h3>
+                  <p className="text-2xl font-bold text-primary leading-none">
+                    {t(`packages.smmvideo.${c.id}.price`)}
+                  </p>
+                  <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                      {t(`packages.smmvideo.${c.id}.videos`)}
+                    </span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground">
+                      {t(`packages.smmvideo.${c.id}.platforms`)}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {t(`packages.smmvideo.${c.id}.desc`)}
+                </p>
+              </div>
+              <div className="mt-5">
+                <MagneticButton
+                  variant={c.popular ? "primary" : "secondary"}
+                  onClick={onCta}
+                  className="w-full justify-center text-sm"
+                >
+                  {t("packages.cta.request")}
+                  <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                </MagneticButton>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-white/[0.06]" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="px-4 bg-background text-xs text-muted-foreground/50 uppercase tracking-widest">
+            {t("packages.smm.section.standalone")}
+          </span>
+        </div>
+      </div>
+
+      {/* SMM only */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-stretch">
+        {smmOnly.map((c, i) => (
+          <SmmCard
+            key={c.id}
+            name={t(`packages.smm.${c.id}.name`)}
+            price={t(`packages.smm.${c.id}.price`)}
+            posts={t(`packages.smm.${c.id}.posts`)}
+            platforms={t(`packages.smm.${c.id}.platforms`)}
+            desc={t(`packages.smm.${c.id}.desc`)}
+            popular={c.popular}
+            index={i}
+            onCta={onCta}
+            ctaLabel={t("packages.cta.request")}
+            popularLabel={t("packages.popular")}
+          />
+        ))}
+      </div>
+
+      <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
+    </div>
+  );
+};
+
+// ─── Main component ───────────────────────────────────────────────────────────
 const Packages = () => {
-  const [selectedPackage, setSelectedPackage] = useState<string>("m");
+  const [activeTab, setActiveTab] = useState<Tab>("day");
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
-
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
-  const activePackage = packageData.find((p) => p.id === selectedPackage)!;
-
   const scrollToContact = () => {
-    const element = document.getElementById("contact");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const getPackageName = (key: string) => t(`packages.${key}.name`);
-  const getPackagePrice = (key: string) => t(`packages.${key}.price`);
-  const getPackageTagline = (key: string) => t(`packages.${key}.tagline`);
-  const getPackageCTA = (id: string) => {
-    if (id === "individual") return t("packages.cta.custom");
-    return t(`packages.cta.${id}`);
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section ref={containerRef} className="relative py-32 overflow-hidden">
-      {/* Animated Background */}
-      <motion.div 
-        style={{ y: backgroundY }}
-        className="absolute inset-0 pointer-events-none"
-      >
+    <section ref={containerRef} id="packages" className="relative py-32 overflow-hidden">
+      {/* Parallax glow */}
+      <motion.div style={{ y: backgroundY }} className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-glow-mint opacity-20 rounded-full blur-3xl" />
         <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-glow-mint opacity-15 rounded-full blur-3xl"
         />
       </motion.div>
@@ -133,294 +398,58 @@ const Packages = () => {
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 max-w-2xl mx-auto md:mx-0 text-center md:text-left"
+          className="text-center mb-12"
         >
-          <motion.h2 
-            className="section-title mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {t("packages.title")}
-          </motion.h2>
-          <motion.p 
-            className="text-muted-foreground text-lg"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            {t("packages.subtitle")}
-          </motion.p>
+          <h2 className="section-title mb-4">{t("packages.title")}</h2>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">{t("packages.subtitle")}</p>
         </motion.div>
 
-        {/* Package selector */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          {/* Left: Package tabs */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-4 space-y-3"
-          >
-            {packageData.map((pkg, index) => (
-              <PackageTab
-                key={pkg.id}
-                pkg={pkg}
-                isActive={selectedPackage === pkg.id}
-                onClick={() => setSelectedPackage(pkg.id)}
-                index={index}
-                t={t}
-              />
-            ))}
-
-            {/* Custom note */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-              className="pt-6 pl-4 border-l-2 border-primary/30"
-            >
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t("packages.note")}
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Right: Package details */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="lg:col-span-8"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedPackage}
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -30, filter: "blur(10px)" }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="relative"
+        {/* Tab switcher */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex justify-center mb-12"
+        >
+          <div className="inline-flex rounded-[14px] bg-surface border border-white/[0.06] p-1 gap-1">
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-5 py-2.5 rounded-[10px] text-sm font-medium transition-colors duration-300 ${
+                  activeTab === tab ? "text-foreground" : "text-muted-foreground hover:text-foreground/70"
+                }`}
               >
-                {/* Premium Card */}
-                <div className="premium-card relative">
-                  {/* Animated border glow */}
+                {activeTab === tab && (
                   <motion.div
-                    className="absolute inset-0 rounded-[18px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(91, 205, 182, 0.1) 0%, transparent 50%, rgba(214, 179, 106, 0.1) 100%)",
-                    }}
+                    layoutId="activePackageTab"
+                    className="absolute inset-0 rounded-[10px] bg-surface-elevated border border-primary/30"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                   />
+                )}
+                <span className="relative z-10">{t(`packages.tab.${tab}`)}</span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
 
-                  {/* Recommended badge */}
-                  {activePackage.recommended && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      className="absolute -top-3 right-6"
-                    >
-                      <span className="badge-primary flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        {t("packages.recommended")}
-                      </span>
-                    </motion.div>
-                  )}
-
-                  <div className="space-y-6">
-                    {/* Header */}
-                    <div>
-                      <motion.h3
-                        key={`name-${selectedPackage}`}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="font-display text-2xl md:text-3xl font-bold mb-2"
-                      >
-                        {getPackageName(activePackage.translationKey)}
-                      </motion.h3>
-                      <motion.p
-                        key={`price-${selectedPackage}`}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.05 }}
-                        className="text-2xl text-primary font-semibold mb-3"
-                      >
-                        {getPackagePrice(activePackage.translationKey)}
-                      </motion.p>
-                      <motion.p
-                        key={`tagline-${selectedPackage}`}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-muted-foreground leading-relaxed"
-                      >
-                        {getPackageTagline(activePackage.translationKey)}
-                      </motion.p>
-                    </div>
-
-                    {/* Features - only for S/M/L packages */}
-                    {activePackage.id !== "individual" && (
-                      <>
-                        {/* Includes */}
-                        <div className="pt-4 border-t border-white/[0.06]">
-                          <p className="text-sm font-medium text-foreground mb-4">
-                            {t("packages.includes")}
-                          </p>
-                          <ul className="space-y-3">
-                            {activePackage.includes.map((feature, index) => (
-                              <motion.li
-                                key={feature}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: index * 0.03 }}
-                                className="flex items-start gap-3"
-                              >
-                                <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                  <Check className="w-3 h-3 text-primary" />
-                                </div>
-                                <span className="text-muted-foreground text-sm">{t(feature)}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Not included */}
-                        {activePackage.notIncluded.length > 0 && (
-                          <div className="pt-4 border-t border-white/[0.06]">
-                            <p className="text-sm font-medium text-muted-foreground/70 mb-4">
-                              {t("packages.notIncluded")}
-                            </p>
-                            <ul className="space-y-2">
-                              {activePackage.notIncluded.map((feature, index) => (
-                                <motion.li
-                                  key={feature}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: activePackage.includes.length * 0.03 + index * 0.03 }}
-                                  className="flex items-start gap-3"
-                                >
-                                  <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                    <X className="w-3 h-3 text-muted-foreground/50" />
-                                  </div>
-                                  <span className="text-muted-foreground/60 text-sm">{t(feature)}</span>
-                                </motion.li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {/* CTA */}
-                    <motion.div 
-                      className="pt-6"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      {activePackage.id !== "individual" && (
-                        <div className="mb-5 p-4 rounded-[12px] border border-primary/20 bg-primary/5">
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            <span className="text-primary font-medium">★ </span>
-                            {t("packages.filming")}
-                          </p>
-                        </div>
-                      )}
-                      <MagneticButton
-                        variant="primary"
-                        onClick={scrollToContact}
-                        className="w-full justify-center"
-                      >
-                        {getPackageCTA(activePackage.id)}
-                      </MagneticButton>
-                    </motion.div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+        {/* Tab content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {activeTab === "day"     && <DayTab     t={t} onCta={scrollToContact} />}
+            {activeTab === "monthly" && <MonthlyTab t={t} onCta={scrollToContact} />}
+            {activeTab === "smm"     && <SmmTab     t={t} onCta={scrollToContact} />}
           </motion.div>
-        </div>
+        </AnimatePresence>
       </div>
     </section>
-  );
-};
-
-interface PackageTabProps {
-  pkg: PackageData;
-  isActive: boolean;
-  onClick: () => void;
-  index: number;
-  t: (key: string) => string;
-}
-
-const PackageTab = ({ pkg, isActive, onClick, index, t }: PackageTabProps) => {
-  const getPackageName = (key: string) => t(`packages.${key}.name`);
-  const getPackagePrice = (key: string) => t(`packages.${key}.price`);
-
-  return (
-    <motion.button
-      onClick={onClick}
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
-      whileHover={{ x: 8, transition: { duration: 0.2 } }}
-      className={`w-full text-left p-5 rounded-[14px] border transition-all duration-500 relative overflow-hidden group ${
-        isActive
-          ? "bg-surface-elevated border-primary/40"
-          : "bg-surface/50 border-white/[0.06] hover:border-white/10"
-      }`}
-    >
-      {/* Animated glow on active */}
-      {isActive && (
-        <motion.div
-          layoutId="activePackageGlow"
-          className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-transparent"
-          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-        />
-      )}
-
-      <div className="relative flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className={`font-display font-semibold transition-colors duration-300 ${
-              isActive ? "text-foreground" : "text-muted-foreground"
-            }`}>
-              {getPackageName(pkg.translationKey)}
-            </span>
-            {pkg.recommended && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="badge-primary text-[8px]"
-              >
-                ★
-              </motion.span>
-            )}
-          </div>
-          <p className={`text-sm mt-1 transition-colors duration-300 ${
-            isActive ? "text-primary" : "text-muted-foreground/70"
-          }`}>
-            {getPackagePrice(pkg.translationKey)}
-          </p>
-        </div>
-        
-        <motion.div
-          animate={{ 
-            x: isActive ? 0 : 10,
-            opacity: isActive ? 1 : 0,
-            scale: isActive ? 1 : 0.8
-          }}
-          transition={{ duration: 0.3 }}
-        >
-          <ArrowRight className="w-4 h-4 text-primary" />
-        </motion.div>
-      </div>
-    </motion.button>
   );
 };
 
