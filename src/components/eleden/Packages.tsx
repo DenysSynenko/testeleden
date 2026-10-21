@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Check, Sparkles, ArrowRight, Camera } from "lucide-react";
+import { Check, Sparkles, Camera } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -75,7 +75,6 @@ const PkgCard = ({
         className="w-full justify-center text-sm"
       >
         {ctaLabel}
-        <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
       </MagneticButton>
     </div>
   </motion.div>
@@ -134,7 +133,6 @@ const SmmCard = ({
         className="w-full justify-center text-sm"
       >
         {ctaLabel}
-        <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
       </MagneticButton>
     </div>
   </motion.div>
@@ -316,7 +314,6 @@ const SmmTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) =
                   className="w-full justify-center text-sm"
                 >
                   {t("packages.cta.request")}
-                  <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                 </MagneticButton>
               </div>
             </motion.div>
