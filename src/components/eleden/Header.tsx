@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import ThemeToggle from "./ThemeToggle";
 
@@ -41,32 +41,14 @@ const Header = () => {
   };
 
   const socialLinks = [
-    { 
-      name: "Instagram", 
+    {
+      name: "Instagram",
       url: "https://www.instagram.com/eleden.media/",
       icon: (
         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
           <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
           <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-        </svg>
-      )
-    },
-    { 
-      name: "TikTok", 
-      url: "https://www.tiktok.com/@de.synenko?_r=1&_t=ZG-93gzwE0wwz2",
-      icon: (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-        </svg>
-      )
-    },
-    { 
-      name: "YouTube", 
-      url: "https://youtube.com/@denyssynenko?si=5YAiNACsPNu_lrTy",
-      icon: (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
         </svg>
       )
     },
@@ -139,9 +121,12 @@ const Header = () => {
               <div className="hidden md:block w-px h-5 bg-white/10" />
 
               {/* Nav Links */}
-              <div className="hidden md:flex items-center gap-8 text-sm">
+              <div className="hidden md:flex items-center gap-6 text-sm">
                 <NavLink onClick={() => scrollToSection("work")}>{t("nav.work")}</NavLink>
                 <NavLink onClick={() => scrollToSection("services")}>{t("nav.services")}</NavLink>
+                <NavPageLink to="/about">{t("nav.about")}</NavPageLink>
+                <NavPageLink to="/faq">{t("nav.faq")}</NavPageLink>
+                <NavPageLink to="/calculator">{t("nav.calculator")}</NavPageLink>
                 <NavLink onClick={() => scrollToSection("contact")}>{t("nav.contact")}</NavLink>
               </div>
 
@@ -233,23 +218,41 @@ const Header = () => {
 
                   <nav className="p-2">
                     {[
-                      { id: "work", label: t("nav.work") },
-                      { id: "services", label: t("nav.services") },
-                      { id: "contact", label: t("nav.contact") },
+                      { id: "work", label: t("nav.work"), page: null },
+                      { id: "services", label: t("nav.services"), page: null },
+                      { id: "contact", label: t("nav.contact"), page: null },
+                      { id: "about", label: t("nav.about"), page: "/about" },
+                      { id: "faq", label: t("nav.faq"), page: "/faq" },
+                      { id: "calculator", label: t("nav.calculator"), page: "/calculator" },
                     ].map((item, i) => (
-                      <motion.button
-                        key={item.id}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.35, delay: 0.05 + i * 0.05 }}
-                        onClick={() => scrollToSection(item.id)}
-                        className="group w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-foreground/90 hover:bg-white/[0.04] hover:text-foreground transition-colors"
-                      >
-                        <span className="font-display text-lg tracking-tight">{item.label}</span>
-                        <svg className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors -translate-x-1 group-hover:translate-x-0 duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </motion.button>
+                      item.page ? (
+                        <motion.div key={item.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35, delay: 0.05 + i * 0.05 }}>
+                          <Link
+                            to={item.page}
+                            onClick={() => setMenuOpen(false)}
+                            className="group w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-foreground/90 hover:bg-white/[0.04] hover:text-foreground transition-colors"
+                          >
+                            <span className="font-display text-lg tracking-tight">{item.label}</span>
+                            <svg className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors -translate-x-1 group-hover:translate-x-0 duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                              <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </Link>
+                        </motion.div>
+                      ) : (
+                        <motion.button
+                          key={item.id}
+                          initial={{ opacity: 0, x: -8 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.35, delay: 0.05 + i * 0.05 }}
+                          onClick={() => scrollToSection(item.id)}
+                          className="group w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-foreground/90 hover:bg-white/[0.04] hover:text-foreground transition-colors"
+                        >
+                          <span className="font-display text-lg tracking-tight">{item.label}</span>
+                          <svg className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors -translate-x-1 group-hover:translate-x-0 duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <path d="M5 12h14M13 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </motion.button>
+                      )
                     ))}
                   </nav>
 
@@ -305,11 +308,11 @@ const Header = () => {
   );
 };
 
-const NavLink = ({ 
-  children, 
-  onClick 
-}: { 
-  children: React.ReactNode; 
+const NavLink = ({
+  children,
+  onClick
+}: {
+  children: React.ReactNode;
   onClick: () => void;
 }) => {
   return (
@@ -320,7 +323,7 @@ const NavLink = ({
       whileTap={{ scale: 0.98 }}
     >
       {children}
-      <motion.span 
+      <motion.span
         className="absolute -bottom-1 left-0 h-px bg-primary origin-left"
         initial={{ scaleX: 0 }}
         whileHover={{ scaleX: 1 }}
@@ -328,6 +331,36 @@ const NavLink = ({
         style={{ width: "100%" }}
       />
     </motion.button>
+  );
+};
+
+const NavPageLink = ({
+  children,
+  to
+}: {
+  children: React.ReactNode;
+  to: string;
+}) => {
+  return (
+    <motion.div
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      className="relative group"
+    >
+      <Link
+        to={to}
+        className="text-[13px] md:text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 whitespace-nowrap"
+      >
+        {children}
+      </Link>
+      <motion.span
+        className="absolute -bottom-1 left-0 h-px bg-primary origin-left"
+        initial={{ scaleX: 0 }}
+        whileHover={{ scaleX: 1 }}
+        transition={{ duration: 0.3 }}
+        style={{ width: "100%" }}
+      />
+    </motion.div>
   );
 };
 

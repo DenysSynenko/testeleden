@@ -20,23 +20,22 @@ interface PkgCardProps {
   onCta: () => void;
   ctaLabel: string;
   popularLabel: string;
-  primaryBtn?: boolean;
 }
 
 const PkgCard = ({
   name, price, badge, per, tagline, includes,
-  popular, index, onCta, ctaLabel, popularLabel, primaryBtn,
+  popular, index, onCta, ctaLabel, popularLabel,
 }: PkgCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay: index * 0.07 }}
-    className={`relative premium-card flex flex-col h-full ${popular ? "border-primary/40" : ""}`}
+    className={`premium-card flex flex-col h-full ${popular ? "border-primary/30" : ""}`}
   >
     {popular && (
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-        <span className="badge-primary flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+      <div className="flex justify-center -mt-1 mb-4">
+        <span className="badge-primary inline-flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
           <Sparkles className="w-3 h-3" />
           {popularLabel}
         </span>
@@ -71,7 +70,7 @@ const PkgCard = ({
 
     <div className="mt-6">
       <MagneticButton
-        variant={primaryBtn ? "primary" : "secondary"}
+        variant="ghost"
         onClick={onCta}
         className="w-full justify-center text-sm"
       >
@@ -105,11 +104,11 @@ const SmmCard = ({
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay: index * 0.07 }}
-    className={`relative premium-card flex flex-col h-full ${popular ? "border-primary/40" : ""}`}
+    className={`premium-card flex flex-col h-full ${popular ? "border-primary/30" : ""}`}
   >
     {popular && (
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-        <span className="badge-primary flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+      <div className="flex justify-center -mt-1 mb-4">
+        <span className="badge-primary inline-flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
           <Sparkles className="w-3 h-3" />
           {popularLabel}
         </span>
@@ -130,7 +129,7 @@ const SmmCard = ({
 
     <div className="mt-5">
       <MagneticButton
-        variant={popular ? "primary" : "secondary"}
+        variant="ghost"
         onClick={onCta}
         className="w-full justify-center text-sm"
       >
@@ -176,7 +175,6 @@ const DayTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) =
             onCta={onCta}
             ctaLabel={t("packages.cta.request")}
             popularLabel={t("packages.popular")}
-            primaryBtn={c.popular}
           />
         ))}
       </div>
@@ -237,7 +235,6 @@ const MonthlyTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void 
             onCta={onCta}
             ctaLabel={t("packages.cta.request")}
             popularLabel={t("packages.popular")}
-            primaryBtn={c.popular}
           />
         ))}
       </div>
@@ -281,11 +278,11 @@ const SmmTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) =
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.07 }}
-              className={`relative premium-card flex flex-col h-full ${c.popular ? "border-primary/40" : ""}`}
+              className={`premium-card flex flex-col h-full ${c.popular ? "border-primary/30" : ""}`}
             >
               {c.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                  <span className="badge-primary flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+                <div className="flex justify-center -mt-1 mb-4">
+                  <span className="badge-primary inline-flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
                     <Sparkles className="w-3 h-3" />
                     {t("packages.popular")}
                   </span>
@@ -314,7 +311,7 @@ const SmmTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) =
               </div>
               <div className="mt-5">
                 <MagneticButton
-                  variant={c.popular ? "primary" : "secondary"}
+                  variant="ghost"
                   onClick={onCta}
                   className="w-full justify-center text-sm"
                 >

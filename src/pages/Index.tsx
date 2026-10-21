@@ -1,8 +1,7 @@
 import Header from "@/components/eleden/Header";
 import Hero from "@/components/eleden/Hero";
+import WorksSection from "@/components/eleden/WorksSection";
 import Packages from "@/components/eleden/Packages";
-import WhoWeWorkWith from "@/components/eleden/WhoWeWorkWith";
-import FAQ from "@/components/eleden/FAQ";
 import ContactCTA from "@/components/eleden/ContactCTA";
 import Footer from "@/components/eleden/Footer";
 import ScrollToTop from "@/components/eleden/ScrollToTop";
@@ -23,11 +22,10 @@ const Index = () => {
       {/* Main content */}
       <main>
         <Hero />
+        <WorksSection />
         <div id="services">
           <Packages />
         </div>
-        <WhoWeWorkWith />
-        <FAQ />
         <ContactCTA />
       </main>
 

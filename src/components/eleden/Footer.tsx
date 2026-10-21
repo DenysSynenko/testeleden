@@ -14,8 +14,6 @@ const Footer = () => {
 
   const socialLinks = {
     instagram: { label: "Instagram", url: "https://www.instagram.com/eleden.media/" },
-    tiktok: { label: "TikTok", url: "https://www.tiktok.com/@de.synenko" },
-    youtube: { label: "YouTube", url: "https://www.youtube.com/@DenysSynenko" },
   };
 
   return (
@@ -101,7 +99,7 @@ const Footer = () => {
           >
             <h4 className="text-sm font-medium text-foreground mb-4">{t("footer.social")}</h4>
             <div className="flex flex-wrap gap-3">
-              {[socialLinks.instagram, socialLinks.tiktok, socialLinks.youtube].map((link) => (
+              {[socialLinks.instagram].map((link) => (
                 <a
                   key={link.label}
                   href={link.url}

@@ -12,8 +12,11 @@ const translations: Record<Language, Record<string, string>> = {
   EN: {
     // Header
     "nav.work": "Work",
-   "nav.services": "Services",
+    "nav.services": "Prices",
     "nav.contact": "Contact",
+    "nav.about": "About",
+    "nav.calculator": "Calculator",
+    "nav.faq": "FAQ",
     
     // Hero
     "hero.headline1": "Content. Art.",
@@ -261,9 +264,9 @@ const translations: Record<Language, Record<string, string>> = {
     "faq.a7": "Both. We can shoot on location or work remotely using your existing materials. We also provide clear shooting direction if you want to film in-house.",
     
     // Contact
-    "contact.headline1": "Ready to build a premium",
-    "contact.headline2": "content system?",
-    "contact.subline": "Send a request — we'll reply within 24–48 hours.",
+    "contact.headline1": "Let's start with",
+    "contact.headline2": "a conversation.",
+    "contact.subline": "Tell us about your project — we reply within 24–48 hours.",
     "contact.firstName": "First name",
     "contact.lastName": "Last name",
     "contact.lastNameOptional": "Last name (optional)",
@@ -376,8 +379,11 @@ const translations: Record<Language, Record<string, string>> = {
   DE: {
     // Header
     "nav.work": "Arbeiten",
-   "nav.services": "Leistungen",
+    "nav.services": "Preise",
     "nav.contact": "Kontakt",
+    "nav.about": "Über uns",
+    "nav.calculator": "Kalkulator",
+    "nav.faq": "FAQ",
     
     // Hero
     "hero.headline1": "Content. Kunst.",
@@ -625,9 +631,9 @@ const translations: Record<Language, Record<string, string>> = {
     "faq.a7": "Beides. Wir können vor Ort drehen oder remote mit Ihrem vorhandenen Material arbeiten. Wir liefern auch klare Drehanweisungen, wenn Sie selbst filmen möchten.",
     
     // Contact
-    "contact.headline1": "Bereit ein Premium",
-    "contact.headline2": "Content-System aufzubauen?",
-    "contact.subline": "Senden Sie eine Anfrage — wir antworten innerhalb von 24–48 Stunden.",
+    "contact.headline1": "Lassen Sie uns",
+    "contact.headline2": "ins Gespräch kommen.",
+    "contact.subline": "Erzählen Sie uns von Ihrem Projekt — wir antworten innerhalb von 24–48 Stunden.",
     "contact.firstName": "Vorname",
     "contact.lastName": "Nachname",
     "contact.lastNameOptional": "Nachname (optional)",
@@ -740,8 +746,11 @@ const translations: Record<Language, Record<string, string>> = {
   UA: {
     // Header
     "nav.work": "Роботи",
-   "nav.services": "Послуги",
+    "nav.services": "Ціни",
     "nav.contact": "Контакт",
+    "nav.about": "Про нас",
+    "nav.calculator": "Калькулятор",
+    "nav.faq": "FAQ",
     
     // Hero
     "hero.headline1": "Контент. Мистецтво.",
@@ -989,9 +998,9 @@ const translations: Record<Language, Record<string, string>> = {
     "faq.a7": "Обидва варіанти. Ми можемо знімати на локації або працювати віддалено з вашими наявними матеріалами. Ми також надаємо чіткі інструкції для зйомки, якщо ви хочете знімати самостійно.",
     
     // Contact
-    "contact.headline1": "Готові побудувати преміальну",
-    "contact.headline2": "контент-систему?",
-    "contact.subline": "Надішліть запит — ми відповімо протягом 24–48 годин.",
+    "contact.headline1": "Давайте почнемо",
+    "contact.headline2": "розмову.",
+    "contact.subline": "Розкажіть про ваш проект — ми відповімо протягом 24–48 годин.",
     "contact.firstName": "Ім'я",
     "contact.lastName": "Прізвище",
     "contact.lastNameOptional": "Прізвище (необов'язково)",
