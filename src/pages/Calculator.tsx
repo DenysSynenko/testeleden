@@ -6,7 +6,7 @@ import Footer from "@/components/eleden/Footer";
 import FloatingParticles from "@/components/eleden/FloatingParticles";
 import ScrollToTop from "@/components/eleden/ScrollToTop";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { MagneticButton } from "@/components/eleden/MagneticButton";
+import MagneticButton from "@/components/eleden/MagneticButton";
 
 /* ─── Types ─── */
 type Tab = "shoot" | "monthly";

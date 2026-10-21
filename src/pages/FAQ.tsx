@@ -6,7 +6,7 @@ import Footer from "@/components/eleden/Footer";
 import FloatingParticles from "@/components/eleden/FloatingParticles";
 import ScrollToTop from "@/components/eleden/ScrollToTop";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { MagneticButton } from "@/components/eleden/MagneticButton";
+import MagneticButton from "@/components/eleden/MagneticButton";
 
 const FAQItem = ({ question, answer, index }: { question: string; answer: string; index: number }) => {
   const [open, setOpen] = useState(false);
