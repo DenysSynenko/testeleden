@@ -24,10 +24,10 @@ type MonthlyId = typeof MONTHLY[number]["id"];
 
 /* ─── Shoot-day packages ─── */
 const SHOOT_DAYS = [
-  { id: "single",   label: "Single Video", price: 150,  videos: 1,  desc: "One-off. No shoot day required." },
-  { id: "mini",     label: "Mini Day",     price: 700,  videos: 5,  desc: "Short session, one location." },
-  { id: "standard", label: "Standard Day", price: 1050, videos: 8,  desc: "Full shoot day. Most popular." },
-  { id: "power",    label: "Power Day",    price: 1500, videos: 12, desc: "Extended day. Maximum output." },
+  { id: "single",   label: "Single Video", price: 150,  hours: "up to 2h", desc: "One location, one shoot." },
+  { id: "mini",     label: "Mini Day",     price: 700,  hours: "4h",        desc: "Short session, one location." },
+  { id: "standard", label: "Standard Day", price: 1050, hours: "6h",        desc: "Full shoot day. Most popular." },
+  { id: "power",    label: "Power Day",    price: 1500, hours: "8h+",       desc: "Extended day. Maximum output." },
 ] as const;
 type ShootId = typeof SHOOT_DAYS[number]["id"];
 
@@ -392,7 +392,7 @@ const Calculator = () => {
                               key={pkg.id}
                               label={pkg.label}
                               price={`€${pkg.price.toLocaleString()}`}
-                              sub={`${pkg.videos} video${pkg.videos > 1 ? "s" : ""} — ${pkg.desc}`}
+                              sub={`${pkg.hours} — ${pkg.desc}`}
                               selected={shootPkg === pkg.id}
                               onClick={() => { setShootPkg(pkg.id); setExtraHours(0); }}
                             />
@@ -466,7 +466,7 @@ const Calculator = () => {
                     )}
                     {tab === "shoot" && (
                       <>
-                        <Line label={`${selectedShoot.label} (${selectedShoot.videos} video${selectedShoot.videos > 1 ? "s" : ""})`} value={`€${selectedShoot.price.toLocaleString()}`} />
+                        <Line label={`${selectedShoot.label} (${selectedShoot.hours})`} value={`€${selectedShoot.price.toLocaleString()}`} />
                         {shootPkg === "single" && extraHours > 0 && <Line label={`Extra shooting — ${extraHours}h`} value={`+€${(extraHours * PRICE_HOUR).toLocaleString()}`} />}
                       </>
                     )}
