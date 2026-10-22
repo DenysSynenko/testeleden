@@ -49,9 +49,6 @@ const About = () => {
                   {t("about.agencyBody")}
                 </p>
 
-                <p className="text-base text-muted-foreground leading-relaxed max-w-2xl">
-                  {t("about.agencyPartner")}
-                </p>
               </motion.div>
 
               {/* Stats row */}
