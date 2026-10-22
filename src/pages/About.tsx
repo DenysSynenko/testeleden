@@ -134,7 +134,7 @@ const About = () => {
                     variant="primary"
                     onClick={() => navigate("/#contact")}
                   >
-                    {t("hero.cta")}
+                    {t("nav.contact")}
                   </MagneticButton>
                 </div>
               </motion.div>
