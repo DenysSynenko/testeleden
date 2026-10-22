@@ -8,45 +8,46 @@ import ScrollToTop from "@/components/eleden/ScrollToTop";
 import { useLanguage } from "@/contexts/LanguageContext";
 import MagneticButton from "@/components/eleden/MagneticButton";
 
-/* ─── Types ─── */
-type Tab = "shoot" | "monthly";
-
-/* ─── Shoot day packages ─── */
-const SHOOT_PACKAGES = [
-  { id: "single", label: "Single Day", price: 150, hours: 4, desc: "Half-day shoot, 1–2 deliverables" },
-  { id: "mini",   label: "Mini Pack",  price: 700, hours: null, desc: "3 shoot days + editing included" },
-  { id: "standard", label: "Standard", price: 1050, hours: null, desc: "5 shoot days + editing + strategy" },
-  { id: "power",  label: "Power",      price: 1500, hours: null, desc: "8 shoot days + full production cycle" },
-] as const;
-type ShootId = typeof SHOOT_PACKAGES[number]["id"];
+/* ─── Prices ─── */
+const PRICE_VIDEO   = 150;   // editing only, per reel
+const PRICE_HOUR    = 100;   // shooting per hour
+const PRICE_STORIES = 75;    // pack of 5 stories
+const PRICE_SMM: Record<string, number> = { none: 0, basic: 350, plus: 600, pro: 950 };
 
 /* ─── Monthly packages ─── */
-const MONTHLY_PACKAGES = [
-  { id: "light",  label: "Light",  price: 1200, videos: 4,  smm: false, desc: "4 videos/mo, editing only" },
-  { id: "growth", label: "Growth", price: 1800, videos: 8,  smm: true,  desc: "8 videos/mo + basic SMM" },
-  { id: "pro",    label: "Pro",    price: 3000, videos: 16, smm: true,  desc: "16 videos/mo + full SMM strategy" },
+const MONTHLY = [
+  { id: "light",  label: "Light",  price: 1200, videos: 8,  freq: "2 / week" },
+  { id: "growth", label: "Growth", price: 1800, videos: 12, freq: "3 / week" },
+  { id: "pro",    label: "Pro",    price: 3000, videos: 20, freq: "5 / week" },
 ] as const;
-type MonthlyId = typeof MONTHLY_PACKAGES[number]["id"];
+type MonthlyId = typeof MONTHLY[number]["id"];
 
-const SMM_ADDON = 400;
+/* ─── Shoot-day packages ─── */
+const SHOOT_DAYS = [
+  { id: "single",   label: "Single Video", price: 150,  videos: 1,  desc: "One-off. No shoot day required." },
+  { id: "mini",     label: "Mini Day",     price: 700,  videos: 5,  desc: "Short session, one location." },
+  { id: "standard", label: "Standard Day", price: 1050, videos: 8,  desc: "Full shoot day. Most popular." },
+  { id: "power",    label: "Power Day",    price: 1500, videos: 12, desc: "Extended day. Maximum output." },
+] as const;
+type ShootId = typeof SHOOT_DAYS[number]["id"];
 
-/* ─── Suggested monthly package based on video count ─── */
-function suggestMonthly(videoCount: number): MonthlyId {
-  if (videoCount <= 4)  return "light";
-  if (videoCount <= 8)  return "growth";
+/* ─── SMM options ─── */
+const SMM_OPTIONS = [
+  { id: "none",  label: "No SMM",    desc: "—",                                  price: 0   },
+  { id: "basic", label: "SMM Basic", desc: "8 posts, 1 platform",                price: 350 },
+  { id: "plus",  label: "SMM Plus",  desc: "12 posts, 2 platforms + DM replies", price: 600 },
+  { id: "pro",   label: "SMM Pro",   desc: "Daily management, 8 stories, 3 ch.", price: 950 },
+] as const;
+type SmmId = "none" | "basic" | "plus" | "pro";
+
+function suggestMonthly(v: number): MonthlyId {
+  if (v <= 8)  return "light";
+  if (v <= 12) return "growth";
   return "pro";
 }
 
-/* ─── Shoot days count helper ─── */
-function calcShootDays(pkg: ShootId, extraHours: number): string {
-  if (pkg === "single") return `~${Math.ceil((4 + extraHours) / 4)} day(s)`;
-  if (pkg === "mini")     return "3 days";
-  if (pkg === "standard") return "5 days";
-  return "8 days";
-}
-
-/* ─── Small reusable UI ─── */
-const TabButton = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
+/* ─── Small UI components ─── */
+const TabBtn = ({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) => (
   <button
     onClick={onClick}
     className={`relative px-5 py-2.5 text-sm rounded-xl transition-all duration-300 font-medium ${
@@ -55,7 +56,7 @@ const TabButton = ({ active, onClick, children }: { active: boolean; onClick: ()
   >
     {active && (
       <motion.span
-        layoutId="tabIndicator"
+        layoutId="calcTab"
         className="absolute inset-0 bg-surface-elevated border border-white/[0.08] rounded-xl"
         transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
       />
@@ -64,19 +65,48 @@ const TabButton = ({ active, onClick, children }: { active: boolean; onClick: ()
   </button>
 );
 
-const PkgCard = ({
-  label, price, desc, selected, onClick, badge
+const Stepper = ({
+  value, min, max, onChange, label, unit, note
 }: {
-  label: string; price: number; desc: string; selected: boolean; onClick: () => void; badge?: string;
+  value: number; min: number; max: number;
+  onChange: (v: number) => void; label: string; unit?: string; note?: string;
+}) => (
+  <div className="flex items-center justify-between gap-4 py-3.5 border-b border-white/[0.05] last:border-0">
+    <div className="flex-1 min-w-0">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      {note && <p className="text-xs text-muted-foreground/50 mt-0.5">{note}</p>}
+    </div>
+    <div className="flex items-center gap-2.5 flex-shrink-0">
+      <button
+        onClick={() => onChange(Math.max(min, value - 1))}
+        className="w-7 h-7 rounded-lg border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
+      >
+        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="2" y1="6" x2="10" y2="6" /></svg>
+      </button>
+      <span className="w-14 text-center font-display font-semibold text-sm text-foreground">
+        {value}{unit ? ` ${unit}` : ""}
+      </span>
+      <button
+        onClick={() => onChange(Math.min(max, value + 1))}
+        className="w-7 h-7 rounded-lg border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
+      >
+        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="6" y1="2" x2="6" y2="10" /><line x1="2" y1="6" x2="10" y2="6" /></svg>
+      </button>
+    </div>
+  </div>
+);
+
+const PkgCard = ({
+  label, price, sub, selected, onClick, badge
+}: {
+  label: string; price: string; sub: string; selected: boolean; onClick: () => void; badge?: string;
 }) => (
   <motion.button
     onClick={onClick}
     whileHover={{ y: -2 }}
     whileTap={{ scale: 0.98 }}
     className={`w-full text-left rounded-2xl border p-4 transition-all duration-300 ${
-      selected
-        ? "border-primary/60 bg-primary/5"
-        : "border-white/[0.06] bg-surface hover:border-white/[0.14]"
+      selected ? "border-primary/60 bg-primary/5" : "border-white/[0.06] bg-surface hover:border-white/[0.14]"
     }`}
   >
     <div className="flex items-start justify-between gap-2">
@@ -85,82 +115,104 @@ const PkgCard = ({
           <span className="font-display font-semibold text-sm text-foreground">{label}</span>
           {badge && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/15 text-primary border border-primary/30">{badge}</span>}
         </div>
-        <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+        <p className="text-xs text-muted-foreground">{sub}</p>
       </div>
-      <div className="text-right flex-shrink-0">
-        <div className={`font-display font-bold text-base ${selected ? "text-primary" : "text-foreground"}`}>
-          €{price.toLocaleString()}
-        </div>
+      <div className={`font-display font-bold text-sm flex-shrink-0 ${selected ? "text-primary" : "text-foreground"}`}>
+        {price}
       </div>
     </div>
-    <div className={`mt-2 h-0.5 rounded-full transition-all duration-300 ${selected ? "bg-primary/40" : "bg-transparent"}`} />
+    <div className={`mt-2 h-px transition-all duration-300 ${selected ? "bg-primary/30" : "bg-transparent"}`} />
   </motion.button>
 );
 
-const Stepper = ({
-  value, min, max, step = 1, onChange, label, unit
-}: {
-  value: number; min: number; max: number; step?: number; onChange: (v: number) => void; label: string; unit?: string;
-}) => (
-  <div className="flex items-center justify-between gap-4 py-3 border-b border-white/[0.06] last:border-0">
-    <span className="text-sm text-muted-foreground flex-1">{label}</span>
-    <div className="flex items-center gap-3">
+const SmmSelector = ({ value, onChange }: { value: SmmId; onChange: (v: SmmId) => void }) => (
+  <div className="grid grid-cols-2 gap-2">
+    {SMM_OPTIONS.map((opt) => (
       <button
-        onClick={() => onChange(Math.max(min, value - step))}
-        className="w-7 h-7 rounded-lg border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
+        key={opt.id}
+        onClick={() => onChange(opt.id as SmmId)}
+        className={`text-left rounded-xl border p-3 transition-all duration-300 ${
+          value === opt.id ? "border-primary/60 bg-primary/5" : "border-white/[0.06] hover:border-white/[0.14]"
+        }`}
       >
-        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="1" y1="6" x2="11" y2="6" /></svg>
+        <div className={`text-xs font-semibold mb-0.5 ${value === opt.id ? "text-primary" : "text-foreground"}`}>{opt.label}</div>
+        <div className="text-[10px] text-muted-foreground leading-snug">{opt.desc}</div>
+        {opt.price > 0 && (
+          <div className="text-xs font-display font-bold text-foreground mt-1">+€{opt.price}</div>
+        )}
       </button>
-      <span className="w-16 text-center font-display font-semibold text-sm text-foreground">
-        {value}{unit ? ` ${unit}` : ""}
-      </span>
-      <button
-        onClick={() => onChange(Math.min(max, value + step))}
-        className="w-7 h-7 rounded-lg border border-white/10 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
-      >
-        <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="1" x2="6" y2="11" /><line x1="1" y1="6" x2="11" y2="6" /></svg>
-      </button>
-    </div>
+    ))}
   </div>
 );
 
-/* ─── Main component ─── */
+/* ─── Line item ─── */
+const Line = ({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) => (
+  <div className="flex justify-between items-center text-sm">
+    <span className="text-muted-foreground">{label}</span>
+    <span className={highlight ? "text-primary text-xs font-medium" : "text-foreground font-medium"}>{value}</span>
+  </div>
+);
+
+/* ─── Main ─── */
+type Tab = "custom" | "monthly" | "shoot";
+
 const Calculator = () => {
   const { t } = useLanguage();
-  const [tab, setTab] = useState<Tab>("monthly");
+  const [tab, setTab] = useState<Tab>("custom");
 
-  // Shoot tab state
-  const [shootPkg, setShootPkg] = useState<ShootId>("mini");
-  const [extraHours, setExtraHours] = useState(0);
+  /* Custom tab */
+  const [videos,      setVideos]    = useState(0);
+  const [shootHours,  setShootHours] = useState(0);
+  const [storyPacks,  setStoryPacks] = useState(0);
+  const [customSmm,   setCustomSmm]  = useState<SmmId>("none");
 
-  // Monthly tab state
-  const [videoCount, setVideoCount] = useState(8);
-  const [smmAddon, setSmmAddon] = useState(false);
+  /* Monthly tab */
+  const [monthVideos, setMonthVideos] = useState(8);
+  const [monthPkg,    setMonthPkg]    = useState<MonthlyId>("light");
+  const [monthStories, setMonthStories] = useState(0);
+  const [monthSmm,    setMonthSmm]    = useState<SmmId>("none");
 
-  const suggestedMonthly = useMemo(() => suggestMonthly(videoCount), [videoCount]);
-  const [monthlyPkg, setMonthlyPkg] = useState<MonthlyId>(suggestedMonthly);
+  /* Shoot tab */
+  const [shootPkg,    setShootPkg]   = useState<ShootId>("standard");
+  const [extraHours,  setExtraHours] = useState(0);
 
-  // Auto-suggest package when video count changes
-  const handleVideoCount = (v: number) => {
-    setVideoCount(v);
-    setMonthlyPkg(suggestMonthly(v));
+  const handleMonthVideos = (v: number) => {
+    setMonthVideos(v);
+    setMonthPkg(suggestMonthly(v));
   };
 
-  // Totals
-  const shootTotal = useMemo(() => {
-    const pkg = SHOOT_PACKAGES.find((p) => p.id === shootPkg)!;
-    const hourExtra = shootPkg === "single" ? extraHours * 100 : 0;
-    return pkg.price + hourExtra;
-  }, [shootPkg, extraHours]);
+  /* Totals */
+  const customTotal = useMemo(() =>
+    videos * PRICE_VIDEO
+    + shootHours * PRICE_HOUR
+    + storyPacks * PRICE_STORIES
+    + PRICE_SMM[customSmm],
+    [videos, shootHours, storyPacks, customSmm]
+  );
 
   const monthlyTotal = useMemo(() => {
-    const pkg = MONTHLY_PACKAGES.find((p) => p.id === monthlyPkg)!;
-    return pkg.price + (smmAddon && !pkg.smm ? SMM_ADDON : 0);
-  }, [monthlyPkg, smmAddon]);
+    const pkg = MONTHLY.find((p) => p.id === monthPkg)!;
+    return pkg.price + monthStories * PRICE_STORIES + PRICE_SMM[monthSmm];
+  }, [monthPkg, monthStories, monthSmm]);
 
-  const total = tab === "shoot" ? shootTotal : monthlyTotal;
-  const selectedShoot = SHOOT_PACKAGES.find((p) => p.id === shootPkg)!;
-  const selectedMonthly = MONTHLY_PACKAGES.find((p) => p.id === monthlyPkg)!;
+  const shootTotal = useMemo(() => {
+    const pkg = SHOOT_DAYS.find((p) => p.id === shootPkg)!;
+    return pkg.price + (shootPkg === "single" ? extraHours * PRICE_HOUR : 0);
+  }, [shootPkg, extraHours]);
+
+  const total = tab === "custom" ? customTotal : tab === "monthly" ? monthlyTotal : shootTotal;
+  const selectedMonth = MONTHLY.find((p) => p.id === monthPkg)!;
+  const selectedShoot = SHOOT_DAYS.find((p) => p.id === shootPkg)!;
+
+  /* Smart suggestion for custom tab */
+  const customSuggestion = useMemo(() => {
+    if (tab !== "custom" || customTotal === 0) return null;
+    if (customTotal >= 2400 && customSmm !== "none") return { label: "Growth Bundle", price: 2400 };
+    if (customTotal >= 1550 && customSmm !== "none") return { label: "Start Bundle", price: 1550 };
+    if (customTotal >= 1050) return { label: "Standard Day", price: 1050 };
+    if (customTotal >= 700)  return { label: "Mini Day", price: 700 };
+    return null;
+  }, [tab, customTotal, customSmm]);
 
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -187,7 +239,7 @@ const Calculator = () => {
               </span>
               <h1 className="section-title mb-4">Price Calculator</h1>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Build your package in real time. Mix options and see the total instantly.
+                Build your package piece by piece — or pick a ready plan. Price updates in real time.
               </p>
             </motion.div>
           </div>
@@ -203,114 +255,144 @@ const Calculator = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="lg:col-span-3 flex flex-col gap-6"
+                className="lg:col-span-3 flex flex-col gap-5"
               >
                 {/* Tab switcher */}
                 <div className="premium-card rounded-2xl p-1.5 inline-flex gap-1 self-start">
-                  <TabButton active={tab === "monthly"} onClick={() => setTab("monthly")}>Monthly</TabButton>
-                  <TabButton active={tab === "shoot"} onClick={() => setTab("shoot")}>Shoot Days</TabButton>
+                  <TabBtn active={tab === "custom"}  onClick={() => setTab("custom")}>Custom</TabBtn>
+                  <TabBtn active={tab === "monthly"} onClick={() => setTab("monthly")}>Monthly</TabBtn>
+                  <TabBtn active={tab === "shoot"}   onClick={() => setTab("shoot")}>Shoot Day</TabBtn>
                 </div>
 
                 <AnimatePresence mode="wait">
+
+                  {/* ── CUSTOM TAB ── */}
+                  {tab === "custom" && (
+                    <motion.div key="custom" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }} className="flex flex-col gap-4">
+
+                      {/* Content */}
+                      <div className="premium-card rounded-2xl p-5">
+                        <h3 className="font-display font-semibold text-sm text-foreground mb-1">Content</h3>
+                        <p className="text-xs text-muted-foreground mb-4">Add what you need — mix and match freely.</p>
+                        <Stepper
+                          label="Reels / Short videos"
+                          note="Editing only — you provide the footage"
+                          value={videos} min={0} max={30}
+                          onChange={setVideos}
+                          unit={videos === 1 ? "video" : "videos"}
+                        />
+                        <Stepper
+                          label="Shooting hours"
+                          note="Filming without editing — €100 / hour"
+                          value={shootHours} min={0} max={16}
+                          onChange={setShootHours}
+                          unit="h"
+                        />
+                        <Stepper
+                          label="Stories packs"
+                          note="Pack of 5 Stories — concept + edit"
+                          value={storyPacks} min={0} max={20}
+                          onChange={setStoryPacks}
+                          unit={storyPacks === 1 ? "pack" : "packs"}
+                        />
+                      </div>
+
+                      {/* SMM */}
+                      <div className="premium-card rounded-2xl p-5">
+                        <h3 className="font-display font-semibold text-sm text-foreground mb-1">SMM Management</h3>
+                        <p className="text-xs text-muted-foreground mb-4">Add social media management on top of your content.</p>
+                        <SmmSelector value={customSmm} onChange={setCustomSmm} />
+                      </div>
+
+                      {/* Smart suggestion */}
+                      <AnimatePresence>
+                        {customSuggestion && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="rounded-2xl border border-primary/25 bg-primary/5 p-4 text-sm">
+                              <span className="text-muted-foreground">💡 Your build is close to </span>
+                              <span className="text-primary font-semibold">{customSuggestion.label}</span>
+                              <span className="text-muted-foreground"> (€{customSuggestion.price}) — might be more cost-effective.</span>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </motion.div>
+                  )}
+
+                  {/* ── MONTHLY TAB ── */}
                   {tab === "monthly" && (
-                    <motion.div
-                      key="monthly"
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.35 }}
-                      className="flex flex-col gap-4"
-                    >
-                      {/* Video count input */}
+                    <motion.div key="monthly" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }} className="flex flex-col gap-4">
+
+                      {/* Video count */}
                       <div className="premium-card rounded-2xl p-5">
                         <h3 className="font-display font-semibold text-sm text-foreground mb-4">How many videos per month?</h3>
                         <Stepper
-                          label="Videos per month"
-                          value={videoCount}
-                          min={1}
-                          max={30}
-                          onChange={handleVideoCount}
+                          label="Videos / month"
+                          value={monthVideos} min={1} max={30}
+                          onChange={handleMonthVideos}
                           unit="videos"
                         />
                         <p className="text-xs text-muted-foreground mt-3">
-                          Based on your input, we suggest: <span className="text-primary font-semibold">{selectedMonthly.label}</span>
+                          Suggested: <span className="text-primary font-semibold">{selectedMonth.label} ({selectedMonth.freq})</span>
                         </p>
                       </div>
 
-                      {/* Package cards */}
+                      {/* Monthly packages */}
                       <div className="premium-card rounded-2xl p-5">
-                        <h3 className="font-display font-semibold text-sm text-foreground mb-4">Choose your monthly plan</h3>
+                        <h3 className="font-display font-semibold text-sm text-foreground mb-4">Monthly plan</h3>
                         <div className="flex flex-col gap-3">
-                          {MONTHLY_PACKAGES.map((pkg) => (
+                          {MONTHLY.map((pkg) => (
                             <PkgCard
                               key={pkg.id}
                               label={pkg.label}
-                              price={pkg.price}
-                              desc={pkg.desc}
-                              selected={monthlyPkg === pkg.id}
-                              onClick={() => setMonthlyPkg(pkg.id)}
-                              badge={suggestedMonthly === pkg.id ? "Suggested" : undefined}
+                              price={`€${pkg.price.toLocaleString()} / mo`}
+                              sub={`${pkg.videos} videos — ${pkg.freq}`}
+                              selected={monthPkg === pkg.id}
+                              onClick={() => setMonthPkg(pkg.id)}
+                              badge={suggestMonthly(monthVideos) === pkg.id ? "Suggested" : undefined}
                             />
                           ))}
                         </div>
                       </div>
 
-                      {/* SMM addon */}
+                      {/* Stories addon */}
                       <div className="premium-card rounded-2xl p-5">
-                        <h3 className="font-display font-semibold text-sm text-foreground mb-4">Add-ons</h3>
-                        <button
-                          onClick={() => setSmmAddon((v) => !v)}
-                          className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${
-                            smmAddon || selectedMonthly.smm
-                              ? "border-primary/50 bg-primary/5"
-                              : "border-white/[0.06] hover:border-white/[0.14]"
-                          }`}
-                          disabled={selectedMonthly.smm}
-                        >
-                          <div className="text-left">
-                            <div className="text-sm font-semibold text-foreground">SMM Management</div>
-                            <div className="text-xs text-muted-foreground mt-0.5">
-                              {selectedMonthly.smm ? "Included in your plan" : "Community + posting schedule"}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            {!selectedMonthly.smm && (
-                              <span className="text-sm font-display text-muted-foreground">+€{SMM_ADDON}</span>
-                            )}
-                            <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${
-                              smmAddon || selectedMonthly.smm ? "bg-primary border-primary" : "border-white/20"
-                            }`}>
-                              {(smmAddon || selectedMonthly.smm) && (
-                                <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                  <polyline points="2 6 5 9 10 3" />
-                                </svg>
-                              )}
-                            </div>
-                          </div>
-                        </button>
+                        <h3 className="font-display font-semibold text-sm text-foreground mb-4">Add Stories</h3>
+                        <Stepper
+                          label="Stories packs / month"
+                          note="Pack of 5 Stories — +€75 each"
+                          value={monthStories} min={0} max={20}
+                          onChange={setMonthStories}
+                          unit={monthStories === 1 ? "pack" : "packs"}
+                        />
+                      </div>
+
+                      {/* SMM */}
+                      <div className="premium-card rounded-2xl p-5">
+                        <h3 className="font-display font-semibold text-sm text-foreground mb-4">SMM Management</h3>
+                        <SmmSelector value={monthSmm} onChange={setMonthSmm} />
                       </div>
                     </motion.div>
                   )}
 
+                  {/* ── SHOOT DAY TAB ── */}
                   {tab === "shoot" && (
-                    <motion.div
-                      key="shoot"
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.35 }}
-                      className="flex flex-col gap-4"
-                    >
-                      {/* Package cards */}
+                    <motion.div key="shoot" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }} className="flex flex-col gap-4">
+
                       <div className="premium-card rounded-2xl p-5">
                         <h3 className="font-display font-semibold text-sm text-foreground mb-4">Choose a shoot package</h3>
                         <div className="flex flex-col gap-3">
-                          {SHOOT_PACKAGES.map((pkg) => (
+                          {SHOOT_DAYS.map((pkg) => (
                             <PkgCard
                               key={pkg.id}
                               label={pkg.label}
-                              price={pkg.price}
-                              desc={pkg.desc}
+                              price={`€${pkg.price.toLocaleString()}`}
+                              sub={`${pkg.videos} video${pkg.videos > 1 ? "s" : ""} — ${pkg.desc}`}
                               selected={shootPkg === pkg.id}
                               onClick={() => { setShootPkg(pkg.id); setExtraHours(0); }}
                             />
@@ -318,7 +400,7 @@ const Calculator = () => {
                         </div>
                       </div>
 
-                      {/* Extra hours (only for Single day) */}
+                      {/* Extra hours — only for Single */}
                       <AnimatePresence>
                         {shootPkg === "single" && (
                           <motion.div
@@ -328,86 +410,68 @@ const Calculator = () => {
                             className="overflow-hidden"
                           >
                             <div className="premium-card rounded-2xl p-5">
-                              <h3 className="font-display font-semibold text-sm text-foreground mb-4">Extra hours</h3>
+                              <h3 className="font-display font-semibold text-sm text-foreground mb-4">Extra shooting hours</h3>
                               <Stepper
-                                label="Additional hours (+€100/h)"
-                                value={extraHours}
-                                min={0}
-                                max={8}
+                                label="Additional hours"
+                                note="+€100 / hour"
+                                value={extraHours} min={0} max={8}
                                 onChange={setExtraHours}
                                 unit="h"
                               />
-                              <p className="text-xs text-muted-foreground mt-3">
-                                Shoot duration: <span className="text-foreground">{calcShootDays(shootPkg, extraHours)}</span>
-                              </p>
                             </div>
                           </motion.div>
                         )}
                       </AnimatePresence>
+
+                      {/* Shooting-only note */}
+                      <div className="rounded-2xl border border-white/[0.05] p-4 text-sm text-muted-foreground">
+                        Need filming only (no editing)?{" "}
+                        <span className="text-foreground font-medium">€100 / hour</span>
+                        {" "}— switch to <button onClick={() => setTab("custom")} className="text-primary underline underline-offset-2">Custom</button> and adjust.
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </motion.div>
 
-              {/* Right panel — live total */}
+              {/* ── RIGHT PANEL — live total ── */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="lg:col-span-2 lg:sticky lg:top-28 flex flex-col gap-4"
               >
-                <div className="premium-card rounded-3xl p-6 border border-white/[0.06]">
-                  {/* Glow accent */}
+                <div className="relative premium-card rounded-3xl p-6 border border-white/[0.06]">
                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-32 bg-glow-mint opacity-10 rounded-full blur-2xl pointer-events-none" />
 
                   <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-5">Your estimate</div>
 
-                  {/* Package summary */}
-                  <div className="flex flex-col gap-2 mb-5 text-sm">
-                    {tab === "monthly" ? (
+                  {/* Line items */}
+                  <div className="flex flex-col gap-2.5 mb-5">
+                    {tab === "custom" && (
                       <>
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">{selectedMonthly.label} plan</span>
-                          <span className="text-foreground font-medium">€{selectedMonthly.price.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">Videos / month</span>
-                          <span className="text-foreground font-medium">{selectedMonthly.videos}</span>
-                        </div>
-                        {(smmAddon && !selectedMonthly.smm) && (
-                          <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">SMM addon</span>
-                            <span className="text-foreground font-medium">+€{SMM_ADDON}</span>
-                          </div>
-                        )}
-                        {selectedMonthly.smm && (
-                          <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">SMM</span>
-                            <span className="text-primary text-xs font-medium">Included</span>
-                          </div>
-                        )}
+                        {videos > 0     && <Line label={`${videos} video${videos > 1 ? "s" : ""} (editing)`}  value={`€${(videos * PRICE_VIDEO).toLocaleString()}`} />}
+                        {shootHours > 0 && <Line label={`Shooting — ${shootHours}h`}                          value={`€${(shootHours * PRICE_HOUR).toLocaleString()}`} />}
+                        {storyPacks > 0 && <Line label={`Stories — ${storyPacks} pack${storyPacks > 1 ? "s" : ""} (×5)`} value={`€${(storyPacks * PRICE_STORIES).toLocaleString()}`} />}
+                        {customSmm !== "none" && <Line label={SMM_OPTIONS.find(o => o.id === customSmm)!.label} value={`+€${PRICE_SMM[customSmm]}`} />}
+                        {customTotal === 0 && <p className="text-xs text-muted-foreground">Add items above to see your estimate.</p>}
                       </>
-                    ) : (
+                    )}
+                    {tab === "monthly" && (
                       <>
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">{selectedShoot.label}</span>
-                          <span className="text-foreground font-medium">€{selectedShoot.price.toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground">Shoot days</span>
-                          <span className="text-foreground font-medium">{calcShootDays(shootPkg, extraHours)}</span>
-                        </div>
-                        {shootPkg === "single" && extraHours > 0 && (
-                          <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">Extra hours ({extraHours}h)</span>
-                            <span className="text-foreground font-medium">+€{extraHours * 100}</span>
-                          </div>
-                        )}
+                        <Line label={`${selectedMonth.label} plan (${selectedMonth.videos} videos)`} value={`€${selectedMonth.price.toLocaleString()}`} />
+                        {monthStories > 0 && <Line label={`Stories — ${monthStories} pack${monthStories > 1 ? "s" : ""}`} value={`+€${(monthStories * PRICE_STORIES).toLocaleString()}`} />}
+                        {monthSmm !== "none" && <Line label={SMM_OPTIONS.find(o => o.id === monthSmm)!.label} value={`+€${PRICE_SMM[monthSmm]}`} />}
+                      </>
+                    )}
+                    {tab === "shoot" && (
+                      <>
+                        <Line label={`${selectedShoot.label} (${selectedShoot.videos} video${selectedShoot.videos > 1 ? "s" : ""})`} value={`€${selectedShoot.price.toLocaleString()}`} />
+                        {shootPkg === "single" && extraHours > 0 && <Line label={`Extra shooting — ${extraHours}h`} value={`+€${(extraHours * PRICE_HOUR).toLocaleString()}`} />}
                       </>
                     )}
                   </div>
 
-                  {/* Divider */}
                   <div className="h-px bg-white/[0.06] mb-5" />
 
                   {/* Total */}
@@ -416,27 +480,23 @@ const Calculator = () => {
                     <AnimatePresence mode="popLayout">
                       <motion.span
                         key={total}
-                        initial={{ opacity: 0, y: -10 }}
+                        initial={{ opacity: 0, y: -8 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.3 }}
+                        exit={{ opacity: 0, y: 8 }}
+                        transition={{ duration: 0.25 }}
                         className="font-display font-bold text-3xl text-primary"
                       >
                         €{total.toLocaleString()}
                       </motion.span>
                     </AnimatePresence>
                   </div>
-                  {tab === "monthly" && (
-                    <p className="text-xs text-muted-foreground mb-6">per month</p>
-                  )}
-                  {tab === "shoot" && (
-                    <p className="text-xs text-muted-foreground mb-6">one-time</p>
-                  )}
+                  <p className="text-xs text-muted-foreground mb-6">
+                    {tab === "monthly" ? "per month, excl. VAT" : "one-time, excl. VAT"}
+                  </p>
 
-                  {/* CTA */}
                   <Link to="/#contact" className="block">
                     <MagneticButton variant="ghost" className="w-full justify-center text-sm">
-                      Request this package →
+                      Request this package
                     </MagneticButton>
                   </Link>
 
@@ -445,13 +505,13 @@ const Calculator = () => {
                   </p>
                 </div>
 
-                {/* FAQ link */}
                 <div className="text-center">
                   <Link to="/faq" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                     Have questions? Check FAQ →
                   </Link>
                 </div>
               </motion.div>
+
             </div>
           </div>
         </section>
