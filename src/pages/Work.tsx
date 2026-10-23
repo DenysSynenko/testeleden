@@ -264,27 +264,44 @@ const LogoImg = ({
   size: "strip" | "block";
 }) => {
   const filter = useMintFilter(client.logoDark);
-  const cls =
+
+  // Fixed containers → every logo occupies identical visual space
+  const w = size === "strip" ? 130 : 160;
+  const h = size === "strip" ? 40  : 48;
+  const opacityCls =
     size === "strip"
-      ? "h-6 max-w-[140px] object-contain opacity-60 hover:opacity-95 transition-opacity duration-300"
-      : "h-7 max-w-[160px] object-contain";
+      ? "opacity-65 hover:opacity-100 transition-opacity duration-300"
+      : "";
+
+  const img = (
+    <img
+      src={client.logo}
+      alt={client.name}
+      className="w-full h-full object-contain"
+      style={{ filter }}
+    />
+  );
+
+  const container = (
+    <div style={{ width: w, height: h }} className={opacityCls}>
+      {img}
+    </div>
+  );
 
   if (delay !== undefined) {
     return (
-      <motion.img
-        src={client.logo}
-        alt={client.name}
-        className={cls}
-        style={{ filter }}
+      <motion.div
+        style={{ width: w, height: h }}
+        className={opacityCls}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay }}
-      />
+      >
+        {img}
+      </motion.div>
     );
   }
-  return (
-    <img src={client.logo} alt={client.name} className={cls} style={{ filter }} />
-  );
+  return container;
 };
 
 /* ──────────────────────────────────────────────

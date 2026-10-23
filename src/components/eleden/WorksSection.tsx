@@ -107,12 +107,12 @@ const ReelCard = ({
         </motion.div>
       </div>
 
-      {/* Logo — no background pill, just the image with filter */}
-      <div className="absolute bottom-4 left-4">
+      {/* Logo — fixed 120×36 container so all logos take identical visual space */}
+      <div className="absolute bottom-4 left-4" style={{ width: 120, height: 36 }}>
         <img
           src={item.logo}
           alt={item.client}
-          className="h-5 max-w-[120px] object-contain"
+          className="w-full h-full object-contain object-left"
           style={{ filter: logoFilter }}
         />
       </div>
@@ -178,13 +178,16 @@ const WorksSection = () => {
               ? "drop-shadow(0 0 8px rgba(61,255,160,0.3)) drop-shadow(0 1px 4px rgba(0,0,0,0.2))"
               : "none";
             return (
-              <img
-                key={item.client}
-                src={item.logo}
-                alt={item.client}
-                className="h-5 max-w-[110px] object-contain opacity-50 hover:opacity-90 transition-opacity duration-300"
-                style={{ filter: f }}
-              />
+              /* Fixed 100×32 container → equal visual size for every logo */
+              <div key={item.client} style={{ width: 100, height: 32 }}
+                className="opacity-55 hover:opacity-90 transition-opacity duration-300">
+                <img
+                  src={item.logo}
+                  alt={item.client}
+                  className="w-full h-full object-contain"
+                  style={{ filter: f }}
+                />
+              </div>
             );
           })}
         </motion.div>
