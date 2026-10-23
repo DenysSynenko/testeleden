@@ -33,9 +33,9 @@ const HIGHLIGHTS = [
 const useLightFilter = () => {
   const { theme } = useTheme();
   if (theme === "light") {
-    return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))";
+    return "drop-shadow(0 0 16px rgba(61,255,160,0.6)) drop-shadow(0 0 6px rgba(61,255,160,0.4)) drop-shadow(0 2px 8px rgba(0,0,0,0.3))";
   }
-  return "drop-shadow(0 2px 8px rgba(0,0,0,0.4))";
+  return "drop-shadow(0 0 8px rgba(255,255,255,0.15)) drop-shadow(0 2px 10px rgba(0,0,0,0.5))";
 };
 
 /* ──────────────────────────────────────────────
@@ -109,7 +109,7 @@ const ReelCard = ({
       </div>
 
       {/* Logo — fixed container so all logos take identical visual space */}
-      <div className="absolute bottom-4 left-4" style={{ width: 140, height: 44 }}>
+      <div className="absolute bottom-4 left-4" style={{ width: 180, height: 58 }}>
         <img
           src={item.logo}
           alt={item.client}
@@ -175,14 +175,14 @@ const WorksSection = () => {
           className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-10 border-t border-foreground/[0.06]"
         >
           {HIGHLIGHTS.map((item) => (
-            /* Fixed 120×40 container → equal visual size for every logo */
-            <div key={item.client} style={{ width: 120, height: 40 }}
+            /* Fixed 160×52 container → equal visual size for every logo */
+            <div key={item.client} style={{ width: 160, height: 52 }}
               className="opacity-60 hover:opacity-95 transition-opacity duration-300">
               <img
                 src={item.logo}
                 alt={item.client}
                 className="w-full h-full object-contain"
-                style={{ filter: "drop-shadow(0 0 8px rgba(61,255,160,0.3)) drop-shadow(0 1px 5px rgba(0,0,0,0.2))" }}
+                style={{ filter: "drop-shadow(0 0 14px rgba(61,255,160,0.5)) drop-shadow(0 0 5px rgba(61,255,160,0.3)) drop-shadow(0 1px 6px rgba(0,0,0,0.25))" }}
               />
             </div>
           ))}

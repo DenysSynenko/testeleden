@@ -57,13 +57,15 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* Mint drop-shadow for all logos — light mode: glow, dark mode: subtle */
+/* Mint drop-shadow for all logos — light mode: strong glow, dark mode: white glow */
 const useMintFilter = () => {
   const { theme } = useTheme();
   if (theme === "light") {
-    return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))";
+    // Double layer mint glow — white logos pop on light bg
+    return "drop-shadow(0 0 16px rgba(61,255,160,0.6)) drop-shadow(0 0 6px rgba(61,255,160,0.4)) drop-shadow(0 2px 8px rgba(0,0,0,0.3))";
   }
-  return "drop-shadow(0 2px 8px rgba(0,0,0,0.4))";
+  // Dark mode: subtle white glow so logos breathe
+  return "drop-shadow(0 0 8px rgba(255,255,255,0.15)) drop-shadow(0 2px 10px rgba(0,0,0,0.5))";
 };
 
 /* ──────────────────────────────────────────────
@@ -289,8 +291,8 @@ const LogoImg = ({
   const filter = useMintFilter();
 
   // Fixed containers → every logo occupies identical visual space
-  const w = size === "strip" ? 160 : 200;
-  const h = size === "strip" ? 52  : 64;
+  const w = size === "strip" ? 210 : 270;
+  const h = size === "strip" ? 68  : 86;
   const opacityCls =
     size === "strip"
       ? "opacity-65 hover:opacity-100 transition-opacity duration-300"
