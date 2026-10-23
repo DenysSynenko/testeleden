@@ -57,11 +57,13 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* Drop-shadow filter so white logos stay visible in light mode */
-const useMintFilter = (isDark?: boolean) => {
+/* Mint drop-shadow for all logos — light mode: glow, dark mode: subtle */
+const useMintFilter = () => {
   const { theme } = useTheme();
-  if (!isDark || theme !== "light") return "none";
-  return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.35))";
+  if (theme === "light") {
+    return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))";
+  }
+  return "drop-shadow(0 2px 8px rgba(0,0,0,0.4))";
 };
 
 /* ──────────────────────────────────────────────
@@ -263,11 +265,11 @@ const LogoImg = ({
   delay?: number;
   size: "strip" | "block";
 }) => {
-  const filter = useMintFilter(client.logoDark);
+  const filter = useMintFilter();
 
   // Fixed containers → every logo occupies identical visual space
-  const w = size === "strip" ? 130 : 160;
-  const h = size === "strip" ? 40  : 48;
+  const w = size === "strip" ? 160 : 200;
+  const h = size === "strip" ? 52  : 64;
   const opacityCls =
     size === "strip"
       ? "opacity-65 hover:opacity-100 transition-opacity duration-300"

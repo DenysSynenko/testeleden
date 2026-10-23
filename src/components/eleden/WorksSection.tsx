@@ -29,12 +29,13 @@ const HIGHLIGHTS = [
   },
 ];
 
-/* Returns a CSS filter string that makes a white logo legible in light mode */
-const useLightFilter = (isDark: boolean) => {
+/* Mint drop-shadow for all logos */
+const useLightFilter = () => {
   const { theme } = useTheme();
-  if (!isDark || theme !== "light") return "none";
-  // mint glow + slight dark shadow so white shapes read against a light page
-  return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.35))";
+  if (theme === "light") {
+    return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))";
+  }
+  return "drop-shadow(0 2px 8px rgba(0,0,0,0.4))";
 };
 
 /* ──────────────────────────────────────────────
@@ -49,7 +50,7 @@ const ReelCard = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hover, setHover] = useState(false);
-  const logoFilter = useLightFilter(item.dark);
+  const logoFilter = useLightFilter();
 
   /* Show a still frame from the video as preview thumbnail */
   useEffect(() => {
@@ -107,8 +108,8 @@ const ReelCard = ({
         </motion.div>
       </div>
 
-      {/* Logo — fixed 120×36 container so all logos take identical visual space */}
-      <div className="absolute bottom-4 left-4" style={{ width: 120, height: 36 }}>
+      {/* Logo — fixed container so all logos take identical visual space */}
+      <div className="absolute bottom-4 left-4" style={{ width: 140, height: 44 }}>
         <img
           src={item.logo}
           alt={item.client}
@@ -173,23 +174,18 @@ const WorksSection = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-10 border-t border-foreground/[0.06]"
         >
-          {HIGHLIGHTS.map((item) => {
-            const f = item.dark
-              ? "drop-shadow(0 0 8px rgba(61,255,160,0.3)) drop-shadow(0 1px 4px rgba(0,0,0,0.2))"
-              : "none";
-            return (
-              /* Fixed 100×32 container → equal visual size for every logo */
-              <div key={item.client} style={{ width: 100, height: 32 }}
-                className="opacity-55 hover:opacity-90 transition-opacity duration-300">
-                <img
-                  src={item.logo}
-                  alt={item.client}
-                  className="w-full h-full object-contain"
-                  style={{ filter: f }}
-                />
-              </div>
-            );
-          })}
+          {HIGHLIGHTS.map((item) => (
+            /* Fixed 120×40 container → equal visual size for every logo */
+            <div key={item.client} style={{ width: 120, height: 40 }}
+              className="opacity-60 hover:opacity-95 transition-opacity duration-300">
+              <img
+                src={item.logo}
+                alt={item.client}
+                className="w-full h-full object-contain"
+                style={{ filter: "drop-shadow(0 0 8px rgba(61,255,160,0.3)) drop-shadow(0 1px 5px rgba(0,0,0,0.2))" }}
+              />
+            </div>
+          ))}
         </motion.div>
 
         {/* CTA */}
