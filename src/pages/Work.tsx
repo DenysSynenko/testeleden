@@ -47,8 +47,8 @@ const CLIENTS: ClientData[] = [
     id: "almeno",
     name: "Almeno Immobilien",
     category: "Real Estate",
-    logo: "/logos/almeno_horizontal.png",
-    logoDark: false,
+    logo: "/logos/almeno_white.png",
+    logoDark: true,
     videos: [
       { src: "/videos/almeno_monopoly.mp4", label: "Brand Film" },
       { src: "/videos/almeno_fpv.mp4",      label: "FPV Drone Reel" },
@@ -277,8 +277,8 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 };
 
 /* ──────────────────────────────────────────────
-   Logo strip image — fixed height so every logo
-   looks proportionally equal regardless of width
+   Logo strip image — identical fixed box for every
+   logo so they all occupy the same visual footprint
 ────────────────────────────────────────────── */
 const StripLogo = ({
   client,
@@ -289,28 +289,36 @@ const StripLogo = ({
 }) => {
   const filter = useMintFilter();
 
-  const img = (
+  // Same box for every logo → object-contain scales each to fit without distortion
+  const box = { width: 160, height: 48 };
+
+  const inner = (
     <img
       src={client.logo}
       alt={client.name}
-      style={{ height: 42, width: "auto", maxWidth: 180, filter }}
-      className="object-contain"
+      className="w-full h-full object-contain"
+      style={{ filter }}
     />
   );
 
   if (delay !== undefined) {
     return (
       <motion.div
-        className="opacity-65 hover:opacity-100 transition-opacity duration-300 flex items-center"
+        style={box}
+        className="opacity-65 hover:opacity-100 transition-opacity duration-300"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay }}
       >
-        {img}
+        {inner}
       </motion.div>
     );
   }
-  return <div className="opacity-65 hover:opacity-100 transition-opacity duration-300 flex items-center">{img}</div>;
+  return (
+    <div style={box} className="opacity-65 hover:opacity-100 transition-opacity duration-300">
+      {inner}
+    </div>
+  );
 };
 
 /* ──────────────────────────────────────────────

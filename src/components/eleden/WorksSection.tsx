@@ -24,8 +24,8 @@ const HIGHLIGHTS = [
   {
     src:    "/videos/almeno_monopoly.mp4",
     client: "Almeno Immobilien",
-    logo:   "/logos/almeno_horizontal.png",
-    dark:   false,  // own colors — fine in both modes
+    logo:   "/logos/almeno_white.png",
+    dark:   true,
   },
 ];
 
@@ -175,14 +175,14 @@ const WorksSection = () => {
           className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-10 border-t border-foreground/[0.06]"
         >
           {HIGHLIGHTS.map((item) => (
-            /* Fixed 160×52 container → equal visual size for every logo */
-            <div key={item.client} style={{ width: 160, height: 52 }}
+            /* Identical 160×48 box → object-contain scales each logo proportionally */
+            <div key={item.client} style={{ width: 160, height: 48 }}
               className="opacity-60 hover:opacity-95 transition-opacity duration-300">
               <img
                 src={item.logo}
                 alt={item.client}
                 className="w-full h-full object-contain"
-                style={{ filter: "drop-shadow(0 0 14px rgba(61,255,160,0.5)) drop-shadow(0 0 5px rgba(61,255,160,0.3)) drop-shadow(0 1px 6px rgba(0,0,0,0.25))" }}
+                style={{ filter: logoFilter }}
               />
             </div>
           ))}
