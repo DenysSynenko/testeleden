@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
 import Header from "@/components/eleden/Header";
 import Footer from "@/components/eleden/Footer";
+import { useTheme } from "@/contexts/ThemeContext";
 
 /* ──────────────────────────────────────────────
    Data
@@ -55,6 +56,13 @@ const CLIENTS: ClientData[] = [
     services: ["Filming", "FPV Drone", "Editing", "Color grading"],
   },
 ];
+
+/* Drop-shadow filter so white logos stay visible in light mode */
+const useMintFilter = (isDark?: boolean) => {
+  const { theme } = useTheme();
+  if (!isDark || theme !== "light") return "none";
+  return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.35))";
+};
 
 /* ──────────────────────────────────────────────
    Minimal Reel Player
@@ -244,6 +252,42 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 };
 
 /* ──────────────────────────────────────────────
+   Logo image — theme-aware filter, no bg pill
+────────────────────────────────────────────── */
+const LogoImg = ({
+  client,
+  delay,
+  size,
+}: {
+  client: ClientData;
+  delay?: number;
+  size: "strip" | "block";
+}) => {
+  const filter = useMintFilter(client.logoDark);
+  const cls =
+    size === "strip"
+      ? "h-6 max-w-[140px] object-contain opacity-60 hover:opacity-95 transition-opacity duration-300"
+      : "h-7 max-w-[160px] object-contain";
+
+  if (delay !== undefined) {
+    return (
+      <motion.img
+        src={client.logo}
+        alt={client.name}
+        className={cls}
+        style={{ filter }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay }}
+      />
+    );
+  }
+  return (
+    <img src={client.logo} alt={client.name} className={cls} style={{ filter }} />
+  );
+};
+
+/* ──────────────────────────────────────────────
    Client Block
 ────────────────────────────────────────────── */
 const CARD_W = 260; // px — 9:16 → ~462px tall
@@ -266,19 +310,7 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
     <div>
       {/* Logo + category */}
       <div className="flex flex-wrap items-center gap-4 mb-5">
-        <div
-          className={`flex-shrink-0 flex items-center ${
-            client.logoDark
-              ? "h-9 px-3.5 rounded-xl bg-zinc-900 border border-white/[0.07]"
-              : "h-9"
-          }`}
-        >
-          <img
-            src={client.logo}
-            alt={client.name}
-            className="h-6 max-w-[160px] object-contain"
-          />
-        </div>
+        <LogoImg client={client} size="block" />
         <p className="text-[11px] tracking-wide text-muted-foreground/45">
           {client.category}
         </p>
@@ -346,31 +378,15 @@ const Work = () => {
             </p>
           </motion.div>
 
-          {/* Logo strip */}
+          {/* Logo strip — no pill bg, filter makes white logos legible */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.18 }}
-            className="flex flex-wrap items-center gap-5 mb-20 pb-16 border-b border-foreground/[0.06]"
+            className="flex flex-wrap items-center gap-8 mb-20 pb-16 border-b border-foreground/[0.06]"
           >
             {CLIENTS.map((c, i) => (
-              <motion.div
-                key={c.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.25 + i * 0.1 }}
-                className={`flex items-center ${
-                  c.logoDark
-                    ? "h-8 px-3 rounded-xl bg-zinc-900 border border-white/[0.07]"
-                    : "h-8"
-                }`}
-              >
-                <img
-                  src={c.logo}
-                  alt={c.name}
-                  className="h-5 max-w-[130px] object-contain opacity-55 hover:opacity-90 transition-opacity duration-300"
-                />
-              </motion.div>
+              <LogoImg key={c.id} client={c} delay={0.25 + i * 0.1} size="strip" />
             ))}
           </motion.div>
 

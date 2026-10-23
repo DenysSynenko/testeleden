@@ -3,16 +3,17 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 /* ──────────────────────────────────────────────
-   Highlight reels shown on the home page (one per client)
+   Highlight reels — one per client
 ────────────────────────────────────────────── */
 const HIGHLIGHTS = [
   {
     src:    "/videos/brandcraft_bmw.mp4",
     client: "Brandcraft",
     logo:   "/logos/brandcraft_logo.png",
-    dark:   true,
+    dark:   true,   // white logo → needs filter in light mode
   },
   {
     src:    "/videos/guatemuc_day_night.mp4",
@@ -24,12 +25,20 @@ const HIGHLIGHTS = [
     src:    "/videos/almeno_monopoly.mp4",
     client: "Almeno Immobilien",
     logo:   "/logos/almeno_horizontal.png",
-    dark:   false,
+    dark:   false,  // own colors — fine in both modes
   },
 ];
 
+/* Returns a CSS filter string that makes a white logo legible in light mode */
+const useLightFilter = (isDark: boolean) => {
+  const { theme } = useTheme();
+  if (!isDark || theme !== "light") return "none";
+  // mint glow + slight dark shadow so white shapes read against a light page
+  return "drop-shadow(0 0 10px rgba(61,255,160,0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.35))";
+};
+
 /* ──────────────────────────────────────────────
-   Inline reel card — hover-to-play preview
+   Reel card — first-frame preview, hover-to-play
 ────────────────────────────────────────────── */
 const ReelCard = ({
   item,
@@ -38,9 +47,20 @@ const ReelCard = ({
   item: (typeof HIGHLIGHTS)[number];
   delay: number;
 }) => {
-  const videoRef  = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [hover, setHover] = useState(false);
+  const logoFilter = useLightFilter(item.dark);
 
+  /* Show a still frame from the video as preview thumbnail */
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const showFrame = () => { v.currentTime = 0.5; };
+    v.addEventListener("loadedmetadata", showFrame);
+    return () => v.removeEventListener("loadedmetadata", showFrame);
+  }, []);
+
+  /* Play on hover, pause + reset preview on leave */
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -62,51 +82,39 @@ const ReelCard = ({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Video (muted, plays on hover) */}
+      {/* Video — always visible; first frame = preview thumbnail */}
       <video
         ref={videoRef}
         src={item.src}
         muted
         playsInline
-        preload="none"
+        preload="metadata"
         loop
-        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-        style={{ opacity: hover ? 1 : 0 }}
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Static gradient bg when not playing */}
-      <div
-        className="absolute inset-0 bg-gradient-to-b from-zinc-800 to-zinc-950 transition-opacity duration-500"
-        style={{ opacity: hover ? 0 : 1 }}
-      />
+      {/* Subtle dark gradient overlay for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
-      {/* Dark overlay for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-      {/* Play icon */}
+      {/* Play button — fades on hover */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
           animate={{ opacity: hover ? 0 : 1, scale: hover ? 0.8 : 1 }}
-          transition={{ duration: 0.3 }}
-          className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+          transition={{ duration: 0.25 }}
+          className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center"
         >
           <Play className="w-4 h-4 text-white fill-white ml-0.5" />
         </motion.div>
       </div>
 
-      {/* Client logo at bottom */}
-      <div className="absolute bottom-4 left-4 right-4">
-        <div
-          className={`inline-flex items-center h-6 ${
-            item.dark ? "px-2 py-1 rounded-md bg-black/60 border border-white/10" : ""
-          }`}
-        >
-          <img
-            src={item.logo}
-            alt={item.client}
-            className="h-4 max-w-[110px] object-contain"
-          />
-        </div>
+      {/* Logo — no background pill, just the image with filter */}
+      <div className="absolute bottom-4 left-4">
+        <img
+          src={item.logo}
+          alt={item.client}
+          className="h-5 max-w-[120px] object-contain"
+          style={{ filter: logoFilter }}
+        />
       </div>
     </motion.div>
   );
@@ -150,38 +158,38 @@ const WorksSection = () => {
           </p>
         </motion.div>
 
-        {/* Reel cards — hover to preview */}
+        {/* Reel cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
           {HIGHLIGHTS.map((item, i) => (
             <ReelCard key={item.client} item={item} delay={i * 0.1} />
           ))}
         </div>
 
-        {/* Brand logo strip */}
+        {/* Logo strip */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-7 mt-12 pt-10 border-t border-white/[0.06]"
+          className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-10 border-t border-foreground/[0.06]"
         >
-          {HIGHLIGHTS.map((item) => (
-            <div
-              key={item.client}
-              className={`h-6 flex items-center ${
-                item.dark ? "px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06]" : ""
-              }`}
-            >
+          {HIGHLIGHTS.map((item) => {
+            const f = item.dark
+              ? "drop-shadow(0 0 8px rgba(61,255,160,0.3)) drop-shadow(0 1px 4px rgba(0,0,0,0.2))"
+              : "none";
+            return (
               <img
+                key={item.client}
                 src={item.logo}
                 alt={item.client}
-                className="h-4 max-w-[100px] object-contain opacity-50 hover:opacity-80 transition-opacity duration-300"
+                className="h-5 max-w-[110px] object-contain opacity-50 hover:opacity-90 transition-opacity duration-300"
+                style={{ filter: f }}
               />
-            </div>
-          ))}
+            );
+          })}
         </motion.div>
 
-        {/* CTA → /work */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
