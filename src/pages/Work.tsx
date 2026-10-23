@@ -78,10 +78,21 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
   const [progress, setProgress] = useState(0);
   const [hover, setHover]       = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [rippleId, setRippleId] = useState(0); // click ripple feedback
+
+  /* Show first frame as thumbnail */
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const showFrame = () => { v.currentTime = 0.5; };
+    v.addEventListener("loadedmetadata", showFrame);
+    return () => v.removeEventListener("loadedmetadata", showFrame);
+  }, []);
 
   const toggle = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
+    setRippleId(id => id + 1); // trigger ripple
     if (v.paused) { v.play(); setPlaying(true); }
     else          { v.pause(); setPlaying(false); }
   }, []);
@@ -119,7 +130,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
     const v = videoRef.current;
     if (!v) return;
     const onTime = () => setProgress(v.duration ? v.currentTime / v.duration : 0);
-    const onEnd  = () => setPlaying(false);
+    const onEnd  = () => { setPlaying(false); }
     const onFs   = () => setFullscreen(!!document.fullscreenElement);
     v.addEventListener("timeupdate", onTime);
     v.addEventListener("ended", onEnd);
@@ -131,16 +142,16 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
     };
   }, []);
 
-  const showControls = hover || !playing;
-
   return (
-    <div
+    <motion.div
       ref={wrapRef}
-      className="relative bg-zinc-950 rounded-2xl overflow-hidden w-full select-none"
+      className="relative bg-zinc-950 rounded-2xl overflow-hidden w-full select-none cursor-pointer"
       style={{ aspectRatio: "9/16" }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={toggle}
+      whileTap={{ scale: 0.965 }}
+      transition={{ duration: 0.12, ease: "easeOut" }}
     >
       <video
         ref={videoRef}
@@ -148,16 +159,17 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         muted={muted}
         playsInline
         preload="metadata"
+        loop
         className="absolute inset-0 w-full h-full object-cover"
       />
 
       {/* Bottom gradient */}
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
-      {/* Label */}
+      {/* Label — top left, visible when not playing or on hover */}
       {label && (
         <AnimatePresence>
-          {showControls && (
+          {(!playing || hover) && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -173,14 +185,14 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         </AnimatePresence>
       )}
 
-      {/* Top-right controls */}
+      {/* Top-right controls — appear on hover only */}
       <AnimatePresence>
-        {showControls && (
+        {hover && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.18 }}
             className="absolute top-3 right-3 z-10 flex gap-1.5"
           >
             <button
@@ -203,37 +215,50 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         )}
       </AnimatePresence>
 
-      {/* Center play / pause */}
-      <AnimatePresence mode="wait">
-        {!playing && (
-          <motion.div
-            key="play"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.18 }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          >
-            <div className="w-14 h-14 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center">
-              <Play className="w-5 h-5 text-white fill-white ml-0.5" />
-            </div>
-          </motion.div>
-        )}
-        {playing && hover && (
-          <motion.div
-            key="pause"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.18 }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          >
-            <div className="w-14 h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center">
-              <Pause className="w-4 h-4 text-white fill-white" />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Center play/pause — same style as main page, fades on hover */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <AnimatePresence mode="wait">
+          {!playing && (
+            <motion.div
+              key="play"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: hover ? 0 : 1, scale: hover ? 0.85 : 1 }}
+              exit={{ opacity: 0, scale: 0.75 }}
+              transition={{ duration: 0.22 }}
+              className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+            >
+              <Play className="w-4 h-4 text-white fill-white ml-0.5" />
+            </motion.div>
+          )}
+          {playing && hover && (
+            <motion.div
+              key="pause"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.22 }}
+              className="w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 flex items-center justify-center"
+            >
+              <Pause className="w-3.5 h-3.5 text-white fill-white" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Click ripple — short motion feedback on every tap */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+        <AnimatePresence>
+          {rippleId > 0 && (
+            <motion.div
+              key={rippleId}
+              className="w-14 h-14 rounded-full border border-white/35"
+              initial={{ scale: 0.5, opacity: 0.7 }}
+              animate={{ scale: 2.2, opacity: 0 }}
+              transition={{ duration: 0.42, ease: "easeOut" }}
+            />
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Progress bar */}
       <div
@@ -242,14 +267,10 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         onClick={seekFromClick}
       >
         <div className="w-full h-px bg-white/10">
-          <motion.div
-            className="h-full bg-white/50"
-            style={{ width: `${progress * 100}%` }}
-            transition={{ duration: 0 }}
-          />
+          <div className="h-full bg-white/50 transition-none" style={{ width: `${progress * 100}%` }} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -309,8 +330,6 @@ const LogoImg = ({
 /* ──────────────────────────────────────────────
    Client Block
 ────────────────────────────────────────────── */
-const CARD_W = 260; // px — 9:16 → ~462px tall
-
 const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
@@ -347,13 +366,12 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
         ))}
       </div>
 
-      {/* Videos — fixed width, flex row */}
-      <div className="flex flex-row flex-wrap gap-4">
+      {/* Videos — responsive grid: 1 col mobile, 2 col tablet, 3 col desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {client.videos.map((v, i) => (
           <motion.div
             key={i}
-            style={{ width: CARD_W }}
-            className="flex-none"
+            className="w-full"
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
