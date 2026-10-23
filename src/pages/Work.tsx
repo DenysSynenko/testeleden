@@ -14,6 +14,8 @@ interface ClientData {
   category: string;
   logo: string;
   logoDark?: boolean;
+  /** Height (px) for the logo strip — gives each logo equal visual weight */
+  stripH: number;
   videos: { src: string; label?: string }[];
   services: string[];
 }
@@ -25,6 +27,7 @@ const CLIENTS: ClientData[] = [
     category: "Custom Made Accessories",
     logo: "/logos/brandcraft_logo.png",
     logoDark: true,
+    stripH: 34,   // wide wordmark — looks balanced at 34px tall
     videos: [
       { src: "/videos/brandcraft_bmw.mp4",       label: "BMW" },
       { src: "/videos/brandcraft_interalpen.mp4", label: "Interalpen Hotel" },
@@ -36,8 +39,9 @@ const CLIENTS: ClientData[] = [
     id: "guatemuc",
     name: "GuateMuc",
     category: "Guatemalan Restaurant · Munich",
-    logo: "/logos/guatemuc_logo.svg",
+    logo: "/logos/guatemuc_logo.png",
     logoDark: true,
+    stripH: 52,   // square symbol — needs more height for equal visual weight
     videos: [
       { src: "/videos/guatemuc_day_night.mp4", label: "Day & Night" },
     ],
@@ -49,6 +53,7 @@ const CLIENTS: ClientData[] = [
     category: "Real Estate",
     logo: "/logos/almeno_white.png",
     logoDark: true,
+    stripH: 40,   // medium wordmark — natural at 40px tall
     videos: [
       { src: "/videos/almeno_monopoly.mp4", label: "Brand Film" },
       { src: "/videos/almeno_fpv.mp4",      label: "FPV Drone Reel" },
@@ -276,8 +281,10 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 };
 
 /* ──────────────────────────────────────────────
-   Logo strip image — identical fixed box for every
-   logo so they all occupy the same visual footprint
+   Logo strip — every logo lives in a fixed-width
+   container (140px) with the logo centred inside.
+   Equal containers = equal visual spacing between
+   logos regardless of each logo's natural width.
 ────────────────────────────────────────────── */
 const StripLogo = ({
   client,
@@ -288,23 +295,22 @@ const StripLogo = ({
 }) => {
   const filter = useMintFilter();
 
-  // Same box for every logo → object-contain scales each to fit without distortion
-  const box = { width: 160, height: 48 };
-
+  // Fixed container width — logo centred; height is per-logo so visual weight is equal
   const inner = (
-    <img
-      src={client.logo}
-      alt={client.name}
-      className="w-full h-full object-contain"
-      style={{ filter }}
-    />
+    <div
+      className="w-[140px] flex items-center justify-center opacity-65 hover:opacity-100 transition-opacity duration-300"
+    >
+      <img
+        src={client.logo}
+        alt={client.name}
+        style={{ height: client.stripH, width: "auto", maxWidth: 130, filter }}
+      />
+    </div>
   );
 
   if (delay !== undefined) {
     return (
       <motion.div
-        style={box}
-        className="opacity-65 hover:opacity-100 transition-opacity duration-300"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay }}
@@ -313,11 +319,7 @@ const StripLogo = ({
       </motion.div>
     );
   }
-  return (
-    <div style={box} className="opacity-65 hover:opacity-100 transition-opacity duration-300">
-      {inner}
-    </div>
-  );
+  return inner;
 };
 
 /* ──────────────────────────────────────────────

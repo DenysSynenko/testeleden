@@ -10,22 +10,28 @@ import { useTheme } from "@/contexts/ThemeContext";
 ────────────────────────────────────────────── */
 const HIGHLIGHTS = [
   {
-    src:    "/videos/brandcraft_bmw.mp4",
-    client: "Brandcraft",
-    logo:   "/logos/brandcraft_logo.png",
-    dark:   true,   // white logo → needs filter in light mode
+    src:     "/videos/brandcraft_bmw.mp4",
+    client:  "Brandcraft",
+    logo:    "/logos/brandcraft_logo.png",
+    dark:    true,
+    stripH:  34,  // wide wordmark
+    cardH:   40,  // height inside video card
   },
   {
-    src:    "/videos/guatemuc_day_night.mp4",
-    client: "GuateMuc",
-    logo:   "/logos/guatemuc_logo.svg",
-    dark:   true,
+    src:     "/videos/guatemuc_day_night.mp4",
+    client:  "GuateMuc",
+    logo:    "/logos/guatemuc_logo.png",
+    dark:    true,
+    stripH:  52,  // square symbol — taller for equal visual weight
+    cardH:   54,
   },
   {
-    src:    "/videos/almeno_monopoly.mp4",
-    client: "Almeno Immobilien",
-    logo:   "/logos/almeno_white.png",
-    dark:   true,
+    src:     "/videos/almeno_monopoly.mp4",
+    client:  "Almeno Immobilien",
+    logo:    "/logos/almeno_white.png",
+    dark:    true,
+    stripH:  40,  // medium wordmark
+    cardH:   46,
   },
 ];
 
@@ -108,13 +114,12 @@ const ReelCard = ({
         </motion.div>
       </div>
 
-      {/* Logo — fixed container so all logos take identical visual space */}
-      <div className="absolute bottom-4 left-4" style={{ width: 180, height: 58 }}>
+      {/* Logo — height per logo for equal visual weight; left-aligned in card */}
+      <div className="absolute bottom-4 left-4 flex items-end" style={{ maxWidth: 170 }}>
         <img
           src={item.logo}
           alt={item.client}
-          className="w-full h-full object-contain object-left"
-          style={{ filter: logoFilter }}
+          style={{ height: item.cardH, width: "auto", maxWidth: 160, filter: logoFilter }}
         />
       </div>
     </motion.div>
@@ -176,14 +181,13 @@ const WorksSection = () => {
           className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-10 border-t border-foreground/[0.06]"
         >
           {HIGHLIGHTS.map((item) => (
-            /* Identical 160×48 box → object-contain scales each logo proportionally */
-            <div key={item.client} style={{ width: 160, height: 48 }}
-              className="opacity-60 hover:opacity-95 transition-opacity duration-300">
+            /* Fixed-width container (140px) centres every logo → equal spacing between all */
+            <div key={item.client}
+              className="w-[140px] flex items-center justify-center opacity-60 hover:opacity-95 transition-opacity duration-300">
               <img
                 src={item.logo}
                 alt={item.client}
-                className="w-full h-full object-contain"
-                style={{ filter: logoFilter }}
+                style={{ height: item.stripH, width: "auto", maxWidth: 130, filter: logoFilter }}
               />
             </div>
           ))}
