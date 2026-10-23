@@ -250,81 +250,57 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 /* ──────────────────────────────────────────────
    Client Block
 ────────────────────────────────────────────── */
-const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => {
-  const colClass =
-    client.videos.length === 1 ? "flex justify-center" :
-    client.videos.length === 2 ? "grid grid-cols-2 gap-4" :
-    "grid grid-cols-1 sm:grid-cols-3 gap-4";
+// Fixed card width so all videos are the same size regardless of count
+const CARD_W = 220; // px — 9:16 → ~391px tall
 
-  const videoMaxW =
-    client.videos.length === 1 ? "max-w-[280px] w-full" : "";
+const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
+    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+  >
+    {/* Client info row */}
+    <div className="flex items-start gap-5 mb-6">
+      <div
+        className={`flex-shrink-0 flex items-center ${
+          client.logoDark
+            ? "h-10 px-3 rounded-xl bg-zinc-900 border border-white/[0.08]"
+            : "h-10"
+        }`}
+      >
+        <img
+          src={client.logo}
+          alt={client.name}
+          className="h-7 max-w-[160px] object-contain"
+        />
+      </div>
+      <div className="pt-1">
+        <p className="text-xs text-muted-foreground/60 tracking-wide mb-1">{client.category}</p>
+        <p className="text-xs text-muted-foreground/40 tracking-wide">
+          {client.services.join(" · ")}
+        </p>
+      </div>
+    </div>
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {/* Client info row */}
-      <div className="flex items-start gap-5 mb-6">
-        {/* Logo */}
-        <div
-          className={`flex-shrink-0 flex items-center ${
-            client.logoDark
-              ? "h-10 px-3 rounded-xl bg-zinc-900 border border-white/[0.08]"
-              : "h-10"
-          }`}
+    {/* Videos — flex row, every card is the same fixed width */}
+    <div className="flex flex-row flex-wrap gap-4">
+      {client.videos.map((v, i) => (
+        <motion.div
+          key={i}
+          style={{ width: CARD_W }}
+          className="flex-none"
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <img
-            src={client.logo}
-            alt={client.name}
-            className="h-7 max-w-[160px] object-contain"
-          />
-        </div>
-
-        {/* Meta */}
-        <div className="pt-1">
-          <p className="text-xs text-muted-foreground/60 tracking-wide mb-1">{client.category}</p>
-          <p className="text-xs text-muted-foreground/40 tracking-wide">
-            {client.services.join(" · ")}
-          </p>
-        </div>
-      </div>
-
-      {/* Videos */}
-      <div className={colClass}>
-        {client.videos.length === 1 ? (
-          <div className={videoMaxW}>
-            {client.videos.map((v, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.96 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <ReelPlayer src={v.src} label={v.label} />
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          client.videos.map((v, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <ReelPlayer src={v.src} label={v.label} />
-            </motion.div>
-          ))
-        )}
-      </div>
-    </motion.div>
-  );
-};
+          <ReelPlayer src={v.src} label={v.label} />
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+);
 
 /* ──────────────────────────────────────────────
    Page
