@@ -351,7 +351,7 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
       {/* Logo + category */}
       <div className="flex flex-wrap items-center gap-4 mb-5">
         <LogoImg client={client} size="block" />
-        <p className="text-[11px] tracking-wide text-muted-foreground/45">
+        <p className="text-[11px] tracking-wide text-muted-foreground">
           {client.category}
         </p>
       </div>
@@ -361,7 +361,7 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
         {client.services.map((s) => (
           <span
             key={s}
-            className="text-[9px] font-mono tracking-[0.12em] uppercase px-2.5 py-[3px] rounded-full border border-foreground/[0.08] text-foreground/35"
+            className="text-[9px] font-mono tracking-[0.12em] uppercase px-2.5 py-[3px] rounded-full border border-foreground/25 text-foreground/60"
           >
             {s}
           </span>
@@ -412,7 +412,7 @@ const Work = () => {
             <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">
               Our Work
             </h1>
-            <p className="text-muted-foreground/50 text-sm leading-relaxed max-w-xs">
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
               Short-form video content crafted for modern brands in Munich and beyond.
             </p>
           </motion.div>
@@ -422,7 +422,7 @@ const Work = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.18 }}
-            className="flex flex-wrap items-center gap-8 mb-20 pb-16 border-b border-foreground/[0.06]"
+            className="flex flex-wrap items-center gap-8 mb-20 pb-16 border-b border-foreground/[0.1]"
           >
             {CLIENTS.map((c, i) => (
               <LogoImg key={c.id} client={c} delay={0.25 + i * 0.1} size="strip" />
