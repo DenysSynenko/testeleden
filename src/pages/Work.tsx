@@ -277,47 +277,31 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 };
 
 /* ──────────────────────────────────────────────
-   Logo image — theme-aware filter, no bg pill
+   Logo strip image — fixed height so every logo
+   looks proportionally equal regardless of width
 ────────────────────────────────────────────── */
-const LogoImg = ({
+const StripLogo = ({
   client,
   delay,
-  size,
 }: {
   client: ClientData;
   delay?: number;
-  size: "strip" | "block";
 }) => {
   const filter = useMintFilter();
-
-  // Fixed containers → every logo occupies identical visual space
-  const w = size === "strip" ? 210 : 270;
-  const h = size === "strip" ? 68  : 86;
-  const opacityCls =
-    size === "strip"
-      ? "opacity-65 hover:opacity-100 transition-opacity duration-300"
-      : "";
 
   const img = (
     <img
       src={client.logo}
       alt={client.name}
-      className="w-full h-full object-contain"
-      style={{ filter }}
+      style={{ height: 42, width: "auto", maxWidth: 180, filter }}
+      className="object-contain"
     />
-  );
-
-  const container = (
-    <div style={{ width: w, height: h }} className={opacityCls}>
-      {img}
-    </div>
   );
 
   if (delay !== undefined) {
     return (
       <motion.div
-        style={{ width: w, height: h }}
-        className={opacityCls}
+        className="opacity-65 hover:opacity-100 transition-opacity duration-300 flex items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay }}
@@ -326,11 +310,11 @@ const LogoImg = ({
       </motion.div>
     );
   }
-  return container;
+  return <div className="opacity-65 hover:opacity-100 transition-opacity duration-300 flex items-center">{img}</div>;
 };
 
 /* ──────────────────────────────────────────────
-   Client Block
+   Client Block — text header, no logo, no number
 ────────────────────────────────────────────── */
 const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => (
   <motion.div
@@ -338,51 +322,43 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
     viewport={{ once: true, margin: "-60px" }}
     transition={{ duration: 0.9, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-    className="grid grid-cols-[32px_1fr] gap-6"
   >
-    {/* Index */}
-    <div className="pt-0.5">
-      <span className="font-mono text-[10px] text-foreground/20 tracking-widest">
-        {String(index + 1).padStart(2, "0")}
-      </span>
+    {/* Text header: name + category */}
+    <div className="mb-5">
+      <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-1">
+        {client.name}
+      </h2>
+      <p className="text-[11px] tracking-wide text-muted-foreground">
+        {client.category}
+      </p>
     </div>
 
-    <div>
-      {/* Logo + category */}
-      <div className="flex flex-wrap items-center gap-4 mb-5">
-        <LogoImg client={client} size="block" />
-        <p className="text-[11px] tracking-wide text-muted-foreground">
-          {client.category}
-        </p>
-      </div>
+    {/* Service tags */}
+    <div className="flex flex-wrap gap-1.5 mb-8">
+      {client.services.map((s) => (
+        <span
+          key={s}
+          className="text-[9px] font-mono tracking-[0.12em] uppercase px-2.5 py-[3px] rounded-full border border-foreground/25 text-foreground/60"
+        >
+          {s}
+        </span>
+      ))}
+    </div>
 
-      {/* Service tags */}
-      <div className="flex flex-wrap gap-1.5 mb-8">
-        {client.services.map((s) => (
-          <span
-            key={s}
-            className="text-[9px] font-mono tracking-[0.12em] uppercase px-2.5 py-[3px] rounded-full border border-foreground/25 text-foreground/60"
-          >
-            {s}
-          </span>
-        ))}
-      </div>
-
-      {/* Videos — responsive grid: 1 col mobile, 2 col tablet, 3 col desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {client.videos.map((v, i) => (
-          <motion.div
-            key={i}
-            className="w-full"
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <ReelPlayer src={v.src} label={v.label} />
-          </motion.div>
-        ))}
-      </div>
+    {/* Videos — responsive grid: 1 col mobile, 2 col tablet, 3 col desktop */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {client.videos.map((v, i) => (
+        <motion.div
+          key={i}
+          className="w-full"
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <ReelPlayer src={v.src} label={v.label} />
+        </motion.div>
+      ))}
     </div>
   </motion.div>
 );
@@ -417,15 +393,15 @@ const Work = () => {
             </p>
           </motion.div>
 
-          {/* Logo strip — no pill bg, filter makes white logos legible */}
+          {/* Logo strip — fixed-height logos so each looks proportionally balanced */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.18 }}
-            className="flex flex-wrap items-center gap-8 mb-20 pb-16 border-b border-foreground/[0.1]"
+            className="flex flex-wrap items-center gap-10 mb-20 pb-16 border-b border-foreground/[0.1]"
           >
             {CLIENTS.map((c, i) => (
-              <LogoImg key={c.id} client={c} delay={0.25 + i * 0.1} size="strip" />
+              <StripLogo key={c.id} client={c} delay={0.25 + i * 0.1} />
             ))}
           </motion.div>
 

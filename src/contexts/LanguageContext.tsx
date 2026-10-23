@@ -306,9 +306,9 @@ const translations: Record<Language, Record<string, string>> = {
     
     // About — ELEDEN section
     "about.agencyBadge": "Agency",
-    "about.agencyHeadline": "We build content systems, not just videos.",
-    "about.agencyLead": "ELEDEN is a Munich-based content production agency. We work with businesses that are serious about social media — not posting once a month and hoping for the best, but building a real, repeatable system that generates visibility and leads.",
-    "about.agencyBody": "We cover the full cycle: strategy, concept, shooting, editing, publishing. Everything in one place, with one point of contact. Our clients are local businesses, experts, and brands who want premium short-form content that actually works — on Instagram, TikTok, and YouTube Shorts.",
+    "about.agencyHeadline": "Premium short-form video. Built as a system.",
+    "about.agencyLead": "ELEDEN is a content production agency from Munich. We turn ideas into structured, high-performing short-form video content — for businesses that want to build visibility, trust, and consistent lead generation through social media.",
+    "about.agencyBody": "We combine strategy, production, and editing into one unified system. From concept to filming to final publish — everything under one roof, one point of contact. We work with local businesses, experts, and established brands who need content that looks premium and performs over time.",
     "about.stat1Label": "Munich",
     "about.stat1Sub": "Based in Germany",
     "about.stat2Label": "Full cycle",
@@ -683,9 +683,9 @@ const translations: Record<Language, Record<string, string>> = {
     
     // About
     "about.agencyBadge": "Agentur",
-    "about.agencyHeadline": "Wir bauen Content-Systeme, keine einzelnen Videos.",
-    "about.agencyLead": "ELEDEN ist eine Content-Produktionsagentur aus München. Wir arbeiten mit Unternehmen, die Social Media ernst nehmen — nicht einmal im Monat posten und hoffen, sondern ein echtes, wiederholbares System aufbauen, das Sichtbarkeit und Leads generiert.",
-    "about.agencyBody": "Wir decken den kompletten Zyklus ab: Strategie, Konzept, Dreh, Schnitt, Veröffentlichung. Alles an einem Ort, mit einem Ansprechpartner. Unsere Kunden sind lokale Unternehmen, Experten und Marken, die Premium-Kurzform-Content wollen, der wirklich funktioniert — auf Instagram, TikTok und YouTube Shorts.",
+    "about.agencyHeadline": "Premium Kurzform-Video. Als System gebaut.",
+    "about.agencyLead": "ELEDEN ist eine Content-Produktionsagentur aus München. Wir verwandeln Ideen in strukturierten, hochperformanten Kurzform-Video-Content — für Unternehmen, die Sichtbarkeit, Vertrauen und konstante Lead-Generierung über Social Media aufbauen wollen.",
+    "about.agencyBody": "Wir vereinen Strategie, Produktion und Schnitt in einem einzigen System. Von Konzept über Dreh bis zur finalen Veröffentlichung — alles unter einem Dach, ein Ansprechpartner. Wir arbeiten mit lokalen Unternehmen, Experten und etablierten Marken, die Content brauchen, der premium wirkt und langfristig performt.",
     "about.stat1Label": "München",
     "about.stat1Sub": "Standort Deutschland",
     "about.stat2Label": "Full Cycle",
