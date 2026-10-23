@@ -142,7 +142,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
       />
 
       {/* Bottom gradient */}
-      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
 
       {/* Label */}
       {label && (
@@ -155,7 +155,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
               transition={{ duration: 0.2 }}
               className="absolute top-3 left-3 z-10 pointer-events-none"
             >
-              <span className="text-[10px] font-mono text-white/60 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
+              <span className="text-[9px] font-mono tracking-[0.15em] uppercase text-white/55 px-2 py-1 rounded-md bg-black/40 backdrop-blur-sm border border-white/[0.06]">
                 {label}
               </span>
             </motion.div>
@@ -163,7 +163,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         </AnimatePresence>
       )}
 
-      {/* Top-right controls: mute + fullscreen */}
+      {/* Top-right controls */}
       <AnimatePresence>
         {showControls && (
           <motion.div
@@ -177,21 +177,17 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
               type="button"
               onClick={toggleMute}
               aria-label={muted ? "Unmute" : "Mute"}
-              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
             >
-              {muted
-                ? <VolumeX className="w-3 h-3" />
-                : <Volume2 className="w-3 h-3" />}
+              {muted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
             </button>
             <button
               type="button"
               onClick={toggleFullscreen}
               aria-label="Fullscreen"
-              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
             >
-              {fullscreen
-                ? <Minimize2 className="w-3 h-3" />
-                : <Maximize2 className="w-3 h-3" />}
+              {fullscreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
             </button>
           </motion.div>
         )}
@@ -202,42 +198,42 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         {!playing && (
           <motion.div
             key="play"
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.18 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center">
-              <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+            <div className="w-14 h-14 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center">
+              <Play className="w-5 h-5 text-white fill-white ml-0.5" />
             </div>
           </motion.div>
         )}
         {playing && hover && (
           <motion.div
             key="pause"
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.18 }}
             className="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
-            <div className="w-16 h-16 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center">
-              <Pause className="w-5 h-5 text-white fill-white" />
+            <div className="w-14 h-14 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center">
+              <Pause className="w-4 h-4 text-white fill-white" />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Thin progress bar at bottom */}
+      {/* Progress bar */}
       <div
         ref={progressRef}
-        className="absolute bottom-0 left-0 right-0 h-6 cursor-pointer z-10 flex items-end"
+        className="absolute bottom-0 left-0 right-0 h-5 cursor-pointer z-10 flex items-end"
         onClick={seekFromClick}
       >
-        <div className="w-full h-0.5 bg-white/10">
+        <div className="w-full h-px bg-white/10">
           <motion.div
-            className="h-full bg-white/60"
+            className="h-full bg-white/50"
             style={{ width: `${progress * 100}%` }}
             transition={{ duration: 0 }}
           />
@@ -250,54 +246,72 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 /* ──────────────────────────────────────────────
    Client Block
 ────────────────────────────────────────────── */
-// Fixed card width so all videos are the same size regardless of count
-const CARD_W = 220; // px — 9:16 → ~391px tall
+const CARD_W = 260; // px — 9:16 → ~462px tall
 
 const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
     viewport={{ once: true, margin: "-60px" }}
-    transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+    transition={{ duration: 0.9, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+    className="grid grid-cols-[32px_1fr] gap-6"
   >
-    {/* Client info row */}
-    <div className="flex items-start gap-5 mb-6">
-      <div
-        className={`flex-shrink-0 flex items-center ${
-          client.logoDark
-            ? "h-10 px-3 rounded-xl bg-zinc-900 border border-white/[0.08]"
-            : "h-10"
-        }`}
-      >
-        <img
-          src={client.logo}
-          alt={client.name}
-          className="h-7 max-w-[160px] object-contain"
-        />
-      </div>
-      <div className="pt-1">
-        <p className="text-xs text-muted-foreground/60 tracking-wide mb-1">{client.category}</p>
-        <p className="text-xs text-muted-foreground/40 tracking-wide">
-          {client.services.join(" · ")}
-        </p>
-      </div>
+    {/* Index */}
+    <div className="pt-0.5">
+      <span className="font-mono text-[10px] text-foreground/20 tracking-widest">
+        {String(index + 1).padStart(2, "0")}
+      </span>
     </div>
 
-    {/* Videos — flex row, every card is the same fixed width */}
-    <div className="flex flex-row flex-wrap gap-4">
-      {client.videos.map((v, i) => (
-        <motion.div
-          key={i}
-          style={{ width: CARD_W }}
-          className="flex-none"
-          initial={{ opacity: 0, scale: 0.96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+    <div>
+      {/* Logo + category */}
+      <div className="flex flex-wrap items-center gap-4 mb-5">
+        <div
+          className={`flex-shrink-0 flex items-center ${
+            client.logoDark
+              ? "h-9 px-3.5 rounded-xl bg-zinc-900 border border-white/[0.07]"
+              : "h-9"
+          }`}
         >
-          <ReelPlayer src={v.src} label={v.label} />
-        </motion.div>
-      ))}
+          <img
+            src={client.logo}
+            alt={client.name}
+            className="h-6 max-w-[160px] object-contain"
+          />
+        </div>
+        <p className="text-[11px] tracking-wide text-muted-foreground/45">
+          {client.category}
+        </p>
+      </div>
+
+      {/* Service tags */}
+      <div className="flex flex-wrap gap-1.5 mb-8">
+        {client.services.map((s) => (
+          <span
+            key={s}
+            className="text-[9px] font-mono tracking-[0.12em] uppercase px-2.5 py-[3px] rounded-full border border-foreground/[0.08] text-foreground/35"
+          >
+            {s}
+          </span>
+        ))}
+      </div>
+
+      {/* Videos — fixed width, flex row */}
+      <div className="flex flex-row flex-wrap gap-4">
+        {client.videos.map((v, i) => (
+          <motion.div
+            key={i}
+            style={{ width: CARD_W }}
+            className="flex-none"
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ReelPlayer src={v.src} label={v.label} />
+          </motion.div>
+        ))}
+      </div>
     </div>
   </motion.div>
 );
@@ -311,7 +325,7 @@ const Work = () => {
       <div className="noise-overlay" />
       <Header />
 
-      <main className="pt-32 pb-28">
+      <main className="pt-32 pb-32">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
 
           {/* Page header */}
@@ -319,29 +333,32 @@ const Work = () => {
             initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-10"
+            className="mb-12"
           >
             <span className="text-[11px] tracking-[0.3em] uppercase text-primary mb-3 block">
               Portfolio
             </span>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">
+            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">
               Our Work
             </h1>
+            <p className="text-muted-foreground/50 text-sm leading-relaxed max-w-xs">
+              Short-form video content crafted for modern brands in Munich and beyond.
+            </p>
           </motion.div>
 
-          {/* Logo row — no label, just logos */}
+          {/* Logo strip */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="flex flex-wrap items-center gap-6 mb-16 pb-14 border-b border-foreground/[0.07]"
+            transition={{ duration: 0.7, delay: 0.18 }}
+            className="flex flex-wrap items-center gap-5 mb-20 pb-16 border-b border-foreground/[0.06]"
           >
             {CLIENTS.map((c, i) => (
               <motion.div
                 key={c.id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                transition={{ duration: 0.5, delay: 0.25 + i * 0.1 }}
                 className={`flex items-center ${
                   c.logoDark
                     ? "h-8 px-3 rounded-xl bg-zinc-900 border border-white/[0.07]"
@@ -351,14 +368,14 @@ const Work = () => {
                 <img
                   src={c.logo}
                   alt={c.name}
-                  className="h-5 max-w-[130px] object-contain opacity-60 hover:opacity-100 transition-opacity duration-300"
+                  className="h-5 max-w-[130px] object-contain opacity-55 hover:opacity-90 transition-opacity duration-300"
                 />
               </motion.div>
             ))}
           </motion.div>
 
           {/* Client blocks */}
-          <div className="space-y-20">
+          <div className="space-y-24">
             {CLIENTS.map((client, i) => (
               <ClientBlock key={client.id} client={client} index={i} />
             ))}
