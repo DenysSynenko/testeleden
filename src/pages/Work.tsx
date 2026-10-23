@@ -57,15 +57,14 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* Mint drop-shadow for all logos — light mode: strong glow, dark mode: white glow */
+/* Logo filter — light theme: flip to black so white logos are visible on light bg
+                  dark theme: white logos with subtle glow */
 const useMintFilter = () => {
   const { theme } = useTheme();
   if (theme === "light") {
-    // Double layer mint glow — white logos pop on light bg
-    return "drop-shadow(0 0 16px rgba(61,255,160,0.6)) drop-shadow(0 0 6px rgba(61,255,160,0.4)) drop-shadow(0 2px 8px rgba(0,0,0,0.3))";
+    return "brightness(0) opacity(0.75)";
   }
-  // Dark mode: subtle white glow so logos breathe
-  return "drop-shadow(0 0 8px rgba(255,255,255,0.15)) drop-shadow(0 2px 10px rgba(0,0,0,0.5))";
+  return "drop-shadow(0 0 8px rgba(255,255,255,0.12)) brightness(1)";
 };
 
 /* ──────────────────────────────────────────────

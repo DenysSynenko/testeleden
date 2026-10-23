@@ -29,13 +29,13 @@ const HIGHLIGHTS = [
   },
 ];
 
-/* Mint drop-shadow for all logos */
+/* Logo filter — light: flip to black, dark: white with subtle glow */
 const useLightFilter = () => {
   const { theme } = useTheme();
   if (theme === "light") {
-    return "drop-shadow(0 0 16px rgba(61,255,160,0.6)) drop-shadow(0 0 6px rgba(61,255,160,0.4)) drop-shadow(0 2px 8px rgba(0,0,0,0.3))";
+    return "brightness(0) opacity(0.75)";
   }
-  return "drop-shadow(0 0 8px rgba(255,255,255,0.15)) drop-shadow(0 2px 10px rgba(0,0,0,0.5))";
+  return "drop-shadow(0 0 8px rgba(255,255,255,0.12)) brightness(1)";
 };
 
 /* ──────────────────────────────────────────────
@@ -126,6 +126,7 @@ const ReelCard = ({
 ────────────────────────────────────────────── */
 const WorksSection = () => {
   const { t } = useLanguage();
+  const logoFilter = useLightFilter();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
