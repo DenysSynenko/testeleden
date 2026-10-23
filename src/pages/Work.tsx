@@ -1,24 +1,19 @@
-import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Play, Pause, Volume2, VolumeX, Maximize2 } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
 import Header from "@/components/eleden/Header";
 import Footer from "@/components/eleden/Footer";
 
 /* ──────────────────────────────────────────────
-   Client data
+   Data
 ────────────────────────────────────────────── */
-
 interface ClientData {
   id: string;
   name: string;
   category: string;
-  logo: string;          // path in /public/logos/
-  logoDark?: boolean;    // true if logo needs dark bg to be visible
-  highlight?: boolean;   // shows bigger featured treatment
-  videos: {
-    src: string;
-    label?: string;
-  }[];
+  logo: string;
+  logoDark?: boolean;
+  videos: { src: string; label?: string }[];
   services: string[];
 }
 
@@ -29,11 +24,10 @@ const CLIENTS: ClientData[] = [
     category: "Custom Made Accessories",
     logo: "/logos/brandcraft_logo.png",
     logoDark: true,
-    highlight: true,
     videos: [
-      { src: "/videos/brandcraft_bmw.mp4",        label: "BMW" },
-      { src: "/videos/brandcraft_interalpen.mp4",  label: "Interalpen Hotel" },
-      { src: "/videos/brandcraft_signature.mp4",   label: "Signature Travel" },
+      { src: "/videos/brandcraft_bmw.mp4",       label: "BMW" },
+      { src: "/videos/brandcraft_interalpen.mp4", label: "Interalpen Hotel" },
+      { src: "/videos/brandcraft_signature.mp4",  label: "Signature Travel" },
     ],
     services: ["Concept", "Filming", "Editing", "Color grading"],
   },
@@ -41,9 +35,8 @@ const CLIENTS: ClientData[] = [
     id: "guatemuc",
     name: "GuateMuc",
     category: "Guatemalan Restaurant · Munich",
-    logo: "/logos/guatemuc_logo.png",
+    logo: "/logos/guatemuc_logo.svg",
     logoDark: true,
-    highlight: true,
     videos: [
       { src: "/videos/guatemuc_day_night.mp4", label: "Day & Night" },
     ],
@@ -55,9 +48,8 @@ const CLIENTS: ClientData[] = [
     category: "Real Estate",
     logo: "/logos/almeno_horizontal.png",
     logoDark: false,
-    highlight: false,
     videos: [
-      { src: "/videos/almeno_monopoly.mp4", label: "Property Reel" },
+      { src: "/videos/almeno_monopoly.mp4", label: "Brand Film" },
       { src: "/videos/almeno_fpv.mp4",      label: "FPV Drone Reel" },
     ],
     services: ["Filming", "FPV Drone", "Editing", "Color grading"],
@@ -65,76 +57,80 @@ const CLIENTS: ClientData[] = [
 ];
 
 /* ──────────────────────────────────────────────
-   Video Player
+   Minimal Reel Player
 ────────────────────────────────────────────── */
-
-const fmt = (s: number) => {
-  if (!isFinite(s)) return "0:00";
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return `${m}:${sec.toString().padStart(2, "0")}`;
-};
-
 const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const wrapRef  = useRef<HTMLDivElement>(null);
-  const [playing, setPlaying]       = useState(false);
-  const [muted, setMuted]           = useState(true);
-  const [current, setCurrent]       = useState(0);
-  const [duration, setDuration]     = useState(0);
-  const [showCtrl, setShowCtrl]     = useState(true);
+  const videoRef    = useRef<HTMLVideoElement>(null);
+  const wrapRef     = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [playing, setPlaying]   = useState(false);
+  const [muted, setMuted]       = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [hover, setHover]       = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
 
-  const togglePlay = () => {
+  const toggle = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
     if (v.paused) { v.play(); setPlaying(true); }
     else          { v.pause(); setPlaying(false); }
-  };
+  }, []);
 
-  const toggleMute = () => {
+  const toggleMute = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
     const v = videoRef.current;
     if (!v) return;
     v.muted = !v.muted;
     setMuted(v.muted);
-  };
+  }, []);
 
-  const seek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = videoRef.current;
-    if (!v) return;
-    const t = Number(e.target.value);
-    v.currentTime = t;
-    setCurrent(t);
-  };
-
-  const goFullscreen = () => {
+  const toggleFullscreen = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
     const el = wrapRef.current;
     if (!el) return;
-    document.fullscreenElement ? document.exitFullscreen() : el.requestFullscreen?.();
-  };
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      el.requestFullscreen?.();
+    }
+  }, []);
+
+  const seekFromClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const v = videoRef.current;
+    const bar = progressRef.current;
+    if (!v || !bar) return;
+    const rect = bar.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    v.currentTime = ratio * v.duration;
+  }, []);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-    const onTime = () => setCurrent(v.currentTime);
-    const onMeta = () => setDuration(v.duration);
+    const onTime = () => setProgress(v.duration ? v.currentTime / v.duration : 0);
     const onEnd  = () => setPlaying(false);
+    const onFs   = () => setFullscreen(!!document.fullscreenElement);
     v.addEventListener("timeupdate", onTime);
-    v.addEventListener("loadedmetadata", onMeta);
     v.addEventListener("ended", onEnd);
+    document.addEventListener("fullscreenchange", onFs);
     return () => {
       v.removeEventListener("timeupdate", onTime);
-      v.removeEventListener("loadedmetadata", onMeta);
       v.removeEventListener("ended", onEnd);
+      document.removeEventListener("fullscreenchange", onFs);
     };
   }, []);
+
+  const showControls = hover || !playing;
 
   return (
     <div
       ref={wrapRef}
-      className="relative bg-black rounded-[16px] overflow-hidden w-full"
+      className="relative bg-zinc-950 rounded-2xl overflow-hidden w-full select-none"
       style={{ aspectRatio: "9/16" }}
-      onMouseEnter={() => setShowCtrl(true)}
-      onMouseLeave={() => playing && setShowCtrl(false)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={toggle}
     >
       <video
         ref={videoRef}
@@ -142,87 +138,109 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         muted={muted}
         playsInline
         preload="metadata"
-        onClick={togglePlay}
-        className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Label badge */}
+      {/* Bottom gradient */}
+      <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
+
+      {/* Label */}
       {label && (
-        <div className="absolute top-3 left-3 z-10">
-          <span className="text-[10px] font-mono text-white/70 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-sm border border-white/10">
-            {label}
-          </span>
-        </div>
+        <AnimatePresence>
+          {showControls && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-3 left-3 z-10 pointer-events-none"
+            >
+              <span className="text-[10px] font-mono text-white/60 px-2 py-0.5 rounded bg-black/40 backdrop-blur-sm">
+                {label}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
 
-      {/* Center play when paused */}
-      {!playing && (
-        <button
-          type="button"
-          onClick={togglePlay}
-          aria-label="Play"
-          className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors"
-        >
-          <span className="w-14 h-14 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center hover:scale-110 transition-transform duration-300">
-            <Play className="w-5 h-5 text-white fill-white ml-0.5" />
-          </span>
-        </button>
-      )}
+      {/* Top-right controls: mute + fullscreen */}
+      <AnimatePresence>
+        {showControls && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute top-3 right-3 z-10 flex gap-1.5"
+          >
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={muted ? "Unmute" : "Mute"}
+              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+            >
+              {muted
+                ? <VolumeX className="w-3 h-3" />
+                : <Volume2 className="w-3 h-3" />}
+            </button>
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              aria-label="Fullscreen"
+              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+            >
+              {fullscreen
+                ? <Minimize2 className="w-3 h-3" />
+                : <Maximize2 className="w-3 h-3" />}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Controls */}
+      {/* Center play / pause */}
+      <AnimatePresence mode="wait">
+        {!playing && (
+          <motion.div
+            key="play"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center">
+              <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+            </div>
+          </motion.div>
+        )}
+        {playing && hover && (
+          <motion.div
+            key="pause"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          >
+            <div className="w-16 h-16 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center">
+              <Pause className="w-5 h-5 text-white fill-white" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Thin progress bar at bottom */}
       <div
-        className={`absolute left-0 right-0 bottom-0 p-3 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-opacity duration-300 ${
-          showCtrl || !playing ? "opacity-100" : "opacity-0"
-        }`}
+        ref={progressRef}
+        className="absolute bottom-0 left-0 right-0 h-6 cursor-pointer z-10 flex items-end"
+        onClick={seekFromClick}
       >
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={togglePlay}
-            aria-label={playing ? "Pause" : "Play"}
-            className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white"
-          >
-            {playing
-              ? <Pause className="w-3.5 h-3.5" />
-              : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
-          </button>
-
-          <span className="text-[10px] text-white/70 tabular-nums min-w-[36px]">
-            {fmt(current)}
-          </span>
-
-          <input
-            type="range"
-            min={0}
-            max={duration || 0}
-            step={0.1}
-            value={current}
-            onChange={seek}
-            aria-label="Seek"
-            className="flex-1 accent-white h-0.5 cursor-pointer"
+        <div className="w-full h-0.5 bg-white/10">
+          <motion.div
+            className="h-full bg-white/60"
+            style={{ width: `${progress * 100}%` }}
+            transition={{ duration: 0 }}
           />
-
-          <span className="text-[10px] text-white/50 tabular-nums min-w-[36px] text-right">
-            {fmt(duration)}
-          </span>
-
-          <button
-            type="button"
-            onClick={toggleMute}
-            aria-label={muted ? "Unmute" : "Mute"}
-            className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white"
-          >
-            {muted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-          </button>
-
-          <button
-            type="button"
-            onClick={goFullscreen}
-            aria-label="Fullscreen"
-            className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center text-white"
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-          </button>
         </div>
       </div>
     </div>
@@ -232,71 +250,75 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 /* ──────────────────────────────────────────────
    Client Block
 ────────────────────────────────────────────── */
-
 const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => {
   const colClass =
-    client.videos.length === 1
-      ? "max-w-[300px] mx-auto"
-      : client.videos.length === 2
-      ? "grid-cols-2 max-w-[640px] mx-auto"
-      : "grid-cols-1 sm:grid-cols-3";
+    client.videos.length === 1 ? "flex justify-center" :
+    client.videos.length === 2 ? "grid grid-cols-2 gap-4" :
+    "grid grid-cols-1 sm:grid-cols-3 gap-4";
+
+  const videoMaxW =
+    client.videos.length === 1 ? "max-w-[280px] w-full" : "";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+      initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className={`relative rounded-[24px] border border-white/[0.07] bg-surface/40 backdrop-blur-sm p-6 sm:p-8 ${
-        client.highlight ? "ring-1 ring-primary/10" : ""
-      }`}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
-      {client.highlight && (
-        <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-      )}
-
-      {/* Client header: logo + category + services */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+      {/* Client info row */}
+      <div className="flex items-start gap-5 mb-6">
         {/* Logo */}
         <div
-          className={`flex-shrink-0 h-10 flex items-center ${
+          className={`flex-shrink-0 flex items-center ${
             client.logoDark
-              ? "px-3 py-2 rounded-lg bg-black/60 border border-white/10"
-              : ""
+              ? "h-10 px-3 rounded-xl bg-zinc-900 border border-white/[0.08]"
+              : "h-10"
           }`}
         >
           <img
             src={client.logo}
             alt={client.name}
-            className="h-8 max-w-[180px] object-contain"
-            style={client.logoDark ? {} : { filter: "brightness(0) invert(0)" }}
+            className="h-7 max-w-[160px] object-contain"
           />
         </div>
 
-        <div className="flex-1 min-w-0">
-          <p className="text-xs text-muted-foreground tracking-wide">{client.category}</p>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {client.services.map((s) => (
-              <span
-                key={s}
-                className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.05] border border-white/[0.07] text-muted-foreground"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
+        {/* Meta */}
+        <div className="pt-1">
+          <p className="text-xs text-muted-foreground/60 tracking-wide mb-1">{client.category}</p>
+          <p className="text-xs text-muted-foreground/40 tracking-wide">
+            {client.services.join(" · ")}
+          </p>
         </div>
       </div>
 
-      {/* Videos grid */}
-      <div className={client.videos.length === 1 ? "" : `grid ${colClass} gap-4`}>
+      {/* Videos */}
+      <div className={colClass}>
         {client.videos.length === 1 ? (
-          <div className={colClass}>
-            <ReelPlayer src={client.videos[0].src} label={client.videos[0].label} />
+          <div className={videoMaxW}>
+            {client.videos.map((v, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.96 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <ReelPlayer src={v.src} label={v.label} />
+              </motion.div>
+            ))}
           </div>
         ) : (
           client.videos.map((v, i) => (
-            <ReelPlayer key={i} src={v.src} label={v.label} />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ReelPlayer src={v.src} label={v.label} />
+            </motion.div>
           ))
         )}
       </div>
@@ -307,58 +329,60 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
 /* ──────────────────────────────────────────────
    Page
 ────────────────────────────────────────────── */
-
 const Work = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       <div className="noise-overlay" />
       <Header />
 
-      <main className="pt-32 pb-24">
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
+      <main className="pt-32 pb-28">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
 
           {/* Page header */}
           <motion.div
-            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16"
+            className="mb-10"
           >
-            <span className="text-xs tracking-[0.3em] uppercase text-primary mb-4 block">Portfolio</span>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+            <span className="text-[11px] tracking-[0.3em] uppercase text-primary mb-3 block">
+              Portfolio
+            </span>
+            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">
               Our Work
             </h1>
-            <p className="text-muted-foreground text-lg max-w-md">
-              Short-form video content we create for real brands.
-            </p>
           </motion.div>
 
-          {/* Brand logo strip */}
+          {/* Logo row — no label, just logos */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="flex flex-wrap items-center gap-6 mb-16 pb-16 border-b border-white/[0.06]"
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="flex flex-wrap items-center gap-6 mb-16 pb-14 border-b border-foreground/[0.07]"
           >
-            <span className="text-xs tracking-[0.25em] uppercase text-muted-foreground/40">Clients</span>
-            {CLIENTS.map((c) => (
-              <div
+            {CLIENTS.map((c, i) => (
+              <motion.div
                 key={c.id}
-                className={`h-7 flex items-center ${
-                  c.logoDark ? "px-2.5 py-1 rounded-md bg-black/50 border border-white/[0.08]" : ""
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                className={`flex items-center ${
+                  c.logoDark
+                    ? "h-8 px-3 rounded-xl bg-zinc-900 border border-white/[0.07]"
+                    : "h-8"
                 }`}
               >
                 <img
                   src={c.logo}
                   alt={c.name}
-                  className="h-5 max-w-[120px] object-contain opacity-70 hover:opacity-100 transition-opacity duration-300"
+                  className="h-5 max-w-[130px] object-contain opacity-60 hover:opacity-100 transition-opacity duration-300"
                 />
-              </div>
+              </motion.div>
             ))}
           </motion.div>
 
           {/* Client blocks */}
-          <div className="space-y-8">
+          <div className="space-y-20">
             {CLIENTS.map((client, i) => (
               <ClientBlock key={client.id} client={client} index={i} />
             ))}

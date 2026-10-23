@@ -17,7 +17,7 @@ const HIGHLIGHTS = [
   {
     src:    "/videos/guatemuc_day_night.mp4",
     client: "GuateMuc",
-    logo:   "/logos/guatemuc_logo.png",
+    logo:   "/logos/guatemuc_logo.svg",
     dark:   true,
   },
   {
@@ -58,7 +58,7 @@ const ReelCard = ({
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="relative aspect-[9/16] rounded-[18px] overflow-hidden bg-surface border border-white/[0.06] group cursor-pointer"
+      className="relative aspect-[9/16] rounded-[18px] overflow-hidden bg-zinc-950 border border-white/[0.06] group cursor-pointer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
@@ -76,7 +76,7 @@ const ReelCard = ({
 
       {/* Static gradient bg when not playing */}
       <div
-        className="absolute inset-0 bg-gradient-to-br from-surface-elevated to-surface transition-opacity duration-500"
+        className="absolute inset-0 bg-gradient-to-b from-zinc-800 to-zinc-950 transition-opacity duration-500"
         style={{ opacity: hover ? 0 : 1 }}
       />
 
@@ -163,11 +163,8 @@ const WorksSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-6 mt-12 pt-10 border-t border-white/[0.06]"
+          className="flex flex-wrap items-center justify-center gap-7 mt-12 pt-10 border-t border-white/[0.06]"
         >
-          <span className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground/30">
-            Clients
-          </span>
           {HIGHLIGHTS.map((item) => (
             <div
               key={item.client}

@@ -12,25 +12,36 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Check localStorage first
-    const stored = localStorage.getItem("eleden-theme") as Theme | null;
-    if (stored) return stored;
-    
-    // Default to dark
+    // 1. Check if user explicitly chose a theme
+    try {
+      const stored = localStorage.getItem("eleden-theme") as Theme | null;
+      if (stored === "dark" || stored === "light") return stored;
+    } catch { /* ignore */ }
+    // 2. Follow OS / browser preference
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
     return "dark";
   });
 
+  // Follow OS preference changes when user hasn't set an explicit override
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let stored: string | null = null;
+    try { stored = localStorage.getItem("eleden-theme"); } catch { /* ignore */ }
+    if (stored) return; // User has an explicit preference — don't override
+
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => setTheme(e.matches ? "dark" : "light");
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   useEffect(() => {
     const root = document.documentElement;
-    
-    // Remove both classes first
     root.classList.remove("dark", "light");
-    
-    // Add the current theme class
     root.classList.add(theme);
-    
-    // Store preference
-    localStorage.setItem("eleden-theme", theme);
+    try { localStorage.setItem("eleden-theme", theme); } catch { /* ignore */ }
   }, [theme]);
 
   const toggleTheme = () => {
