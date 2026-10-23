@@ -119,7 +119,7 @@ const FAQ = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link to="/#contact">
                   <MagneticButton variant="ghost" className="text-sm">
-                    Send a message →
+                    Send a message
                   </MagneticButton>
                 </Link>
                 <Link to="/calculator" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
