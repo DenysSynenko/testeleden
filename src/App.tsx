@@ -11,6 +11,7 @@ import Privacy from "./pages/Privacy";
 import About from "./pages/About";
 import Calculator from "./pages/Calculator";
 import FAQ from "./pages/FAQ";
+import Work from "./pages/Work";
 import NotFound from "./pages/NotFound";
 import CookieBanner from "./components/eleden/CookieBanner";
 import RouteScrollToTop from "./components/RouteScrollToTop";
@@ -33,6 +34,7 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/calculator" element={<Calculator />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/work" element={<Work />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -122,7 +122,7 @@ const Header = () => {
 
               {/* Nav Links */}
               <div className="hidden md:flex items-center gap-6 text-sm">
-                <NavLink onClick={() => scrollToSection("work")}>{t("nav.work")}</NavLink>
+                <NavPageLink to="/work">{t("nav.work")}</NavPageLink>
                 <NavLink onClick={() => scrollToSection("services")}>{t("nav.services")}</NavLink>
                 <NavPageLink to="/about">{t("nav.about")}</NavPageLink>
                 <NavPageLink to="/faq">{t("nav.faq")}</NavPageLink>
@@ -218,7 +218,7 @@ const Header = () => {
 
                   <nav className="p-2">
                     {[
-                      { id: "work", label: t("nav.work"), page: null },
+                      { id: "work", label: t("nav.work"), page: "/work" },
                       { id: "services", label: t("nav.services"), page: null },
                       { id: "contact", label: t("nav.contact"), page: null },
                       { id: "about", label: t("nav.about"), page: "/about" },
