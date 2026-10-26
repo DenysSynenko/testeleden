@@ -178,12 +178,15 @@ const WorksSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-wrap items-center justify-center gap-8 mt-12 pt-10 border-t border-foreground/[0.06]"
+          className="flex items-center justify-center gap-0 mt-12 pt-10 border-t border-foreground/[0.06]"
         >
-          {HIGHLIGHTS.map((item) => (
-            /* Fixed-width container (140px) centres every logo → equal spacing between all */
-            <div key={item.client}
-              className="w-[140px] flex items-center justify-center opacity-60 hover:opacity-95 transition-opacity duration-300">
+          {HIGHLIGHTS.map((item, i) => (
+            <div
+              key={item.client}
+              className={`flex-1 flex items-center justify-center py-2 opacity-55 hover:opacity-90 transition-opacity duration-300 ${
+                i < HIGHLIGHTS.length - 1 ? "border-r border-foreground/[0.08]" : ""
+              }`}
+            >
               <img
                 src={item.logo}
                 alt={item.client}

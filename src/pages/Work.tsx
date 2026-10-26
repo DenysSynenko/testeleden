@@ -289,16 +289,19 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 const StripLogo = ({
   client,
   delay,
+  isLast,
 }: {
   client: ClientData;
   delay?: number;
+  isLast?: boolean;
 }) => {
   const filter = useMintFilter();
 
-  // Fixed container width — logo centred; height is per-logo so visual weight is equal
   const inner = (
     <div
-      className="w-[140px] flex items-center justify-center opacity-65 hover:opacity-100 transition-opacity duration-300"
+      className={`flex-1 flex items-center justify-center py-2 opacity-55 hover:opacity-90 transition-opacity duration-300 ${
+        !isLast ? "border-r border-foreground/[0.08]" : ""
+      }`}
     >
       <img
         src={client.logo}
@@ -311,6 +314,7 @@ const StripLogo = ({
   if (delay !== undefined) {
     return (
       <motion.div
+        className="flex-1 contents"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay }}
@@ -402,15 +406,15 @@ const Work = () => {
             </p>
           </motion.div>
 
-          {/* Logo strip — fixed-height logos so each looks proportionally balanced */}
+          {/* Logo strip */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.18 }}
-            className="flex flex-wrap items-center gap-10 mb-20 pb-16 border-b border-foreground/[0.1]"
+            className="flex items-center justify-center gap-0 mb-20 pb-16 border-b border-foreground/[0.1]"
           >
             {CLIENTS.map((c, i) => (
-              <StripLogo key={c.id} client={c} delay={0.25 + i * 0.1} />
+              <StripLogo key={c.id} client={c} delay={0.25 + i * 0.1} isLast={i === CLIENTS.length - 1} />
             ))}
           </motion.div>
 
