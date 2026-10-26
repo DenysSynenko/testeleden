@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/contexts/LanguageContext";
-import founderPhoto from "@/assets/founder-photo.jpg";
+const founderPhoto = "/denys.jpg";
 
 const About = () => {
   const containerRef = useRef<HTMLDivElement>(null);
