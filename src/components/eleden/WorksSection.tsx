@@ -15,7 +15,7 @@ const HIGHLIGHTS = [
     logo:    "/logos/brandcraft_logo.png",
     dark:    true,
     stripH:  34,
-    cardH:   32,
+    cardH:   22,
   },
   {
     src:     "/videos/guatemuc_day_night.mp4",
@@ -23,7 +23,7 @@ const HIGHLIGHTS = [
     logo:    "/logos/guatemuc_logo.png",
     dark:    true,
     stripH:  64,
-    cardH:   54,
+    cardH:   36,
   },
   {
     src:     "/videos/almeno_monopoly.mp4",
@@ -31,7 +31,7 @@ const HIGHLIGHTS = [
     logo:    "/logos/almeno_horizontal.png",
     dark:    false,
     stripH:  50,
-    cardH:   46,
+    cardH:   28,
   },
   {
     src:     "/videos/alrighty_filter.mp4",
@@ -39,7 +39,7 @@ const HIGHLIGHTS = [
     logo:    "/logos/alrighty_logo.png",
     dark:    true,
     stripH:  48,
-    cardH:   44,
+    cardH:   24,
   },
   {
     src:     "/videos/aoni_v2.mp4",
@@ -47,7 +47,7 @@ const HIGHLIGHTS = [
     logo:    "/logos/aoni_logo.png",
     dark:    true,
     stripH:  52,
-    cardH:   48,
+    cardH:   28,
   },
 ];
 
@@ -186,43 +186,19 @@ const WorksSection = () => {
           ))}
         </div>
 
-        {/* Logo strip */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex items-center justify-center gap-0 mt-12 pt-10 border-t border-foreground/[0.06]"
-        >
-          {HIGHLIGHTS.map((item, i) => (
-            <div
-              key={item.client}
-              className={`flex-1 flex items-center justify-center py-2 opacity-100 transition-opacity duration-300 ${
-                i < HIGHLIGHTS.length - 1 ? "border-r border-foreground/[0.08]" : ""
-              }`}
-            >
-              <img
-                src={item.logo}
-                alt={item.client}
-                style={{ maxHeight: item.stripH, width: "auto", maxWidth: 160, filter: logoFilter(theme, item.dark) }}
-              />
-            </div>
-          ))}
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-10 text-center"
         >
           <Link
             to="/work"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 group text-sm"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-foreground/20 text-sm font-medium text-foreground hover:border-foreground/50 hover:bg-foreground/5 transition-all duration-300 group"
           >
-            <span>{t("portfolio.viewAll") || "View all work"}</span>
+            <span>{t("portfolio.viewAll") || "Alle Arbeiten ansehen"}</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </motion.div>

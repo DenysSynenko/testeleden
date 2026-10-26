@@ -76,7 +76,7 @@ const CLIENTS: ClientData[] = [
   {
     id: "aoni",
     name: "Aoni Studios",
-    category: "Creative Studio · Munich",
+    category: "Tattoo Studio · Munich",
     logo: "/logos/aoni_logo.png",
     logoDark: true,
     stripH: 52,
