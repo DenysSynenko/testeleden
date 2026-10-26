@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Check, Sparkles, Camera, Scissors } from "lucide-react";
+import { Check, Sparkles, Camera, Scissors, SlidersHorizontal } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -473,6 +473,45 @@ const Packages = () => {
             {activeTab === "smm"     && <SmmTab     t={t} onCta={scrollToContact} />}
           </motion.div>
         </AnimatePresence>
+
+        {/* Custom package CTA banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 max-w-3xl mx-auto"
+        >
+          <div className="relative rounded-[20px] border border-primary/20 bg-surface overflow-hidden px-8 py-8 flex flex-col sm:flex-row items-center gap-6">
+            {/* Subtle glow accent */}
+            <div className="absolute -top-10 -left-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
+
+            {/* Icon */}
+            <div className="flex-shrink-0 w-12 h-12 rounded-[14px] bg-primary/10 border border-primary/20 flex items-center justify-center">
+              <SlidersHorizontal className="w-5 h-5 text-primary" />
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-base font-semibold text-foreground mb-1">
+                {t("packages.custom.cta.title")}
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {t("packages.custom.cta.sub")}
+              </p>
+            </div>
+
+            {/* CTA */}
+            <div className="flex-shrink-0">
+              <button
+                onClick={scrollToContact}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/30 text-sm font-medium text-primary hover:bg-primary/20 hover:border-primary/50 transition-all duration-300 whitespace-nowrap"
+              >
+                {t("packages.custom.cta.btn")}
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

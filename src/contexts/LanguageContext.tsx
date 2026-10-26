@@ -141,6 +141,9 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.editing.label": "Editing",
     "packages.editing.price": "€100 / video",
     "packages.editing.desc": "Single video edit — colour grade, captions, sound design, effects.",
+    "packages.custom.cta.title": "Not a perfect match?",
+    "packages.custom.cta.sub": "Tell us your goals and budget — we'll build a content system made exactly for you.",
+    "packages.custom.cta.btn": "Build your own package →",
     // Day packages
     "packages.day.inc1": "Filming (professional quality)",
     "packages.day.inc2": "Concept & idea per video",
@@ -521,6 +524,9 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.editing.label": "Schnitt",
     "packages.editing.price": "€100 / Video",
     "packages.editing.desc": "Einzelvideo-Schnitt — Farbkorrektur, Untertitel, Sound-Design, Effekte.",
+    "packages.custom.cta.title": "Kein passendes Paket dabei?",
+    "packages.custom.cta.sub": "Beschreib uns dein Ziel und Budget — wir bauen ein Content-System, das genau zu dir passt.",
+    "packages.custom.cta.btn": "Eigenes Paket anfragen →",
     // Day packages
     "packages.day.inc1": "Dreh (professionelle Qualität)",
     "packages.day.inc2": "Konzept & Idee pro Video",
@@ -900,6 +906,9 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.editing.label": "Монтаж",
     "packages.editing.price": "€100 / відео",
     "packages.editing.desc": "Монтаж одного відео — кольорокорекція, субтитри, звук, ефекти.",
+    "packages.custom.cta.title": "Жоден пакет не підходить?",
+    "packages.custom.cta.sub": "Розкажи нам про свої цілі та бюджет — ми побудуємо контент-систему саме під тебе.",
+    "packages.custom.cta.btn": "Побудувати власний пакет →",
     // Day packages
     "packages.day.inc1": "Зйомка (професійна якість)",
     "packages.day.inc2": "Концепція та ідея на відео",
