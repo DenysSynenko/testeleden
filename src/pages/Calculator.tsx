@@ -9,8 +9,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import MagneticButton from "@/components/eleden/MagneticButton";
 
 /* ─── Prices ─── */
-const PRICE_VIDEO   = 150;   // editing only, per reel
-const PRICE_HOUR    = 100;   // shooting per hour
+const PRICE_VIDEO     = 150;   // per video in monthly plans
+const PRICE_EDIT_ONLY = 100;   // editing only, custom tab — client provides footage
+const PRICE_HOUR      = 100;   // shooting per hour
 const PRICE_STORIES = 75;    // pack of 5 stories
 const PRICE_SMM: Record<string, number> = { none: 0, basic: 350, plus: 600, pro: 950 };
 
@@ -183,7 +184,7 @@ const Calculator = () => {
 
   /* Totals */
   const customTotal = useMemo(() =>
-    videos * PRICE_VIDEO
+    videos * PRICE_EDIT_ONLY
     + shootHours * PRICE_HOUR
     + storyPacks * PRICE_STORIES
     + PRICE_SMM[customSmm],
@@ -282,7 +283,7 @@ const Calculator = () => {
                         <p className="text-xs text-muted-foreground mb-4">Add what you need — mix and match freely.</p>
                         <Stepper
                           label="Reels / Short videos"
-                          note="Editing only — you provide the footage"
+                          note="Editing only — you provide the footage — €100 / video"
                           value={videos} min={0} max={30}
                           onChange={setVideos}
                           unit={videos === 1 ? "video" : "videos"}
@@ -456,7 +457,7 @@ const Calculator = () => {
                   <div className="flex flex-col gap-2.5 mb-5">
                     {tab === "custom" && (
                       <>
-                        {videos > 0     && <Line label={`${videos} video${videos > 1 ? "s" : ""} (editing)`}  value={`€${(videos * PRICE_VIDEO).toLocaleString()}`} />}
+                        {videos > 0     && <Line label={`${videos} video${videos > 1 ? "s" : ""} (editing)`}  value={`€${(videos * PRICE_EDIT_ONLY).toLocaleString()}`} />}
                         {shootHours > 0 && <Line label={`Shooting — ${shootHours}h`}                          value={`€${(shootHours * PRICE_HOUR).toLocaleString()}`} />}
                         {storyPacks > 0 && <Line label={`Stories — ${storyPacks} pack${storyPacks > 1 ? "s" : ""} (×5)`} value={`€${(storyPacks * PRICE_STORIES).toLocaleString()}`} />}
                         {customSmm !== "none" && <Line label={SMM_OPTIONS.find(o => o.id === customSmm)!.label} value={`+€${PRICE_SMM[customSmm]}`} />}
