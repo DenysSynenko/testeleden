@@ -1,50 +1,379 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Camera, Scissors, ArrowRight } from "lucide-react";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { Check, Sparkles, Camera, Scissors } from "lucide-react";
+import MagneticButton from "./MagneticButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-/* ──────────────────────────────────────────────
-   Simple transparent pricing — two services
-────────────────────────────────────────────── */
+type Tab = "day" | "monthly" | "smm";
+const TABS: Tab[] = ["day", "monthly", "smm"];
 
-interface ServiceCardProps {
-  icon: React.ReactNode;
-  subtitle: string;
-  title: string;
+// ─── Shared card component ────────────────────────────────────────────────────
+interface PkgCardProps {
+  name: string;
   price: string;
-  unit: string;
-  note: string;
+  badge: string;
+  per: string;
+  tagline: string;
+  includes: string[];
+  popular?: boolean;
   index: number;
+  onCta: () => void;
+  ctaLabel: string;
+  popularLabel: string;
 }
 
-const ServiceCard = ({ icon, subtitle, title, price, unit, note, index }: ServiceCardProps) => (
+const PkgCard = ({
+  name, price, badge, per, tagline, includes,
+  popular, index, onCta, ctaLabel, popularLabel,
+}: PkgCardProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.6, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
-    className="premium-card flex flex-col gap-6 p-8"
+    transition={{ duration: 0.5, delay: index * 0.07 }}
+    className={`premium-card flex flex-col h-full ${popular ? "border-primary/30" : ""}`}
   >
-    <div className="w-11 h-11 rounded-[12px] bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-      {icon}
+    {popular && (
+      <div className="flex justify-center -mt-1 mb-4">
+        <span className="badge-primary inline-flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+          <Sparkles className="w-3 h-3" />
+          {popularLabel}
+        </span>
+      </div>
+    )}
+
+    <div className="flex-1 space-y-4">
+      <div>
+        <h3 className="font-display font-semibold text-base mb-2 text-foreground">{name}</h3>
+        <p className="text-2xl font-bold text-primary leading-none">{price}</p>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+            {badge}
+          </span>
+          <span className="text-xs text-muted-foreground">{per}</span>
+        </div>
+      </div>
+
+      <p className="text-sm text-muted-foreground leading-relaxed">{tagline}</p>
+
+      <ul className="space-y-2 pt-1">
+        {includes.map((item, i) => (
+          <li key={i} className="flex items-start gap-2.5">
+            <div className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Check className="w-2.5 h-2.5 text-primary" />
+            </div>
+            <span className="text-muted-foreground text-xs leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
     </div>
 
-    <div>
-      <p className="text-xs tracking-[0.25em] uppercase text-muted-foreground mb-1">{subtitle}</p>
-      <h3 className="font-display font-semibold text-xl text-foreground">{title}</h3>
+    <div className="mt-6">
+      <MagneticButton
+        variant="ghost"
+        onClick={onCta}
+        className="w-full justify-center text-sm"
+      >
+        {ctaLabel}
+      </MagneticButton>
     </div>
-
-    <div className="flex items-end gap-2 border-t border-foreground/[0.06] pt-6">
-      <span className="text-4xl font-bold text-primary leading-none">{price}</span>
-      <span className="text-sm text-muted-foreground pb-1">{unit}</span>
-    </div>
-
-    <p className="text-sm text-muted-foreground leading-relaxed">{note}</p>
   </motion.div>
 );
 
+// ─── SMM card (slightly different shape) ─────────────────────────────────────
+interface SmmCardProps {
+  name: string;
+  price: string;
+  posts: string;
+  platforms: string;
+  desc: string;
+  popular?: boolean;
+  index: number;
+  onCta: () => void;
+  ctaLabel: string;
+  popularLabel: string;
+}
+
+const SmmCard = ({
+  name, price, posts, platforms, desc,
+  popular, index, onCta, ctaLabel, popularLabel,
+}: SmmCardProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay: index * 0.07 }}
+    className={`premium-card flex flex-col h-full ${popular ? "border-primary/30" : ""}`}
+  >
+    {popular && (
+      <div className="flex justify-center -mt-1 mb-4">
+        <span className="badge-primary inline-flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+          <Sparkles className="w-3 h-3" />
+          {popularLabel}
+        </span>
+      </div>
+    )}
+
+    <div className="flex-1 space-y-3">
+      <div>
+        <h3 className="font-display font-semibold text-base mb-2 text-foreground">{name}</h3>
+        <p className="text-2xl font-bold text-primary leading-none">{price}</p>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">{posts}</span>
+          <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground">{platforms}</span>
+        </div>
+      </div>
+      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+    </div>
+
+    <div className="mt-5">
+      <MagneticButton
+        variant="ghost"
+        onClick={onCta}
+        className="w-full justify-center text-sm"
+      >
+        {ctaLabel}
+      </MagneticButton>
+    </div>
+  </motion.div>
+);
+
+// ─── Tab panels ───────────────────────────────────────────────────────────────
+const DayTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) => {
+  const includes = [
+    t("packages.day.inc1"),
+    t("packages.day.inc2"),
+    t("packages.day.inc3"),
+    t("packages.day.inc4"),
+    t("packages.day.inc5"),
+  ];
+
+  const cards = [
+    { id: "single", popular: false },
+    { id: "mini",   popular: false },
+    { id: "standard", popular: true },
+    { id: "power",  popular: false },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <p className="text-center text-sm text-muted-foreground">{t("packages.tab.day.sub")}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+        {cards.map((c, i) => (
+          <PkgCard
+            key={c.id}
+            name={t(`packages.day.${c.id}.name`)}
+            price={t(`packages.day.${c.id}.price`)}
+            badge={t(`packages.day.${c.id}.videos`)}
+            per={t(`packages.day.${c.id}.per`)}
+            tagline={t(`packages.day.${c.id}.tagline`)}
+            includes={includes}
+            popular={c.popular}
+            index={i}
+            onCta={onCta}
+            ctaLabel={t("packages.cta.request")}
+            popularLabel={t("packages.popular")}
+          />
+        ))}
+      </div>
+
+      {/* Add-on rates */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="max-w-xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4"
+      >
+        <div className="text-center p-5 rounded-[14px] bg-surface border border-white/[0.06]">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Camera className="w-4 h-4 text-primary" />
+            <p className="text-sm font-medium text-foreground">
+              {t("packages.hourly.label")} —{" "}
+              <span className="text-primary">{t("packages.hourly.price")}</span>
+            </p>
+          </div>
+          <p className="text-xs text-muted-foreground">{t("packages.hourly.desc")}</p>
+        </div>
+        <div className="text-center p-5 rounded-[14px] bg-surface border border-white/[0.06]">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Scissors className="w-4 h-4 text-primary" />
+            <p className="text-sm font-medium text-foreground">
+              {t("packages.editing.label")} —{" "}
+              <span className="text-primary">{t("packages.editing.price")}</span>
+            </p>
+          </div>
+          <p className="text-xs text-muted-foreground">{t("packages.editing.desc")}</p>
+        </div>
+      </motion.div>
+
+      <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
+    </div>
+  );
+};
+
+const MonthlyTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) => {
+  const includes = [
+    t("packages.monthly.inc1"),
+    t("packages.monthly.inc2"),
+    t("packages.monthly.inc3"),
+    t("packages.monthly.inc4"),
+    t("packages.monthly.inc5"),
+  ];
+
+  const cards = [
+    { id: "light",  popular: false },
+    { id: "growth", popular: true },
+    { id: "pro",    popular: false },
+  ];
+
+  return (
+    <div className="space-y-8">
+      <p className="text-center text-sm text-muted-foreground">{t("packages.tab.monthly.sub")}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-stretch">
+        {cards.map((c, i) => (
+          <PkgCard
+            key={c.id}
+            name={t(`packages.monthly.${c.id}.name`)}
+            price={t(`packages.monthly.${c.id}.price`)}
+            badge={t(`packages.monthly.${c.id}.videos`)}
+            per={t("packages.monthly.per")}
+            tagline={t(`packages.monthly.${c.id}.tagline`)}
+            includes={includes}
+            popular={c.popular}
+            index={i}
+            onCta={onCta}
+            ctaLabel={t("packages.cta.request")}
+            popularLabel={t("packages.popular")}
+          />
+        ))}
+      </div>
+      <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
+    </div>
+  );
+};
+
+const SmmTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) => {
+  const bundles = [
+    { id: "start",  popular: false },
+    { id: "growth", popular: true },
+    { id: "full",   popular: false },
+  ];
+
+  const smmOnly = [
+    { id: "basic", popular: false },
+    { id: "plus",  popular: true },
+    { id: "pro",   popular: false },
+  ];
+
+  return (
+    <div className="space-y-12">
+      <p className="text-center text-sm text-muted-foreground">{t("packages.tab.smm.sub")}</p>
+
+      {/* Combined bundles */}
+      <div className="space-y-4">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground/60"
+        >
+          {t("packages.smm.section.bundle")}
+        </motion.p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-stretch">
+          {bundles.map((c, i) => (
+            <motion.div
+              key={c.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
+              className={`premium-card flex flex-col h-full ${c.popular ? "border-primary/30" : ""}`}
+            >
+              {c.popular && (
+                <div className="flex justify-center -mt-1 mb-4">
+                  <span className="badge-primary inline-flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1">
+                    <Sparkles className="w-3 h-3" />
+                    {t("packages.popular")}
+                  </span>
+                </div>
+              )}
+              <div className="flex-1 space-y-3">
+                <div>
+                  <h3 className="font-display font-semibold text-base mb-2 text-foreground">
+                    {t(`packages.smmvideo.${c.id}.name`)}
+                  </h3>
+                  <p className="text-2xl font-bold text-primary leading-none">
+                    {t(`packages.smmvideo.${c.id}.price`)}
+                  </p>
+                  <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+                      {t(`packages.smmvideo.${c.id}.videos`)}
+                    </span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-muted-foreground">
+                      {t(`packages.smmvideo.${c.id}.platforms`)}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {t(`packages.smmvideo.${c.id}.desc`)}
+                </p>
+              </div>
+              <div className="mt-5">
+                <MagneticButton
+                  variant="ghost"
+                  onClick={onCta}
+                  className="w-full justify-center text-sm"
+                >
+                  {t("packages.cta.request")}
+                </MagneticButton>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-white/[0.06]" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="px-4 bg-background text-xs text-muted-foreground/50 uppercase tracking-widest">
+            {t("packages.smm.section.standalone")}
+          </span>
+        </div>
+      </div>
+
+      {/* SMM only */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto items-stretch">
+        {smmOnly.map((c, i) => (
+          <SmmCard
+            key={c.id}
+            name={t(`packages.smm.${c.id}.name`)}
+            price={t(`packages.smm.${c.id}.price`)}
+            posts={t(`packages.smm.${c.id}.posts`)}
+            platforms={t(`packages.smm.${c.id}.platforms`)}
+            desc={t(`packages.smm.${c.id}.desc`)}
+            popular={c.popular}
+            index={i}
+            onCta={onCta}
+            ctaLabel={t("packages.cta.request")}
+            popularLabel={t("packages.popular")}
+          />
+        ))}
+      </div>
+
+      <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
+    </div>
+  );
+};
+
 // ─── Main component ───────────────────────────────────────────────────────────
 const Packages = () => {
+  const [activeTab, setActiveTab] = useState<Tab>("day");
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -58,6 +387,7 @@ const Packages = () => {
 
   return (
     <section ref={containerRef} id="packages" className="relative py-32 overflow-hidden">
+      {/* Parallax glow */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-glow-mint opacity-20 rounded-full blur-3xl" />
         <motion.div
@@ -67,92 +397,63 @@ const Packages = () => {
         />
       </motion.div>
 
-      <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <span className="text-xs tracking-[0.3em] uppercase text-primary mb-4 block">
-            Preise
-          </span>
-          <h2 className="section-title mb-4">Transparente Preise</h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Klare Leistungen. Keine versteckten Kosten.
-          </p>
+          <h2 className="section-title mb-4">{t("packages.title")}</h2>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">{t("packages.subtitle")}</p>
         </motion.div>
 
-        {/* Two service cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-          <ServiceCard
-            icon={<Camera className="w-5 h-5" />}
-            subtitle="Produktion"
-            title="Dreh"
-            price="€100"
-            unit="/ Stunde"
-            note="Professionelle Kamera, Licht & Ton. Mehrere Standorte möglich. Ein Drehtag = ca. 6–8 Stunden."
-            index={0}
-          />
-          <ServiceCard
-            icon={<Scissors className="w-5 h-5" />}
-            subtitle="Post-Produktion"
-            title="Schnitt"
-            price="€100"
-            unit="/ Video"
-            note="Schnitt, Farbe, Ton & Untertitel. Für Reels, TikToks und Shorts bis 60 Sekunden."
-            index={1}
-          />
-        </div>
-
-        {/* Example calculation */}
+        {/* Tab switcher */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 max-w-2xl mx-auto p-6 rounded-[16px] bg-surface border border-white/[0.06]"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex justify-center mb-12"
         >
-          <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground/60 mb-4">
-            Beispiel
-          </p>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between text-muted-foreground">
-              <span>Dreh — 6 Stunden</span>
-              <span className="font-medium text-foreground">€600</span>
-            </div>
-            <div className="flex justify-between text-muted-foreground">
-              <span>Schnitt — 4 Videos</span>
-              <span className="font-medium text-foreground">€400</span>
-            </div>
-            <div className="flex justify-between pt-3 border-t border-foreground/[0.06]">
-              <span className="font-medium text-foreground">Gesamt</span>
-              <span className="font-bold text-primary text-base">€1.000</span>
-            </div>
+          <div className="inline-flex rounded-[14px] bg-surface border border-white/[0.06] p-1 gap-1">
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`relative px-5 py-2.5 rounded-[10px] text-sm font-medium transition-colors duration-300 ${
+                  activeTab === tab ? "text-foreground" : "text-muted-foreground hover:text-foreground/70"
+                }`}
+              >
+                {activeTab === tab && (
+                  <motion.div
+                    layoutId="activePackageTab"
+                    className="absolute inset-0 rounded-[10px] bg-surface-elevated border border-primary/30"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                  />
+                )}
+                <span className="relative z-10">{t(`packages.tab.${tab}`)}</span>
+              </button>
+            ))}
           </div>
         </motion.div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-10 text-center"
-        >
-          <button
-            onClick={scrollToContact}
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity duration-300 group"
+        {/* Tab content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span>Angebot anfragen</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
-          <p className="mt-4 text-xs text-muted-foreground/60">
-            Alle Preise zzgl. MwSt. (19%)
-          </p>
-        </motion.div>
+            {activeTab === "day"     && <DayTab     t={t} onCta={scrollToContact} />}
+            {activeTab === "monthly" && <MonthlyTab t={t} onCta={scrollToContact} />}
+            {activeTab === "smm"     && <SmmTab     t={t} onCta={scrollToContact} />}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

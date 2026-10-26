@@ -138,6 +138,9 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.hourly.label": "Shooting only",
     "packages.hourly.price": "€100 / hour",
     "packages.hourly.desc": "Filming without editing — ideal when you have your own editor.",
+    "packages.editing.label": "Editing",
+    "packages.editing.price": "€100 / video",
+    "packages.editing.desc": "Single video edit — colour grade, captions, sound design, effects.",
     // Day packages
     "packages.day.inc1": "Filming (professional quality)",
     "packages.day.inc2": "Concept & idea per video",
@@ -515,6 +518,9 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.hourly.label": "Nur Dreh",
     "packages.hourly.price": "€100 / Stunde",
     "packages.hourly.desc": "Filmen ohne Schnitt — ideal wenn Sie einen eigenen Editor haben.",
+    "packages.editing.label": "Schnitt",
+    "packages.editing.price": "€100 / Video",
+    "packages.editing.desc": "Einzelvideo-Schnitt — Farbkorrektur, Untertitel, Sound-Design, Effekte.",
     // Day packages
     "packages.day.inc1": "Dreh (professionelle Qualität)",
     "packages.day.inc2": "Konzept & Idee pro Video",
@@ -891,6 +897,9 @@ const translations: Record<Language, Record<string, string>> = {
     "packages.hourly.label": "Лише зйомка",
     "packages.hourly.price": "€100 / година",
     "packages.hourly.desc": "Зйомка без монтажу — ідеально якщо у вас є власний монтажер.",
+    "packages.editing.label": "Монтаж",
+    "packages.editing.price": "€100 / відео",
+    "packages.editing.desc": "Монтаж одного відео — кольорокорекція, субтитри, звук, ефекти.",
     // Day packages
     "packages.day.inc1": "Зйомка (професійна якість)",
     "packages.day.inc2": "Концепція та ідея на відео",

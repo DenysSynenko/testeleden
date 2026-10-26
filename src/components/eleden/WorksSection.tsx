@@ -129,7 +129,7 @@ const ReelCard = ({
       </div>
 
       {/* Logo — height per logo for equal visual weight; left-aligned in card */}
-      <div className="absolute bottom-4 left-4 flex items-end" style={{ maxWidth: 170 }}>
+      <div className="absolute bottom-4 left-2 flex items-end" style={{ maxWidth: 170 }}>
         <img
           src={item.logo}
           alt={item.client}
