@@ -87,8 +87,9 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* Pure helper — all logos rendered white on dark theme, near-black on light. */
-const getLogoFilter = (theme: string) => {
+/* logoDark:false → keep original brand color; logoDark:true → white/black */
+const getLogoFilter = (theme: string, isDark: boolean) => {
+  if (!isDark) return "none";
   if (theme === "light") return "brightness(0) opacity(0.75)";
   return "brightness(0) invert(1)";
 };
@@ -317,11 +318,11 @@ const StripLogo = ({
   isLast?: boolean;
 }) => {
   const { theme } = useTheme();
-  const filter = getLogoFilter(theme);
+  const filter = getLogoFilter(theme, client.logoDark ?? false);
 
   const inner = (
     <div
-      className={`flex-1 flex items-center justify-center py-2 opacity-80 hover:opacity-100 transition-opacity duration-300 ${
+      className={`flex-1 flex items-center justify-center py-2 opacity-100 hover:opacity-100 transition-opacity duration-300 ${
         !isLast ? "border-r border-foreground/[0.08]" : ""
       }`}
     >

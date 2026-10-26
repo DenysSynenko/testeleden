@@ -51,8 +51,9 @@ const HIGHLIGHTS = [
   },
 ];
 
-/* Pure helper — all logos white on dark theme, near-black on light. */
-const logoFilter = (theme: string) => {
+/* dark:false → keep original brand color; dark:true → white/black */
+const logoFilter = (theme: string, isDark: boolean) => {
+  if (!isDark) return "none";
   if (theme === "light") return "brightness(0) opacity(0.75)";
   return "brightness(0) invert(1)";
 };
@@ -70,7 +71,7 @@ const ReelCard = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hover, setHover] = useState(false);
   const { theme } = useTheme();
-  const filter = logoFilter(theme);
+  const filter = logoFilter(theme, item.dark);
 
   /* Show a still frame from the video as preview thumbnail */
   useEffect(() => {
@@ -197,14 +198,14 @@ const WorksSection = () => {
           {HIGHLIGHTS.map((item, i) => (
             <div
               key={item.client}
-              className={`flex-1 flex items-center justify-center py-2 opacity-80 hover:opacity-100 transition-opacity duration-300 ${
+              className={`flex-1 flex items-center justify-center py-2 opacity-100 transition-opacity duration-300 ${
                 i < HIGHLIGHTS.length - 1 ? "border-r border-foreground/[0.08]" : ""
               }`}
             >
               <img
                 src={item.logo}
                 alt={item.client}
-                style={{ height: item.stripH, width: "auto", maxWidth: 160, filter: logoFilter(theme) }}
+                style={{ height: item.stripH, width: "auto", maxWidth: 160, filter: logoFilter(theme, item.dark) }}
               />
             </div>
           ))}
