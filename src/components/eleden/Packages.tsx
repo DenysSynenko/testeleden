@@ -4,8 +4,8 @@ import { Check, Sparkles, Camera, Scissors } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type Tab = "monthly" | "smm";
-const TABS: Tab[] = ["monthly", "smm"];
+type Tab = "monthly" | "day" | "smm";
+const TABS: Tab[] = ["monthly", "day", "smm"];
 
 // ─── Shared card component ────────────────────────────────────────────────────
 interface PkgCardProps {
@@ -386,7 +386,7 @@ const Packages = () => {
   };
 
   return (
-    <section ref={containerRef} id="packages" className="relative py-32 overflow-hidden">
+    <section ref={containerRef} id="packages" className="relative pt-16 pb-32 overflow-hidden">
       {/* Parallax glow */}
       <motion.div style={{ y: backgroundY }} className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-[800px] h-[800px] bg-glow-mint opacity-20 rounded-full blur-3xl" />
@@ -450,6 +450,7 @@ const Packages = () => {
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
             {activeTab === "monthly" && <MonthlyTab t={t} onCta={scrollToContact} />}
+            {activeTab === "day"     && <DayTab     t={t} onCta={scrollToContact} />}
             {activeTab === "smm"     && <SmmTab     t={t} onCta={scrollToContact} />}
           </motion.div>
         </AnimatePresence>
