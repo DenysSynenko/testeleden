@@ -236,6 +236,37 @@ const MonthlyTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void 
           />
         ))}
       </div>
+
+      {/* Extra / custom add-on rates */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="max-w-xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4"
+      >
+        <div className="text-center p-5 rounded-[14px] bg-surface border border-white/[0.06]">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Camera className="w-4 h-4 text-primary" />
+            <p className="text-sm font-medium text-foreground">
+              {t("packages.hourly.label")} —{" "}
+              <span className="text-primary">{t("packages.hourly.price")}</span>
+            </p>
+          </div>
+          <p className="text-xs text-muted-foreground">{t("packages.hourly.desc")}</p>
+        </div>
+        <div className="text-center p-5 rounded-[14px] bg-surface border border-white/[0.06]">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Scissors className="w-4 h-4 text-primary" />
+            <p className="text-sm font-medium text-foreground">
+              {t("packages.editing.label")} —{" "}
+              <span className="text-primary">{t("packages.editing.price")}</span>
+            </p>
+          </div>
+          <p className="text-xs text-muted-foreground">{t("packages.editing.desc")}</p>
+        </div>
+      </motion.div>
+
       <p className="text-center text-xs text-muted-foreground/60">{t("packages.vat")}</p>
     </div>
   );
