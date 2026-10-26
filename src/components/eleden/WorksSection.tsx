@@ -28,19 +28,18 @@ const HIGHLIGHTS = [
   {
     src:     "/videos/almeno_monopoly.mp4",
     client:  "Almeno Immobilien",
-    logo:    "/logos/almeno_white.png",
-    dark:    true,
+    logo:    "/logos/almeno_horizontal.png",
+    dark:    false,
     stripH:  40,  // medium wordmark
     cardH:   46,
   },
 ];
 
-/* Logo filter — light: flip to black, dark: white with subtle glow */
-const useLightFilter = () => {
-  const { theme } = useTheme();
-  if (theme === "light") {
-    return "brightness(0) opacity(0.75)";
-  }
+/* Pure helper — returns CSS filter for a logo given current theme.
+   Colored logos (dark:false) always get "none". */
+const logoFilter = (theme: string, isDark: boolean) => {
+  if (!isDark) return "none";
+  if (theme === "light") return "brightness(0) opacity(0.75)";
   return "drop-shadow(0 0 8px rgba(255,255,255,0.12)) brightness(1)";
 };
 
@@ -56,7 +55,8 @@ const ReelCard = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hover, setHover] = useState(false);
-  const logoFilter = useLightFilter();
+  const { theme } = useTheme();
+  const filter = logoFilter(theme, item.dark);
 
   /* Show a still frame from the video as preview thumbnail */
   useEffect(() => {
@@ -119,7 +119,7 @@ const ReelCard = ({
         <img
           src={item.logo}
           alt={item.client}
-          style={{ height: item.cardH, width: "auto", maxWidth: 160, filter: logoFilter }}
+          style={{ height: item.cardH, width: "auto", maxWidth: 160, filter }}
         />
       </div>
     </motion.div>
@@ -131,7 +131,7 @@ const ReelCard = ({
 ────────────────────────────────────────────── */
 const WorksSection = () => {
   const { t } = useLanguage();
-  const logoFilter = useLightFilter();
+  const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -190,7 +190,7 @@ const WorksSection = () => {
               <img
                 src={item.logo}
                 alt={item.client}
-                style={{ height: item.stripH, width: "auto", maxWidth: 130, filter: logoFilter }}
+                style={{ height: item.stripH, width: "auto", maxWidth: 130, filter: logoFilter(theme, item.dark) }}
               />
             </div>
           ))}

@@ -51,8 +51,8 @@ const CLIENTS: ClientData[] = [
     id: "almeno",
     name: "Almeno Immobilien",
     category: "Real Estate",
-    logo: "/logos/almeno_white.png",
-    logoDark: true,
+    logo: "/logos/almeno_horizontal.png",
+    logoDark: false,
     stripH: 40,   // medium wordmark — natural at 40px tall
     videos: [
       { src: "/videos/almeno_monopoly.mp4", label: "Brand Film" },
@@ -62,13 +62,10 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* Logo filter — light theme: flip to black so white logos are visible on light bg
-                  dark theme: white logos with subtle glow */
-const useMintFilter = () => {
-  const { theme } = useTheme();
-  if (theme === "light") {
-    return "brightness(0) opacity(0.75)";
-  }
+/* Pure helper — returns CSS filter. Colored logos (logoDark:false) get "none". */
+const getLogoFilter = (theme: string, isDark: boolean) => {
+  if (!isDark) return "none";
+  if (theme === "light") return "brightness(0) opacity(0.75)";
   return "drop-shadow(0 0 8px rgba(255,255,255,0.12)) brightness(1)";
 };
 
@@ -295,7 +292,8 @@ const StripLogo = ({
   delay?: number;
   isLast?: boolean;
 }) => {
-  const filter = useMintFilter();
+  const { theme } = useTheme();
+  const filter = getLogoFilter(theme, client.logoDark ?? false);
 
   const inner = (
     <div
