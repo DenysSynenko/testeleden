@@ -16,6 +16,7 @@ const HIGHLIGHTS = [
     dark:    true,
     stripH:  34,
     cardH:   22,
+    cardLeft: "left-4",
   },
   {
     src:     "/videos/guatemuc_day_night.mp4",
@@ -23,7 +24,8 @@ const HIGHLIGHTS = [
     logo:    "/logos/guatemuc_logo.png",
     dark:    true,
     stripH:  64,
-    cardH:   36,
+    cardH:   42,
+    cardLeft: "left-4",
   },
   {
     src:     "/videos/almeno_monopoly.mp4",
@@ -31,7 +33,8 @@ const HIGHLIGHTS = [
     logo:    "/logos/almeno_horizontal.png",
     dark:    false,
     stripH:  50,
-    cardH:   28,
+    cardH:   34,
+    cardLeft: "left-4",
   },
   {
     src:     "/videos/alrighty_filter.mp4",
@@ -39,7 +42,8 @@ const HIGHLIGHTS = [
     logo:    "/logos/alrighty_logo.png",
     dark:    true,
     stripH:  48,
-    cardH:   24,
+    cardH:   30,
+    cardLeft: "left-4",
   },
   {
     src:     "/videos/aoni_v2.mp4",
@@ -47,7 +51,8 @@ const HIGHLIGHTS = [
     logo:    "/logos/aoni_logo.png",
     dark:    true,
     stripH:  52,
-    cardH:   20,
+    cardH:   26,
+    cardLeft: "left-2",
   },
 ];
 
@@ -129,7 +134,7 @@ const ReelCard = ({
       </div>
 
       {/* Logo — height per logo for equal visual weight; left-aligned in card */}
-      <div className="absolute bottom-4 left-2 flex items-end" style={{ maxWidth: 170 }}>
+      <div className={`absolute bottom-4 ${item.cardLeft ?? "left-4"} flex items-end`} style={{ maxWidth: 170 }}>
         <img
           src={item.logo}
           alt={item.client}

@@ -4,8 +4,8 @@ import { Check, Sparkles, Camera, Scissors } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-type Tab = "day" | "monthly" | "smm";
-const TABS: Tab[] = ["day", "monthly", "smm"];
+type Tab = "monthly" | "smm";
+const TABS: Tab[] = ["monthly", "smm"];
 
 // ─── Shared card component ────────────────────────────────────────────────────
 interface PkgCardProps {
@@ -371,7 +371,7 @@ const SmmTab = ({ t, onCta }: { t: (k: string) => string; onCta: () => void }) =
 
 // ─── Main component ───────────────────────────────────────────────────────────
 const Packages = () => {
-  const [activeTab, setActiveTab] = useState<Tab>("day");
+  const [activeTab, setActiveTab] = useState<Tab>("monthly");
   const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
 
@@ -449,7 +449,6 @@ const Packages = () => {
             exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            {activeTab === "day"     && <DayTab     t={t} onCta={scrollToContact} />}
             {activeTab === "monthly" && <MonthlyTab t={t} onCta={scrollToContact} />}
             {activeTab === "smm"     && <SmmTab     t={t} onCta={scrollToContact} />}
           </motion.div>
