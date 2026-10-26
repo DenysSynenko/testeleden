@@ -14,15 +14,15 @@ const HIGHLIGHTS = [
     client:  "Brandcraft",
     logo:    "/logos/brandcraft_logo.png",
     dark:    true,
-    stripH:  34,  // wide wordmark
-    cardH:   40,  // height inside video card
+    stripH:  44,
+    cardH:   40,
   },
   {
     src:     "/videos/guatemuc_day_night.mp4",
     client:  "GuateMuc",
     logo:    "/logos/guatemuc_logo.png",
     dark:    true,
-    stripH:  52,  // square symbol — taller for equal visual weight
+    stripH:  64,
     cardH:   54,
   },
   {
@@ -30,7 +30,7 @@ const HIGHLIGHTS = [
     client:  "Almeno Immobilien",
     logo:    "/logos/almeno_horizontal.png",
     dark:    false,
-    stripH:  40,  // medium wordmark
+    stripH:  50,
     cardH:   46,
   },
   {
@@ -38,7 +38,7 @@ const HIGHLIGHTS = [
     client:  "Alrighty Roastery",
     logo:    "/logos/alrighty_logo.png",
     dark:    true,
-    stripH:  38,
+    stripH:  48,
     cardH:   44,
   },
   {
@@ -46,7 +46,7 @@ const HIGHLIGHTS = [
     client:  "Aoni Studios",
     logo:    "/logos/aoni_logo.png",
     dark:    true,
-    stripH:  42,
+    stripH:  52,
     cardH:   48,
   },
 ];
@@ -197,14 +197,14 @@ const WorksSection = () => {
           {HIGHLIGHTS.map((item, i) => (
             <div
               key={item.client}
-              className={`flex-1 flex items-center justify-center py-2 opacity-55 hover:opacity-90 transition-opacity duration-300 ${
+              className={`flex-1 flex items-center justify-center py-2 opacity-80 hover:opacity-100 transition-opacity duration-300 ${
                 i < HIGHLIGHTS.length - 1 ? "border-r border-foreground/[0.08]" : ""
               }`}
             >
               <img
                 src={item.logo}
                 alt={item.client}
-                style={{ height: item.stripH, width: "auto", maxWidth: 130, filter: logoFilter(theme) }}
+                style={{ height: item.stripH, width: "auto", maxWidth: 160, filter: logoFilter(theme) }}
               />
             </div>
           ))}

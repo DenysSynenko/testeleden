@@ -27,7 +27,7 @@ const CLIENTS: ClientData[] = [
     category: "Custom Made Accessories",
     logo: "/logos/brandcraft_logo.png",
     logoDark: true,
-    stripH: 34,   // wide wordmark — looks balanced at 34px tall
+    stripH: 44,   // wide wordmark
     videos: [
       { src: "/videos/brandcraft_bmw.mp4",       label: "BMW" },
       { src: "/videos/brandcraft_interalpen.mp4", label: "Interalpen Hotel" },
@@ -41,7 +41,7 @@ const CLIENTS: ClientData[] = [
     category: "Guatemalan Restaurant · Munich",
     logo: "/logos/guatemuc_logo.png",
     logoDark: true,
-    stripH: 52,   // square symbol — needs more height for equal visual weight
+    stripH: 64,   // square symbol — taller for equal visual weight
     videos: [
       { src: "/videos/guatemuc_day_night.mp4", label: "Day & Night" },
     ],
@@ -53,7 +53,7 @@ const CLIENTS: ClientData[] = [
     category: "Real Estate",
     logo: "/logos/almeno_horizontal.png",
     logoDark: false,
-    stripH: 40,   // medium wordmark — natural at 40px tall
+    stripH: 50,   // medium wordmark
     videos: [
       { src: "/videos/almeno_monopoly.mp4",    label: "Brand Film" },
       { src: "/videos/almeno_fpv.mp4",         label: "FPV Drone Reel" },
@@ -67,7 +67,7 @@ const CLIENTS: ClientData[] = [
     category: "Specialty Coffee · Munich",
     logo: "/logos/alrighty_logo.png",
     logoDark: true,
-    stripH: 38,
+    stripH: 48,
     videos: [
       { src: "/videos/alrighty_filter.mp4", label: "Filter Coffee" },
     ],
@@ -79,7 +79,7 @@ const CLIENTS: ClientData[] = [
     category: "Creative Studio · Munich",
     logo: "/logos/aoni_logo.png",
     logoDark: true,
-    stripH: 42,
+    stripH: 52,
     videos: [
       { src: "/videos/aoni_v2.mp4", label: "Brand Film" },
     ],
@@ -321,14 +321,14 @@ const StripLogo = ({
 
   const inner = (
     <div
-      className={`flex-1 flex items-center justify-center py-2 opacity-55 hover:opacity-90 transition-opacity duration-300 ${
+      className={`flex-1 flex items-center justify-center py-2 opacity-80 hover:opacity-100 transition-opacity duration-300 ${
         !isLast ? "border-r border-foreground/[0.08]" : ""
       }`}
     >
       <img
         src={client.logo}
         alt={client.name}
-        style={{ height: client.stripH, width: "auto", maxWidth: 130, filter }}
+        style={{ height: client.stripH, width: "auto", maxWidth: 160, filter }}
       />
     </div>
   );
