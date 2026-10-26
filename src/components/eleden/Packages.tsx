@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Check, Sparkles, Camera, Scissors, SlidersHorizontal } from "lucide-react";
+import { Link } from "react-router-dom";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -503,12 +504,12 @@ const Packages = () => {
 
             {/* CTA */}
             <div className="flex-shrink-0">
-              <button
-                onClick={scrollToContact}
+              <Link
+                to="/calculator"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/30 text-sm font-medium text-primary hover:bg-primary/20 hover:border-primary/50 transition-all duration-300 whitespace-nowrap"
               >
                 {t("packages.custom.cta.btn")}
-              </button>
+              </Link>
             </div>
           </div>
         </motion.div>
