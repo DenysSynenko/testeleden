@@ -47,7 +47,7 @@ const HIGHLIGHTS = [
     logo:    "/logos/aoni_logo.png",
     dark:    true,
     stripH:  52,
-    cardH:   28,
+    cardH:   20,
   },
 ];
 
