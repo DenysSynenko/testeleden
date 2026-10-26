@@ -55,10 +55,35 @@ const CLIENTS: ClientData[] = [
     logoDark: false,
     stripH: 40,   // medium wordmark — natural at 40px tall
     videos: [
-      { src: "/videos/almeno_monopoly.mp4", label: "Brand Film" },
-      { src: "/videos/almeno_fpv.mp4",      label: "FPV Drone Reel" },
+      { src: "/videos/almeno_monopoly.mp4",    label: "Brand Film" },
+      { src: "/videos/almeno_fpv.mp4",         label: "FPV Drone Reel" },
+      { src: "/videos/almeno_3questions.mp4",  label: "3 Questions" },
     ],
     services: ["Filming", "FPV Drone", "Editing", "Color grading"],
+  },
+  {
+    id: "alrighty",
+    name: "Alrighty Roastery",
+    category: "Specialty Coffee · Munich",
+    logo: "/logos/alrighty_logo.png",
+    logoDark: true,
+    stripH: 38,
+    videos: [
+      { src: "/videos/alrighty_filter.mp4", label: "Filter Coffee" },
+    ],
+    services: ["Filming", "Editing", "Color grading"],
+  },
+  {
+    id: "aoni",
+    name: "Aoni Studios",
+    category: "Creative Studio · Munich",
+    logo: "/logos/aoni_logo.png",
+    logoDark: true,
+    stripH: 42,
+    videos: [
+      { src: "/videos/aoni_v2.mp4", label: "Brand Film" },
+    ],
+    services: ["Filming", "Editing", "Color grading"],
   },
 ];
 

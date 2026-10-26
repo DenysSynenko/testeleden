@@ -33,6 +33,22 @@ const HIGHLIGHTS = [
     stripH:  40,  // medium wordmark
     cardH:   46,
   },
+  {
+    src:     "/videos/alrighty_filter.mp4",
+    client:  "Alrighty Roastery",
+    logo:    "/logos/alrighty_logo.png",
+    dark:    true,
+    stripH:  38,
+    cardH:   44,
+  },
+  {
+    src:     "/videos/aoni_v2.mp4",
+    client:  "Aoni Studios",
+    logo:    "/logos/aoni_logo.png",
+    dark:    true,
+    stripH:  42,
+    cardH:   48,
+  },
 ];
 
 /* Pure helper — returns CSS filter for a logo given current theme.
