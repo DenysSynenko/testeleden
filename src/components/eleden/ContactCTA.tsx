@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { AnimatedLines } from "./AnimatedText";
 import MagneticButton from "./MagneticButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+
+/* ── Submission-limit constants ── */
+const SUBMIT_KEY   = "eleden_lead_count_v1";
+const MAX_SUBMITS  = 3;
+
+function getSubmitCount(): number {
+  try {
+    return parseInt(localStorage.getItem(SUBMIT_KEY) || "0", 10) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function incrementSubmitCount(): void {
+  try {
+    localStorage.setItem(SUBMIT_KEY, String(getSubmitCount() + 1));
+  } catch { /* ignore */ }
+}
 
 const ContactCTA = () => {
   const { t } = useLanguage();
@@ -15,11 +33,25 @@ const ContactCTA = () => {
     phone: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting]   = useState(false);
+  /* session-only: resets on page reload, hides the form after submit */
+  const [isSubmitted, setIsSubmitted]     = useState(false);
+  /* persistent: if visitor used up all 3 attempts */
+  const [limitReached, setLimitReached]   = useState(false);
+
+  useEffect(() => {
+    if (getSubmitCount() >= MAX_SUBMITS) setLimitReached(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    /* Double-check limit before sending */
+    if (getSubmitCount() >= MAX_SUBMITS) {
+      setLimitReached(true);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -30,6 +62,9 @@ const ContactCTA = () => {
       if (data && (data as { success?: boolean }).success === false) {
         throw new Error((data as { error?: string }).error || "Request failed");
       }
+      /* Persist the submission count, then close the form for this session */
+      incrementSubmitCount();
+      if (getSubmitCount() >= MAX_SUBMITS) setLimitReached(true);
       setIsSubmitted(true);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Something went wrong";
@@ -107,7 +142,7 @@ const ContactCTA = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-xl mx-auto"
         >
-          {isSubmitted ? (
+          {(isSubmitted || limitReached) ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
