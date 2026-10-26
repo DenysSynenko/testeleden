@@ -54,6 +54,15 @@ const HIGHLIGHTS = [
     cardH:   26,
     cardLeft: "left-2",
   },
+  {
+    src:     "/videos/brandcraft_interalpen.mp4",
+    client:  "Brandcraft",
+    logo:    "/logos/brandcraft_logo.png",
+    dark:    true,
+    stripH:  34,
+    cardH:   22,
+    cardLeft: "left-4",
+  },
 ];
 
 /* dark:false → keep original brand color; dark:true → always white */
