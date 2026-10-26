@@ -27,7 +27,7 @@ const CLIENTS: ClientData[] = [
     category: "Custom Made Accessories",
     logo: "/logos/brandcraft_logo.png",
     logoDark: true,
-    stripH: 44,   // wide wordmark
+    stripH: 34,   // wide wordmark — reduced so it doesn't hit maxWidth
     videos: [
       { src: "/videos/brandcraft_bmw.mp4",       label: "BMW" },
       { src: "/videos/brandcraft_interalpen.mp4", label: "Interalpen Hotel" },
@@ -87,10 +87,9 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* logoDark:false → keep original brand color; logoDark:true → white/black */
-const getLogoFilter = (theme: string, isDark: boolean) => {
+/* logoDark:false → keep original brand color; logoDark:true → always white */
+const getLogoFilter = (_theme: string, isDark: boolean) => {
   if (!isDark) return "none";
-  if (theme === "light") return "brightness(0) opacity(0.75)";
   return "brightness(0) invert(1)";
 };
 
@@ -329,7 +328,7 @@ const StripLogo = ({
       <img
         src={client.logo}
         alt={client.name}
-        style={{ height: client.stripH, width: "auto", maxWidth: 160, filter }}
+        style={{ maxHeight: client.stripH, width: "auto", maxWidth: 160, filter }}
       />
     </div>
   );

@@ -14,8 +14,8 @@ const HIGHLIGHTS = [
     client:  "Brandcraft",
     logo:    "/logos/brandcraft_logo.png",
     dark:    true,
-    stripH:  44,
-    cardH:   40,
+    stripH:  34,
+    cardH:   32,
   },
   {
     src:     "/videos/guatemuc_day_night.mp4",
@@ -51,10 +51,9 @@ const HIGHLIGHTS = [
   },
 ];
 
-/* dark:false → keep original brand color; dark:true → white/black */
-const logoFilter = (theme: string, isDark: boolean) => {
+/* dark:false → keep original brand color; dark:true → always white */
+const logoFilter = (_theme: string, isDark: boolean) => {
   if (!isDark) return "none";
-  if (theme === "light") return "brightness(0) opacity(0.75)";
   return "brightness(0) invert(1)";
 };
 
@@ -134,7 +133,7 @@ const ReelCard = ({
         <img
           src={item.logo}
           alt={item.client}
-          style={{ height: item.cardH, width: "auto", maxWidth: 160, filter }}
+          style={{ maxHeight: item.cardH, width: "auto", maxWidth: 160, filter }}
         />
       </div>
     </motion.div>
@@ -205,7 +204,7 @@ const WorksSection = () => {
               <img
                 src={item.logo}
                 alt={item.client}
-                style={{ height: item.stripH, width: "auto", maxWidth: 160, filter: logoFilter(theme, item.dark) }}
+                style={{ maxHeight: item.stripH, width: "auto", maxWidth: 160, filter: logoFilter(theme, item.dark) }}
               />
             </div>
           ))}
