@@ -87,11 +87,10 @@ const CLIENTS: ClientData[] = [
   },
 ];
 
-/* Pure helper — returns CSS filter. Colored logos (logoDark:false) get "none". */
-const getLogoFilter = (theme: string, isDark: boolean) => {
-  if (!isDark) return "none";
+/* Pure helper — all logos rendered white on dark theme, near-black on light. */
+const getLogoFilter = (theme: string) => {
   if (theme === "light") return "brightness(0) opacity(0.75)";
-  return "drop-shadow(0 0 8px rgba(255,255,255,0.12)) brightness(1)";
+  return "brightness(0) invert(1)";
 };
 
 /* ──────────────────────────────────────────────
@@ -318,7 +317,7 @@ const StripLogo = ({
   isLast?: boolean;
 }) => {
   const { theme } = useTheme();
-  const filter = getLogoFilter(theme, client.logoDark ?? false);
+  const filter = getLogoFilter(theme);
 
   const inner = (
     <div

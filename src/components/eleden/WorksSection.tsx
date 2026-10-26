@@ -51,12 +51,10 @@ const HIGHLIGHTS = [
   },
 ];
 
-/* Pure helper — returns CSS filter for a logo given current theme.
-   Colored logos (dark:false) always get "none". */
-const logoFilter = (theme: string, isDark: boolean) => {
-  if (!isDark) return "none";
+/* Pure helper — all logos white on dark theme, near-black on light. */
+const logoFilter = (theme: string) => {
   if (theme === "light") return "brightness(0) opacity(0.75)";
-  return "drop-shadow(0 0 8px rgba(255,255,255,0.12)) brightness(1)";
+  return "brightness(0) invert(1)";
 };
 
 /* ──────────────────────────────────────────────
@@ -72,7 +70,7 @@ const ReelCard = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hover, setHover] = useState(false);
   const { theme } = useTheme();
-  const filter = logoFilter(theme, item.dark);
+  const filter = logoFilter(theme);
 
   /* Show a still frame from the video as preview thumbnail */
   useEffect(() => {
@@ -206,7 +204,7 @@ const WorksSection = () => {
               <img
                 src={item.logo}
                 alt={item.client}
-                style={{ height: item.stripH, width: "auto", maxWidth: 130, filter: logoFilter(theme, item.dark) }}
+                style={{ height: item.stripH, width: "auto", maxWidth: 130, filter: logoFilter(theme) }}
               />
             </div>
           ))}
