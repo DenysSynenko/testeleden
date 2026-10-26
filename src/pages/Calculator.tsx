@@ -190,10 +190,16 @@ const Calculator = () => {
     [videos, shootHours, storyPacks, customSmm]
   );
 
+  const monthlyBase = useMemo(() => {
+    if (monthVideos <= 8)  return monthVideos * PRICE_VIDEO;
+    if (monthVideos <= 12) return 1800;
+    if (monthVideos <= 20) return 3000;
+    return 3000 + (monthVideos - 20) * PRICE_VIDEO;
+  }, [monthVideos]);
+
   const monthlyTotal = useMemo(() => {
-    const pkg = MONTHLY.find((p) => p.id === monthPkg)!;
-    return pkg.price + monthStories * PRICE_STORIES + PRICE_SMM[monthSmm];
-  }, [monthPkg, monthStories, monthSmm]);
+    return monthlyBase + monthStories * PRICE_STORIES + PRICE_SMM[monthSmm];
+  }, [monthlyBase, monthStories, monthSmm]);
 
   const shootTotal = useMemo(() => {
     const pkg = SHOOT_DAYS.find((p) => p.id === shootPkg)!;
@@ -353,7 +359,7 @@ const Calculator = () => {
                               price={`€${pkg.price.toLocaleString()} / mo`}
                               sub={`${pkg.videos} videos — ${pkg.freq}`}
                               selected={monthPkg === pkg.id}
-                              onClick={() => setMonthPkg(pkg.id)}
+                              onClick={() => { setMonthPkg(pkg.id); setMonthVideos(pkg.videos); }}
                               badge={suggestMonthly(monthVideos) === pkg.id ? "Suggested" : undefined}
                             />
                           ))}
@@ -459,7 +465,16 @@ const Calculator = () => {
                     )}
                     {tab === "monthly" && (
                       <>
-                        <Line label={`${selectedMonth.label} plan (${selectedMonth.videos} videos)`} value={`€${selectedMonth.price.toLocaleString()}`} />
+                        {monthVideos > 20 ? (
+                          <>
+                            <Line label="Pro plan (20 videos)" value="€3,000" />
+                            <Line label={`+${monthVideos - 20} extra video${monthVideos - 20 !== 1 ? "s" : ""} × €150`} value={`+€${((monthVideos - 20) * PRICE_VIDEO).toLocaleString()}`} />
+                          </>
+                        ) : monthVideos > 8 ? (
+                          <Line label={`${selectedMonth.label} plan (${monthVideos} videos)`} value={`€${monthlyBase.toLocaleString()}`} />
+                        ) : (
+                          <Line label={`${monthVideos} video${monthVideos !== 1 ? "s" : ""} × €150 / mo`} value={`€${monthlyBase.toLocaleString()}`} />
+                        )}
                         {monthStories > 0 && <Line label={`Stories — ${monthStories} pack${monthStories > 1 ? "s" : ""}`} value={`+€${(monthStories * PRICE_STORIES).toLocaleString()}`} />}
                         {monthSmm !== "none" && <Line label={SMM_OPTIONS.find(o => o.id === monthSmm)!.label} value={`+€${PRICE_SMM[monthSmm]}`} />}
                       </>
