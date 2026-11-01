@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/eleden/Header";
 import Footer from "@/components/eleden/Footer";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -96,16 +97,27 @@ const getLogoFilter = (_theme: string, isDark: boolean) => {
 /* ──────────────────────────────────────────────
    Minimal Reel Player
 ────────────────────────────────────────────── */
-const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
+const ReelPlayer = ({
+  src,
+  label,
+  autoPlay,
+}: {
+  src: string;
+  label?: string;
+  autoPlay?: boolean;
+}) => {
   const videoRef    = useRef<HTMLVideoElement>(null);
   const wrapRef     = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying]   = useState(false);
   const [muted, setMuted]       = useState(true);
+  const [volume, setVolume]     = useState(1);
+  const [showVolume, setShowVolume] = useState(false);
   const [progress, setProgress] = useState(0);
   const [hover, setHover]       = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
-  const [rippleId, setRippleId] = useState(0); // click ripple feedback
+  const [rippleId, setRippleId] = useState(0);
+  const volumeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /* Show first frame as thumbnail */
   useEffect(() => {
@@ -116,10 +128,28 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
     return () => v.removeEventListener("loadedmetadata", showFrame);
   }, []);
 
+  /* Autoplay when navigated from home page */
+  useEffect(() => {
+    if (!autoPlay) return;
+    const v = videoRef.current;
+    if (!v) return;
+    const timer = setTimeout(() => {
+      v.muted = false;
+      setMuted(false);
+      v.play().then(() => setPlaying(true)).catch(() => {
+        // fallback: play muted if autoplay blocked
+        v.muted = true;
+        setMuted(true);
+        v.play().then(() => setPlaying(true)).catch(() => {});
+      });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [autoPlay]);
+
   const toggle = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
-    setRippleId(id => id + 1); // trigger ripple
+    setRippleId(id => id + 1);
     if (v.paused) { v.play(); setPlaying(true); }
     else          { v.pause(); setPlaying(false); }
   }, []);
@@ -128,8 +158,37 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
     e.stopPropagation();
     const v = videoRef.current;
     if (!v) return;
-    v.muted = !v.muted;
-    setMuted(v.muted);
+    if (v.muted) {
+      v.muted = false;
+      v.volume = volume;
+      setMuted(false);
+    } else {
+      v.muted = true;
+      setMuted(true);
+    }
+    setShowVolume(true);
+    if (volumeTimeout.current) clearTimeout(volumeTimeout.current);
+    volumeTimeout.current = setTimeout(() => setShowVolume(false), 2000);
+  }, [volume]);
+
+  const handleVolumeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    const v = videoRef.current;
+    if (!v) return;
+    const val = parseFloat(e.target.value);
+    setVolume(val);
+    v.volume = val;
+    v.muted = val === 0;
+    setMuted(val === 0);
+    if (volumeTimeout.current) clearTimeout(volumeTimeout.current);
+    volumeTimeout.current = setTimeout(() => setShowVolume(false), 2000);
+  }, []);
+
+  const handleVolumeClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowVolume(s => !s);
+    if (volumeTimeout.current) clearTimeout(volumeTimeout.current);
+    volumeTimeout.current = setTimeout(() => setShowVolume(false), 3000);
   }, []);
 
   const toggleFullscreen = useCallback((e: React.MouseEvent) => {
@@ -175,7 +234,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
       className="relative bg-zinc-950 rounded-2xl overflow-hidden w-full select-none cursor-pointer"
       style={{ aspectRatio: "9/16" }}
       onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseLeave={() => { setHover(false); setShowVolume(false); }}
       onClick={toggle}
       whileTap={{ scale: 0.965 }}
       transition={{ duration: 0.12, ease: "easeOut" }}
@@ -212,7 +271,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         </AnimatePresence>
       )}
 
-      {/* Top-right controls — appear on hover only */}
+      {/* Top-right controls — appear on hover */}
       <AnimatePresence>
         {hover && (
           <motion.div
@@ -220,29 +279,66 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.18 }}
-            className="absolute top-3 right-3 z-10 flex gap-1.5"
+            className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1.5"
+            onClick={e => e.stopPropagation()}
           >
-            <button
-              type="button"
-              onClick={toggleMute}
-              aria-label={muted ? "Unmute" : "Mute"}
-              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
-            >
-              {muted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
-            </button>
-            <button
-              type="button"
-              onClick={toggleFullscreen}
-              aria-label="Fullscreen"
-              className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
-            >
-              {fullscreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
-            </button>
+            {/* Volume slider — appears above mute button */}
+            <AnimatePresence>
+              {showVolume && (
+                <motion.div
+                  initial={{ opacity: 0, scaleY: 0.7, y: 8 }}
+                  animate={{ opacity: 1, scaleY: 1, y: 0 }}
+                  exit={{ opacity: 0, scaleY: 0.7, y: 8 }}
+                  transition={{ duration: 0.18 }}
+                  className="flex flex-col items-center h-20 justify-center px-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/10"
+                  style={{ transformOrigin: "bottom" }}
+                >
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={muted ? 0 : volume}
+                    onChange={handleVolumeChange}
+                    onClick={e => e.stopPropagation()}
+                    className="h-16 cursor-pointer accent-white"
+                    style={{
+                      writingMode: "vertical-lr",
+                      direction: "rtl",
+                      appearance: "slider-vertical",
+                      WebkitAppearance: "slider-vertical",
+                    } as React.CSSProperties}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className="flex gap-1.5">
+              {/* Mute / Volume button */}
+              <button
+                type="button"
+                onClick={handleVolumeClick}
+                aria-label={muted ? "Unmute" : "Mute"}
+                className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+              >
+                {muted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+              </button>
+
+              {/* Fullscreen */}
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                aria-label="Fullscreen"
+                className="w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+              >
+                {fullscreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Center play/pause — same style as main page, fades on hover */}
+      {/* Center play/pause */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <AnimatePresence mode="wait">
           {!playing && (
@@ -272,7 +368,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
         </AnimatePresence>
       </div>
 
-      {/* Click ripple — short motion feedback on every tap */}
+      {/* Click ripple */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
         <AnimatePresence>
           {rippleId > 0 && (
@@ -302,10 +398,7 @@ const ReelPlayer = ({ src, label }: { src: string; label?: string }) => {
 };
 
 /* ──────────────────────────────────────────────
-   Logo strip — every logo lives in a fixed-width
-   container (140px) with the logo centred inside.
-   Equal containers = equal visual spacing between
-   logos regardless of each logo's natural width.
+   Logo strip
 ────────────────────────────────────────────── */
 const StripLogo = ({
   client,
@@ -349,16 +442,25 @@ const StripLogo = ({
 };
 
 /* ──────────────────────────────────────────────
-   Client Block — text header, no logo, no number
+   Client Block
 ────────────────────────────────────────────── */
-const ClientBlock = ({ client, index }: { client: ClientData; index: number }) => (
+const ClientBlock = ({
+  client,
+  index,
+  autoPlaySrc,
+}: {
+  client: ClientData;
+  index: number;
+  autoPlaySrc?: string;
+}) => (
   <motion.div
+    id={client.id}
     initial={{ opacity: 0, y: 48, filter: "blur(12px)" }}
     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
     viewport={{ once: true, margin: "-60px" }}
     transition={{ duration: 0.9, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
   >
-    {/* Text header: name + category */}
+    {/* Text header */}
     <div className="mb-5">
       <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight mb-1">
         {client.name}
@@ -380,7 +482,7 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
       ))}
     </div>
 
-    {/* Videos — responsive grid: 1 col mobile, 2 col tablet, 3 col desktop */}
+    {/* Videos */}
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {client.videos.map((v, i) => (
         <motion.div
@@ -391,7 +493,11 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <ReelPlayer src={v.src} label={v.label} />
+          <ReelPlayer
+            src={v.src}
+            label={v.label}
+            autoPlay={autoPlaySrc === v.src}
+          />
         </motion.div>
       ))}
     </div>
@@ -402,6 +508,21 @@ const ClientBlock = ({ client, index }: { client: ClientData; index: number }) =
    Page
 ────────────────────────────────────────────── */
 const Work = () => {
+  const location = useLocation();
+  const targetSrc = (location.state as { videoSrc?: string } | null)?.videoSrc;
+
+  /* Scroll to the client block whose video was clicked on the home page */
+  useEffect(() => {
+    if (!targetSrc) return;
+    const targetClient = CLIENTS.find(c => c.videos.some(v => v.src === targetSrc));
+    if (!targetClient) return;
+    const timer = setTimeout(() => {
+      const el = document.getElementById(targetClient.id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [targetSrc]);
+
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       <div className="noise-overlay" />
@@ -443,7 +564,12 @@ const Work = () => {
           {/* Client blocks */}
           <div className="space-y-24">
             {CLIENTS.map((client, i) => (
-              <ClientBlock key={client.id} client={client} index={i} />
+              <ClientBlock
+                key={client.id}
+                client={client}
+                index={i}
+                autoPlaySrc={targetSrc}
+              />
             ))}
           </div>
 

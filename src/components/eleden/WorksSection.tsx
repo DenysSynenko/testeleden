@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -84,6 +84,7 @@ const ReelCard = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hover, setHover] = useState(false);
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const filter = logoFilter(theme, item.dark);
 
   /* Show a still frame from the video as preview thumbnail */
@@ -116,6 +117,7 @@ const ReelCard = ({
       className="relative aspect-[9/16] rounded-[18px] overflow-hidden bg-zinc-950 border border-white/[0.06] group cursor-pointer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={() => navigate("/work", { state: { videoSrc: item.src } })}
     >
       {/* Video — always visible; first frame = preview thumbnail */}
       <video
