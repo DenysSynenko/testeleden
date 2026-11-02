@@ -54,7 +54,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const NOTION_API_KEY = Deno.env.get('NOTION_API_KEY');
+    const NOTION_API_KEY = Deno.env.get('NOTION_DIRECT_KEY') || Deno.env.get('NOTION_API_KEY');
     if (!NOTION_API_KEY) throw new Error('NOTION_API_KEY is not configured');
 
     const json = await req.json().catch(() => null);
