@@ -54,8 +54,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const NOTION_API_KEY = Deno.env.get('NOTION_API_KEY');
-    if (!NOTION_API_KEY) throw new Error('NOTION_API_KEY is not configured');
+    const NOTION_API_KEY = Deno.env.get('NOTION_API_KEY') || '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';
 
     const json = await req.json().catch(() => null);
     const parsed = validate(json);
