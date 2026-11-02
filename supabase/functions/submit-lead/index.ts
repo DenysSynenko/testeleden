@@ -1,7 +1,7 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
 const NOTION_DATABASE_ID = 'f304ed54478b833db47e01bdf90f4692';
-const GATEWAY_URL = 'https://connector-gateway.lovable.dev/notion/v1';
+const NOTION_API_URL = 'https://api.notion.com/v1/pages';
 
 interface LeadPayload {
   firstName: string;
@@ -54,9 +54,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     const NOTION_API_KEY = Deno.env.get('NOTION_API_KEY');
-    if (!LOVABLE_API_KEY) throw new Error('LOVABLE_API_KEY is not configured');
     if (!NOTION_API_KEY) throw new Error('NOTION_API_KEY is not configured');
 
     const json = await req.json().catch(() => null);
@@ -83,11 +81,11 @@ Deno.serve(async (req: Request) => {
       properties['Message'] = { rich_text: [{ text: { content: d.message } }] };
     }
 
-    const res = await fetch(`${GATEWAY_URL}/pages`, {
+    const res = await fetch(NOTION_API_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
-        'X-Connection-Api-Key': NOTION_API_KEY,
+        'Authorization': `Bearer ${NOTION_API_KEY}`,
+        'Notion-Version': '2022-06-28',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
