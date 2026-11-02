@@ -307,7 +307,7 @@ const ReelPlayer = ({
                       direction: "rtl",
                       appearance: "slider-vertical",
                       WebkitAppearance: "slider-vertical",
-                    } as React.CSSProperties}
+                    } as unknown as React.CSSProperties}
                   />
                 </motion.div>
               )}
