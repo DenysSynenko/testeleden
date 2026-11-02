@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export type Language = "EN" | "DE" | "UA";
 
@@ -1157,7 +1157,10 @@ const translations: Record<Language, Record<string, string>> = {
   },
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+// Keep a single context instance across hot reloads
+const LanguageContext: React.Context<LanguageContextType | undefined> =
+  ((globalThis as Record<string, unknown>).__elendenLangCtx as React.Context<LanguageContextType | undefined>) ??
+  ((globalThis as Record<string, unknown>).__elendenLangCtx = createContext<LanguageContextType | undefined>(undefined));
 
 const LANG_KEY = "eleden_lang";
 
@@ -1199,7 +1202,16 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 export const useLanguage = (): LanguageContextType => {
   const context = useContext(LanguageContext);
   if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
+    // Fallback (e.g. during hot reload) instead of crashing the whole page
+    const language = detectLanguage();
+    return {
+      language,
+      setLanguage: (lang: Language) => {
+        try { localStorage.setItem(LANG_KEY, lang); } catch { /* ignore */ }
+        window.location.reload();
+      },
+      t: (key: string) => translations[language][key] || key,
+    };
   }
   return context;
 };
